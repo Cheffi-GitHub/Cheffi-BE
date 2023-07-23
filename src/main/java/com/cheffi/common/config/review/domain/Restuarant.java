@@ -1,20 +1,19 @@
 package com.cheffi.common.config.review.domain;
 
+import com.cheffi.common.constant.Address;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Rating {
+public class Restuarant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private Enum ratingType;
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "review_id")
-    private Review review;
+    @Embedded
+    private Address address;
 }

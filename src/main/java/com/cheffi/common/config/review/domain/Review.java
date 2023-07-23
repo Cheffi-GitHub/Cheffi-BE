@@ -1,9 +1,6 @@
 package com.cheffi.common.config.review.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -20,5 +17,5 @@ public class Review {
     private String text;
 
     @NotNull
-    private int ratings;
+    private int ratingCnt;
 }
