@@ -25,6 +25,10 @@ public class Review {
     @NotNull
     private int ratingCnt;
 
+    @ManyToOne
+    @Column(name = "restuarnt_id")
+    private Restuarant restuarant;
+
     @Builder
     public Review(String title, String text, int ratingCnt) {
         this.title = title;
