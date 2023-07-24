@@ -2,10 +2,8 @@ package com.cheffi.common.constant;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.MappedSuperclass;
-<<<<<<< HEAD
-=======
+
 import jakarta.validation.constraints.NotNull;
->>>>>>> develop
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +13,6 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @MappedSuperclass
 public class Address {
-<<<<<<< HEAD
-=======
 
 	// 시, 도
 	@NotNull
@@ -38,5 +34,5 @@ public class Address {
 	public static Address cityAddress(String province, String city) {
 		return new Address(province, city);
 	}
->>>>>>> develop
+
 }

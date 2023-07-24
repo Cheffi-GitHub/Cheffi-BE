@@ -1,6 +1,7 @@
 package com.cheffi.common.config.review.domain;
 
 import com.cheffi.common.constant.Address;
+import com.cheffi.common.constant.DetailedAddress;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -21,11 +22,11 @@ public class Restuarant {
     private String name;
 
     @Embedded
-    private Address address;
+    private DetailedAddress detailedAddress;
 
     @Builder
-    public Restuarant(String name, Address address) {
+    public Restuarant(String name, DetailedAddress detailedAddress) {
         this.name = name;
-        this.address = address;
+        this.detailedAddress = detailedAddress;
     }
 }

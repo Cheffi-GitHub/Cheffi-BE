@@ -23,10 +23,10 @@ public class ReviewPhoto {
     private String url;
 
     @NotNull
-    private String order;
+    private Integer order;
 
     @Builder
-    public ReviewPhoto(String url, String order) {
+    public ReviewPhoto(String url, Integer order) {
         this.url = url;
         this.order = order;
     }
