@@ -1,6 +1,9 @@
-package com.cheffi.common.config.review.domain;
+package com.cheffi.notice.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Review {
+public class Notice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,19 +23,11 @@ public class Review {
     private String title;
 
     @NotNull
-    private String text;
-
-    @NotNull
-    private int ratingCnt;
-
-    @ManyToOne
-    @Column(name = "restuarnt_id")
-    private Restuarant restuarant;
+    private String content;
 
     @Builder
-    public Review(String title, String text, int ratingCnt) {
+    public Notice(String title, String content) {
         this.title = title;
-        this.text = text;
-        this.ratingCnt = ratingCnt;
+        this.content = content;
     }
 }
