@@ -1,9 +1,6 @@
 package com.cheffi.common.config.review.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,4 +27,8 @@ public class ReviewPhoto {
         this.url = url;
         this.order = order;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "review_id")
+    private Review review;
 }
