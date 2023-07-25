@@ -1,34 +1,34 @@
-package com.cheffi.common.config.review.domain;
+package com.cheffi.user.domain;
 
+import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.review.domain.Review;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class ReviewPhoto {
+public class Bookmark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String url;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "avatar_id")
+    private Avatar avatar;
 
     @NotNull
-    private Integer order;
-
-    @Builder
-    public ReviewPhoto(String url, Integer order) {
-        this.url = url;
-        this.order = order;
-    }
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
+
+    public Bookmark(Avatar avatar, Review review) {
+        this.avatar = avatar;
+        this.review = review;
+    }
 }
