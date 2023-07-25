@@ -1,4 +1,4 @@
-package com.cheffi.common.config.review.domain;
+package com.cheffi.review.domain;
 
 import com.cheffi.common.constant.Address;
 import com.cheffi.common.constant.DetailedAddress;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Restuarant {
+public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Restuarant {
     private DetailedAddress detailedAddress;
 
     @Builder
-    public Restuarant(String name, DetailedAddress detailedAddress) {
+    public Restaurant(String name, DetailedAddress detailedAddress) {
         this.name = name;
         this.detailedAddress = detailedAddress;
     }

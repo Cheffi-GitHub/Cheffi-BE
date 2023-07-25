@@ -1,4 +1,4 @@
-package com.cheffi.common.config.review.domain;
+package com.cheffi.review.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -10,29 +10,27 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Review {
+public class ReviewPhoto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String title;
+    private String url;
 
     @NotNull
-    private String text;
+    private Integer order;
 
     @NotNull
-    private int ratingCnt;
-
     @ManyToOne
-    @Column(name = "restuarnt_id")
-    private Restuarant restuarant;
+    @JoinColumn(name = "review_id")
+    private Review review;
 
     @Builder
-    public Review(String title, String text, int ratingCnt) {
-        this.title = title;
-        this.text = text;
-        this.ratingCnt = ratingCnt;
+    public ReviewPhoto(String url, Integer order, Review review) {
+        this.url = url;
+        this.order = order;
+        this.review = review;
     }
 }

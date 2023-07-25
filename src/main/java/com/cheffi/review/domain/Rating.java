@@ -1,4 +1,7 @@
-package com.cheffi.common.config.review.domain;
+package com.cheffi.review.domain;
+
+import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.review.constant.RatingType;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -10,27 +13,30 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Food {
+public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private RatingType ratingType;
 
     @NotNull
-    private int price;
-
     @ManyToOne
     @JoinColumn(name = "review_id")
     private Review review;
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "avatar_id")
+    private Avatar avatar;
 
     @Builder
-    public Food(String name, int price, Review review) {
-        this.name = name;
-        this.price = price;
+    public Rating(RatingType ratingType, Review review, Avatar avatar) {
+        this.ratingType = ratingType;
         this.review = review;
+        this.avatar = avatar;
     }
 }
