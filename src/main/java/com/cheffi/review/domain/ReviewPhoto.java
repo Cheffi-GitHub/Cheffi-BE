@@ -1,7 +1,5 @@
 package com.cheffi.review.domain;
 
-import com.cheffi.avatar.domain.Avatar;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,36 +15,27 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Review {
+public class ReviewPhoto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String title;
+    private String url;
 
     @NotNull
-    private String text;
-
-    private int ratingCnt;
+    private Integer order;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private Avatar author;
+    @JoinColumn(name = "review_id")
+    private Review review;
 
     @Builder
-    public Review(String title, String text, Restaurant restaurant, Avatar author) {
-        this.title = title;
-        this.text = text;
-        this.restaurant = restaurant;
-        this.author = author;
-        this.ratingCnt = 0;
+    public ReviewPhoto(String url, Integer order, Review review) {
+        this.url = url;
+        this.order = order;
+        this.review = review;
     }
 }

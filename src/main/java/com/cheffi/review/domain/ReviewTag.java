@@ -1,6 +1,6 @@
 package com.cheffi.review.domain;
 
-import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.tag.domain.Tag;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,36 +17,25 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Review {
+public class ReviewTag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String title;
-
-    @NotNull
-    private String text;
-
-    private int ratingCnt;
+    @ManyToOne
+    @JoinColumn(name = "review_id")
+    private Review review;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private Avatar author;
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
 
     @Builder
-    public Review(String title, String text, Restaurant restaurant, Avatar author) {
-        this.title = title;
-        this.text = text;
-        this.restaurant = restaurant;
-        this.author = author;
-        this.ratingCnt = 0;
+    public ReviewTag(Review review, Tag tag) {
+        this.review = review;
+        this.tag = tag;
     }
 }
