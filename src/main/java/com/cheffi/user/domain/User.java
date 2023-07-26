@@ -3,6 +3,7 @@ package com.cheffi.user.domain;
 import java.time.LocalDateTime;
 
 import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.common.domain.BaseTimeEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 @Entity
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

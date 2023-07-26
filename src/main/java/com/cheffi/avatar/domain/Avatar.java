@@ -1,6 +1,7 @@
 package com.cheffi.avatar.domain;
 
 import com.cheffi.common.constant.Address;
+import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.user.domain.User;
 
 import jakarta.persistence.Embedded;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Avatar {
+public class Avatar extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

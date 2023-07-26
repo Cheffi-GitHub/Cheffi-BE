@@ -1,6 +1,7 @@
 package com.cheffi.review.domain;
 
 import com.cheffi.common.constant.DetailedAddress;
+import com.cheffi.common.domain.BaseTimeEntity;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Restaurant {
+public class Restaurant extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

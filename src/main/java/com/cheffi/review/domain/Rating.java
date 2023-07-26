@@ -1,6 +1,7 @@
 package com.cheffi.review.domain;
 
 import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.review.constant.RatingType;
 
 import jakarta.persistence.Entity;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Rating {
+public class Rating extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

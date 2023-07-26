@@ -1,6 +1,7 @@
 package com.cheffi.user.domain;
 
 import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.review.domain.Review;
 
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 
-public class Bookmark {
+public class Bookmark extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,6 +2,8 @@ package com.cheffi.avatar.domain;
 
 import java.time.LocalDateTime;
 
+import com.cheffi.common.domain.BaseTimeEntity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Inquiry {
+public class Inquiry extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

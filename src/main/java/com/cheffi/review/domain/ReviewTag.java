@@ -1,5 +1,6 @@
 package com.cheffi.review.domain;
 
+import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.tag.domain.Tag;
 
 import jakarta.persistence.Entity;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class ReviewTag {
+public class ReviewTag extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
