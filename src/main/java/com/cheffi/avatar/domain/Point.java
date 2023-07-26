@@ -21,16 +21,16 @@ public class Point {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int value;
+    private int pointValue;
     // private String createdBy;
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avatar_id")
     private Avatar avatar;
 
-    private Point(Avatar avatar, int value) {
+    private Point(Avatar avatar, int pointValue) {
         this.avatar = avatar;
-        this.value = value;
+        this.pointValue = pointValue;
     }
 
     //TODO 포인트 추가 메서드

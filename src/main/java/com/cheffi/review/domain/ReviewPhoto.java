@@ -26,7 +26,7 @@ public class ReviewPhoto {
     private String url;
 
     @NotNull
-    private Integer order;
+    private Integer givenOrder;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,9 +34,9 @@ public class ReviewPhoto {
     private Review review;
 
     @Builder
-    public ReviewPhoto(String url, Integer order, Review review) {
+    public ReviewPhoto(String url, Integer givenOrder, Review review) {
         this.url = url;
-        this.order = order;
+        this.givenOrder = givenOrder;
         this.review = review;
     }
 }

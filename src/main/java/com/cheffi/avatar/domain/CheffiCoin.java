@@ -21,7 +21,7 @@ public class CheffiCoin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int value;
+    private int cfcValue;
 
     // private String createdBy;
 
@@ -30,8 +30,8 @@ public class CheffiCoin {
     @JoinColumn(name = "avatar_id")
     private Avatar avatar;
 
-    private CheffiCoin(Avatar avatar, int value) {
-        this.value = value;
+    private CheffiCoin(Avatar avatar, int cfcValue) {
+        this.cfcValue = cfcValue;
         this.avatar = avatar;
     }
 
