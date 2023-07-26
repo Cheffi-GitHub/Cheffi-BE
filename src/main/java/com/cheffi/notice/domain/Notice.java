@@ -1,8 +1,5 @@
-package com.cheffi.review.domain;
+package com.cheffi.notice.domain;
 
-import com.cheffi.common.constant.DetailedAddress;
-
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,21 +13,21 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Restaurant {
+public class Notice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String name;
+    private String title;
 
-    @Embedded
-    private DetailedAddress detailedAddress;
+    @NotNull
+    private String content;
 
     @Builder
-    public Restaurant(String name, DetailedAddress detailedAddress) {
-        this.name = name;
-        this.detailedAddress = detailedAddress;
+    public Notice(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 }
