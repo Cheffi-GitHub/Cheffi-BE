@@ -1,6 +1,9 @@
 package com.cheffi.review.domain;
 
+import com.cheffi.common.domain.BaseTimeEntity;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class ReviewPhoto {
+public class ReviewPhoto extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +28,17 @@ public class ReviewPhoto {
     private String url;
 
     @NotNull
-    private Integer order;
+    private Integer givenOrder;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
 
     @Builder
-    public ReviewPhoto(String url, Integer order, Review review) {
+    public ReviewPhoto(String url, Integer givenOrder, Review review) {
         this.url = url;
-        this.order = order;
+        this.givenOrder = givenOrder;
         this.review = review;
     }
 }

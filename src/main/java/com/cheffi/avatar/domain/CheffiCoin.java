@@ -1,6 +1,9 @@
 package com.cheffi.avatar.domain;
 
+import com.cheffi.common.domain.BaseEntity;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,23 +17,21 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class CheffiCoin {
+public class CheffiCoin extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int value;
-
-    // private String createdBy;
+    private int cfcValue;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avatar_id")
     private Avatar avatar;
 
-    private CheffiCoin(Avatar avatar, int value) {
-        this.value = value;
+    private CheffiCoin(Avatar avatar, int cfcValue) {
+        this.cfcValue = cfcValue;
         this.avatar = avatar;
     }
 

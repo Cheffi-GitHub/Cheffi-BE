@@ -2,7 +2,10 @@ package com.cheffi.avatar.domain;
 
 import java.time.LocalDateTime;
 
+import com.cheffi.common.domain.BaseTimeEntity;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Inquiry {
+public class Inquiry extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +31,7 @@ public class Inquiry {
 	private String answer;
 	private boolean answered;
 	private LocalDateTime answeredDate;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "inquirer_id")
 	private Avatar avatar;
 
