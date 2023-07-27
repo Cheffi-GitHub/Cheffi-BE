@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ApiResponse의 T date에 전달할 클래스
+ * ApiResponse의 T data에 전달할 클래스
  */
 @Getter @Setter
 @ToString
@@ -40,14 +40,14 @@ public class GetReviewResponseDto {
     public static GetReviewResponseDto of(Review searchedReview,
                                           boolean bookmark) {
 
-        RestaurantValue mockRestaurant = new RestaurantValue(searchedReview.getRestaurant());
+        RestaurantValue restaurantValue = new RestaurantValue(searchedReview.getRestaurant());
 
-        List<ReviewPhotosValue> mockReviewPhotos = searchedReview.getReviewPhotos()
+        List<ReviewPhotosValue> reviewPhotoValues = searchedReview.getReviewPhotos()
                 .stream()
                 .map(ReviewPhotosValue::new)
                 .toList();
 
-        List<RatingValue> mockRatings = searchedReview.getRatings()
+        List<RatingValue> ratingValues = searchedReview.getRatings()
                 .stream()
                 .map(RatingValue::new)
                 .toList();
@@ -57,9 +57,9 @@ public class GetReviewResponseDto {
                 .title(searchedReview.getTitle())
                 .text(searchedReview.getText())
                 .bookmark(bookmark)
-                .restaurant(mockRestaurant)
-                .reviewphotos(mockReviewPhotos)
-                .ratings(mockRatings)
+                .restaurant(restaurantValue)
+                .reviewphotos(reviewPhotoValues)
+                .ratings(ratingValues)
                 .build();
 
     }
@@ -83,8 +83,10 @@ public class GetReviewResponseDto {
     }
 
 
-
-
+    /**
+     * Mock 데이터로 이루어진 Dto 반환
+     * @return
+     */
     //TODO 데이터 생기면 삭제
     public static GetReviewResponseDto getMockDto() {
 
