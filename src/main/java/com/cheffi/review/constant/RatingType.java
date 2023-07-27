@@ -12,4 +12,7 @@ public enum RatingType {
 
 	private int score;
 
+	public int getScore() {
+		return score;
+	}
 }
