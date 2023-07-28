@@ -14,7 +14,7 @@ public class ReviewController {
 
     @Tag(name = "리뷰 단건 조회")
     @GetMapping
-    public ApiResponse<GetReviewResponseDto> getRivew(GetReviewRequestDto requestDto) {
+    public ApiResponse<GetReviewResponseDto> getReview(GetReviewRequestDto requestDto) {
 
         return ApiResponse.success(GetReviewResponseDto.getMockDto());
     }
