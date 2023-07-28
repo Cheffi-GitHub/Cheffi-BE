@@ -16,19 +16,7 @@ public class ReviewController {
     @GetMapping
     public ApiResponse<GetReviewResponseDto> getRivew(GetReviewRequestDto requestDto) {
 
-        return ApiResponse.success(createMockDto());
+        return ApiResponse.success(GetReviewResponseDto.getMockDto());
     }
 
-    /**
-     * <p>
-     * Mock dto 반환
-     * </p>
-     *
-     * @return ApiResponse<GetReviewResponseDto>
-     */
-    //TODO 데이터 생기면 삭제
-    private static GetReviewResponseDto createMockDto() {
-
-        return GetReviewResponseDto.getMockDto();
-    }
 }
