@@ -5,7 +5,11 @@ import com.cheffi.review.domain.Rating;
 import com.cheffi.review.domain.Restaurant;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.domain.ReviewPhoto;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +17,19 @@ import java.util.List;
 /**
  * ApiResponse의 T data에 전달할 클래스
  */
-@Getter @Setter
+@Getter
+@Setter
 @ToString
 public class GetReviewResponseDto {
 
-    private Long    reviewid;
+    private Long    reviewId;
     private String  title;
     private String  text;
-    private boolean bookmark;
+    private boolean bookmarked;
 
     private RestaurantValue restaurant;
 
-    private List<ReviewPhotosValue>  reviewphotos;
+    private List<ReviewPhotosValue>  reviewPhotos;
     private List<RatingValue>        ratings;
 
 
@@ -34,11 +39,11 @@ public class GetReviewResponseDto {
      * </p>
      *
      * @param searchedReview    searched review entity
-     * @param bookmark  review bookmark state
+     * @param bookmarked  review bookmark state
      * @return GetReviewResponseDto
      */
     public static GetReviewResponseDto of(Review searchedReview,
-                                          boolean bookmark) {
+                                          boolean bookmarked) {
 
         RestaurantValue restaurantValue = new RestaurantValue(searchedReview.getRestaurant());
 
@@ -56,7 +61,7 @@ public class GetReviewResponseDto {
                 .reviewid(searchedReview.getId())
                 .title(searchedReview.getTitle())
                 .text(searchedReview.getText())
-                .bookmark(bookmark)
+                .bookmark(bookmarked)
                 .restaurant(restaurantValue)
                 .reviewphotos(reviewPhotoValues)
                 .ratings(ratingValues)
@@ -73,12 +78,12 @@ public class GetReviewResponseDto {
                                 List<ReviewPhotosValue> reviewphotos,
                                 List<RatingValue> ratings) {
 
-        this.reviewid = reviewid;
+        this.reviewId = reviewid;
         this.text = text;
         this.title = title;
-        this.bookmark = bookmark;
+        this.bookmarked = bookmark;
         this.restaurant = restaurant;
-        this.reviewphotos = reviewphotos;
+        this.reviewPhotos = reviewphotos;
         this.ratings = ratings;
     }
 
