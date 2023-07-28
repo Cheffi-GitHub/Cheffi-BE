@@ -2,7 +2,7 @@ package com.cheffi.review.controller;
 
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.review.dto.request.GetReviewRequestDto;
-import com.cheffi.review.dto.response.GetRegionalReviewResponseDto;
+import com.cheffi.review.dto.response.GetRegionalReviewsResponseDto;
 import com.cheffi.review.dto.response.GetReviewResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +24,8 @@ public class ReviewController {
 
     @Tag(name = "지역별 맛집 조회")
     @GetMapping("/areas")
-    public ApiResponse<List<GetRegionalReviewResponseDto>> getRegionalReview() {
+    public ApiResponse<List<GetRegionalReviewsResponseDto>> getRegionalReviews() {
 
-        return ApiResponse.success(GetRegionalReviewResponseDto.getMockDtoes());
+        return ApiResponse.success(GetRegionalReviewsResponseDto.getMockDtoes());
     }
 }
