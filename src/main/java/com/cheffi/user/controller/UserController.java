@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/reviews")
+@RequestMapping("${api.prefix}/users")
 public class UserController {
 
 	private final UserService userService;
@@ -27,7 +27,7 @@ public class UserController {
 	@Operation(summary = "유저 정보 조회 API",
 		description = "자신의 계정 조회 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
-	@GetMapping("/users")
+	@GetMapping
 	public ApiResponse<UserInfoDto> getSignedUserInfo(HttpServletRequest request) {
 		String sessionToken = request.getHeader("Authorization");
 		if(sessionToken == null || sessionToken.isBlank())
