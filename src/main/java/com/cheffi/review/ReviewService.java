@@ -47,25 +47,17 @@ public class ReviewService {
 
     public List<GetRegionalReviewsResponseDto> getRegionalReviews() {
 
-        return getGetRegionalReviewsResponseDtoes();
-    }
-
-
-
-
-    //TODO 데이터 생성후 삭제
-    private static List<GetRegionalReviewsResponseDto> getGetRegionalReviewsResponseDtoes() {
-
-        List<GetRegionalReviewsResponseDto> result = new ArrayList<>();
+        List<GetRegionalReviewsResponseDto> mockDtoes = new ArrayList<>();
         for (Long i = 1L; i < 11; i++) {
 
-            result.add(new GetRegionalReviewsResponseDto(ReviewInfoDto.builder()
+            mockDtoes.add(new GetRegionalReviewsResponseDto(ReviewInfoDto.builder()
                     .id(i)
                     .title("title" + i)
                     .bookmarked(i % 2 == 0)
                     .build()));
         }
 
-        return result;
+        return mockDtoes;
     }
+
 }
