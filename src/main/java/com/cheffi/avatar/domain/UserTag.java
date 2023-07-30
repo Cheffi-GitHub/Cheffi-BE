@@ -1,6 +1,5 @@
 package com.cheffi.avatar.domain;
 
-import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.tag.domain.Tag;
 
@@ -29,6 +28,7 @@ public class UserTag extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "avatar_id")
 	private Avatar avatar;
+
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tag_id")
