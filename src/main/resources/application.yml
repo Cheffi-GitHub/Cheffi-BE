@@ -23,3 +23,6 @@ spring:
         default_batch_fetch_size: 100
     # turn OSIV off
     open-in-view: false
+
+api:
+  prefix: /api/v1
