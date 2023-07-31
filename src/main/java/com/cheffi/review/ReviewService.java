@@ -1,15 +1,16 @@
 package com.cheffi.review;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.cheffi.review.dto.RatingInfoDto;
 import com.cheffi.review.dto.RestaurantInfoDto;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewPhotoInfoDto;
 import com.cheffi.review.dto.response.SearchReviewResponse;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Transactional
 @Service
@@ -19,7 +20,7 @@ public class ReviewService {
 
         List<ReviewPhotoInfoDto> mockReviewPhotoes = new ArrayList<>();
         for (Long i = 1L; i < 3; i++) {
-            mockReviewPhotoes.add(new ReviewPhotoInfoDto(i,
+            mockReviewPhotoes.add(new ReviewPhotoInfoDto(i, i,
                     "www.photoUrl" + i));
         }
         List<RatingInfoDto> mockRatingInfoes = new ArrayList<>();
@@ -32,6 +33,7 @@ public class ReviewService {
                         .id(5L)
                         .title("리뷰 제목")
                         .text("리뷰 내용")
+                        .ratingCnt(27)
                         .bookmarked(true)
                         .build())
                 .restaurant(RestaurantInfoDto.builder()

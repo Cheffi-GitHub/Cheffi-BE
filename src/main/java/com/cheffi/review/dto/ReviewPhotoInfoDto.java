@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @NoArgsConstructor
 @Getter
 public class ReviewPhotoInfoDto {
@@ -21,10 +18,10 @@ public class ReviewPhotoInfoDto {
 
 
     @Builder
-    public ReviewPhotoInfoDto(Long photoOrderInReview, String reviewUrl) {
+    public ReviewPhotoInfoDto(Long id, Long photoOrderInReview, String reviewUrl) {
+        this.id = id;
         this.photoOrderInReview = photoOrderInReview;
         this.reviewUrl = reviewUrl;
     }
-
 }
 
