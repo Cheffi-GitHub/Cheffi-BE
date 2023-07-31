@@ -1,4 +1,4 @@
-package com.cheffi.common.dto;
+package com.cheffi.review.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

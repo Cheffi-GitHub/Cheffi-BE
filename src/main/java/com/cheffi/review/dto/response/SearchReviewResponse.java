@@ -1,10 +1,10 @@
 package com.cheffi.review.dto.response;
 
 import com.cheffi.common.dto.DetailAddressInfoDto;
-import com.cheffi.common.dto.RatingInfoDto;
-import com.cheffi.common.dto.RestaurantInfoDto;
-import com.cheffi.common.dto.ReviewInfoDto;
-import com.cheffi.common.dto.ReviewPhotoInfoDto;
+import com.cheffi.review.dto.RatingInfoDto;
+import com.cheffi.review.dto.RestaurantInfoDto;
+import com.cheffi.review.dto.ReviewInfoDto;
+import com.cheffi.review.dto.ReviewPhotoInfoDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter @Setter
 @ToString
-public class GetReviewResponseDto {
+public class SearchReviewResponse {
 
     @Schema(description = "리뷰 정보", example = "너무 맛있어요")
     private ReviewInfoDto reviewInfo;
@@ -34,11 +34,11 @@ public class GetReviewResponseDto {
 
 
     @Builder
-    private GetReviewResponseDto(ReviewInfoDto reviewInfo,
-                                RestaurantInfoDto restaurant,
-                                DetailAddressInfoDto addressInfo,
-                                List<ReviewPhotoInfoDto> reviewphotos,
-                                List<RatingInfoDto> ratings) {
+    private SearchReviewResponse(ReviewInfoDto reviewInfo,
+                                 RestaurantInfoDto restaurant,
+                                 DetailAddressInfoDto addressInfo,
+                                 List<ReviewPhotoInfoDto> reviewphotos,
+                                 List<RatingInfoDto> ratings) {
 
         this.reviewInfo = reviewInfo;
         this.restaurant = restaurant;

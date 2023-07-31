@@ -1,4 +1,4 @@
-package com.cheffi.common.dto;
+package com.cheffi.review.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -6,9 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @NoArgsConstructor
 @Getter @Setter
-public class DetailAddressInfoDto {
+public class RestaurantInfoDto {
+
+
+    @Schema(description = "레스토랑 ID", example = "1L")
+    private Long id;
+    @Schema(description = "상가명", example = "태초밥")
+    private String name;
 
     @Schema(description = "시/도", example = "서울시")
     private String town;
@@ -20,7 +27,15 @@ public class DetailAddressInfoDto {
     private String detail;
 
     @Builder
-    public DetailAddressInfoDto(String town, String city, String province, String detail) {
+
+    public RestaurantInfoDto(Long id,
+                             String name,
+                             String town,
+                             String city,
+                             String province,
+                             String detail) {
+        this.id = id;
+        this.name = name;
         this.town = town;
         this.city = city;
         this.province = province;

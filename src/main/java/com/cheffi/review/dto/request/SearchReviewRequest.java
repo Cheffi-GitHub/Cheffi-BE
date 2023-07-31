@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-public class GetReviewRequestDto {
+public class SearchReviewRequest {
 
     @Schema(description = "Review 식별자", example = "1")
     @NotBlank

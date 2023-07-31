@@ -4,9 +4,9 @@ import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.AuthenticationException;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.review.ReviewService;
-import com.cheffi.review.dto.request.GetReviewRequestDto;
-import com.cheffi.review.dto.response.GetRegionalReviewsResponseDto;
-import com.cheffi.review.dto.response.GetReviewResponseDto;
+import com.cheffi.review.dto.ReviewInfoDto;
+import com.cheffi.review.dto.request.SearchReviewRequest;
+import com.cheffi.review.dto.response.SearchReviewResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,14 +30,14 @@ public class ReviewController {
             description = "자신의 계정 조회 - 인증 필요",
             security = {@SecurityRequirement(name = "session-token")})
     @GetMapping
-    public ApiResponse<GetReviewResponseDto> getReview(HttpServletRequest request,
-                                                       GetReviewRequestDto requestDto) {
+    public ApiResponse<SearchReviewResponse> searchReview(HttpServletRequest request,
+                                                          SearchReviewRequest requestDto) {
 
         String sessionToken = request.getHeader("Authorization");
         if(sessionToken == null || sessionToken.isBlank())
             throw new AuthenticationException(ErrorCode.NOT_VALID_TOKEN);
 
-        return ApiResponse.success(reviewService.getReview(requestDto.getId()));
+        return ApiResponse.success(reviewService.searchReview(requestDto.getId()));
     }
 
 
@@ -47,7 +47,7 @@ public class ReviewController {
             description = "자신의 계정 조회 - 인증 필요",
             security = {@SecurityRequirement(name = "session-token")})
     @GetMapping("/areas")
-    public ApiResponse<List<GetRegionalReviewsResponseDto>> getRegionalReviews(HttpServletRequest request) {
+    public ApiResponse<List<ReviewInfoDto>> searchRegionalReviews(HttpServletRequest request) {
 
         String sessionToken = request.getHeader("Authorization");
         if(sessionToken == null || sessionToken.isBlank())
