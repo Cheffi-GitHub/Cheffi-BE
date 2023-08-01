@@ -28,7 +28,7 @@ public class Restaurant extends BaseTimeEntity {
 
     @Embedded
     private DetailedAddress detailedAddress;
-
+    //
     @Builder
     public Restaurant(String name, DetailedAddress detailedAddress) {
         this.name = name;
