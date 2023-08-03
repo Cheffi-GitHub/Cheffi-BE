@@ -15,7 +15,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @NoArgsConstructor
-@Getter @Setter
+@Getter
 @ToString
 public class SearchReviewResponse {
 

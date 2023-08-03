@@ -10,7 +10,7 @@ import lombok.Setter;
 
 
 @NoArgsConstructor
-@Getter @Setter
+@Getter
 public class RestaurantInfoDto {
 
 

@@ -18,18 +18,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/review")
+@RequestMapping("${api.prefix}/reviews")
 public class ReviewController {
 
     private final ReviewService reviewService;
 
     @Tag(name = "리뷰 단건 조회")
     @Operation(summary = "리뷰 단건 조회 API")
-
     @GetMapping
     public ApiResponse<SearchReviewResponse> searchReview(SearchReviewRequest requestDto) {
 
-        return ApiResponse.success(reviewService.searchReview(requestDto.getId()));
+        return ApiResponse.success(reviewService.searchReview(requestDto.id()));
     }
 
     @Tag(name = "지역별 맛집 조회")
