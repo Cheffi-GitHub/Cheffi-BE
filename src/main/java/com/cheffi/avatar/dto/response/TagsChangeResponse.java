@@ -1,4 +1,4 @@
-package com.cheffi.avatar.dto;
+package com.cheffi.avatar.dto.response;
 
 import java.util.List;
 
