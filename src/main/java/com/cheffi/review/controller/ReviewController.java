@@ -28,14 +28,13 @@ public class ReviewController {
 
     @Tag(name = "리뷰 단건 조회")
     @Operation(summary = "리뷰 단건 조회 API")
+
     @GetMapping
     public ApiResponse<SearchReviewResponse> searchReview(HttpServletRequest request,
                                                           SearchReviewRequest requestDto) {
 
         return ApiResponse.success(reviewService.searchReview(requestDto.getId()));
     }
-
-
 
     @Tag(name = "지역별 맛집 조회")
     @Operation(summary = "지역별 맛집 조회 API")

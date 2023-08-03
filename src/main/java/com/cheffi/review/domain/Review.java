@@ -34,7 +34,7 @@ public class Review extends BaseTimeEntity {
     @NotNull
     private String text;
 
-    private int ratingCnt;
+    private Integer ratingCnt;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,7 +1,6 @@
 package com.cheffi.review.dto;
 
 import com.cheffi.common.constant.DetailedAddress;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;

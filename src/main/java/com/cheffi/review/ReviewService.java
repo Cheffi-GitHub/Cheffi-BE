@@ -28,6 +28,7 @@ public class ReviewService {
         mockRatingInfoes.add(new RatingInfoDto("GOOD", 30));
         mockRatingInfoes.add(new RatingInfoDto("Bad", -7));
 
+
         return SearchReviewResponse.builder()
                 .reviewInfo(ReviewInfoDto.builder()
                         .id(5L)
