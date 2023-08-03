@@ -14,7 +14,6 @@ import com.cheffi.review.dto.response.SearchReviewResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -28,8 +27,7 @@ public class ReviewController {
     @Operation(summary = "리뷰 단건 조회 API")
 
     @GetMapping
-    public ApiResponse<SearchReviewResponse> searchReview(HttpServletRequest request,
-                                                          SearchReviewRequest requestDto) {
+    public ApiResponse<SearchReviewResponse> searchReview(SearchReviewRequest requestDto) {
 
         return ApiResponse.success(reviewService.searchReview(requestDto.getId()));
     }
@@ -37,7 +35,7 @@ public class ReviewController {
     @Tag(name = "지역별 맛집 조회")
     @Operation(summary = "지역별 맛집 조회 API")
     @GetMapping("/areas")
-    public ApiResponse<List<ReviewInfoDto>> searchRegionalReviews(HttpServletRequest request) {
+    public ApiResponse<List<ReviewInfoDto>> searchRegionalReviews() {
 
         return ApiResponse.success(reviewService.searchRegionalReviews());
     }
