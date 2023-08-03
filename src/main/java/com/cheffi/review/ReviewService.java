@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cheffi.common.constant.DetailedAddress;
 import com.cheffi.review.dto.RatingInfoDto;
 import com.cheffi.review.dto.RestaurantInfoDto;
 import com.cheffi.review.dto.ReviewInfoDto;
@@ -27,7 +28,6 @@ public class ReviewService {
         mockRatingInfoes.add(new RatingInfoDto("GOOD", 30));
         mockRatingInfoes.add(new RatingInfoDto("Bad", -7));
 
-
         return SearchReviewResponse.builder()
                 .reviewInfo(ReviewInfoDto.builder()
                         .id(5L)
@@ -39,18 +39,20 @@ public class ReviewService {
                 .restaurant(RestaurantInfoDto.builder()
                         .id(1L)
                         .name("태초밥")
-                        .town("서울시")
-                        .city("강북구")
-                        .province("수유리")
-                        .detail("평화로 45길 12-11 502호")
+                        .detailedAddress(
+                            DetailedAddress.of("수유리",
+                                "강북구",
+                                "서울시",
+                                "평화로 45길 12-11 502호")
+                        )
                         .build())
-                .reviewphotos(mockReviewPhotoes)
+                .reviewPhotos(mockReviewPhotoes)
                 .ratings(mockRatingInfoes)
                 .build();
     }
 
 
-    public List<ReviewInfoDto> getRegionalReviews() {
+    public List<ReviewInfoDto> searchRegionalReviews() {
 
         List<ReviewInfoDto> mockDtos = new ArrayList<>();
         for (Long i = 1L; i < 11; i++) {

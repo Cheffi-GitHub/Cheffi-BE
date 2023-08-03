@@ -15,7 +15,6 @@ import com.cheffi.review.dto.request.SearchReviewRequest;
 import com.cheffi.review.dto.response.SearchReviewResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -28,16 +27,10 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @Tag(name = "리뷰 단건 조회")
-    @Operation(summary = "리뷰 단건 조회 API",
-            description = "자신의 계정 조회 - 인증 필요",
-            security = {@SecurityRequirement(name = "session-token")})
+    @Operation(summary = "리뷰 단건 조회 API")
     @GetMapping
     public ApiResponse<SearchReviewResponse> searchReview(HttpServletRequest request,
                                                           SearchReviewRequest requestDto) {
-
-        String sessionToken = request.getHeader("Authorization");
-        if(sessionToken == null || sessionToken.isBlank())
-            throw new AuthenticationException(ErrorCode.NOT_VALID_TOKEN);
 
         return ApiResponse.success(reviewService.searchReview(requestDto.getId()));
     }
@@ -45,16 +38,10 @@ public class ReviewController {
 
 
     @Tag(name = "지역별 맛집 조회")
-    @Operation(summary = "지역별 맛집 조회 API",
-            description = "자신의 계정 조회 - 인증 필요",
-            security = {@SecurityRequirement(name = "session-token")})
+    @Operation(summary = "지역별 맛집 조회 API")
     @GetMapping("/areas")
     public ApiResponse<List<ReviewInfoDto>> searchRegionalReviews(HttpServletRequest request) {
 
-        String sessionToken = request.getHeader("Authorization");
-        if(sessionToken == null || sessionToken.isBlank())
-            throw new AuthenticationException(ErrorCode.NOT_VALID_TOKEN);
-
-        return ApiResponse.success(reviewService.getRegionalReviews());
+        return ApiResponse.success(reviewService.searchRegionalReviews());
     }
 }

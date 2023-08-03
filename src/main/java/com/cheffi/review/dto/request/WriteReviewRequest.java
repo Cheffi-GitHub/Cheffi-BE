@@ -16,7 +16,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Getter @Setter
-public class RegisterReviewRequest {
+public class WriteReviewRequest {
 
     @NotBlank
     @Schema(description = "식당 이름")
@@ -38,7 +38,7 @@ public class RegisterReviewRequest {
     private Map<String, String> foodInfo;
 
     @Builder
-    public RegisterReviewRequest(String restaurantName,
+    public WriteReviewRequest(String restaurantName,
                                  int addressCode,
                                  String title,
                                  String text,

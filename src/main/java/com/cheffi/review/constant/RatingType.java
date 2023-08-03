@@ -1,5 +1,8 @@
 package com.cheffi.review.constant;
 
+import lombok.Getter;
+
+@Getter
 public enum RatingType {
 
 	GOOD(5),
@@ -11,8 +14,4 @@ public enum RatingType {
 	}
 
 	private int score;
-
-	public int getScore() {
-		return score;
-	}
 }

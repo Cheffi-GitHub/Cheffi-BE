@@ -33,12 +33,12 @@ public class SearchReviewResponse {
     @Builder
     private SearchReviewResponse(ReviewInfoDto reviewInfo,
                                  RestaurantInfoDto restaurant,
-                                 List<ReviewPhotoInfoDto> reviewphotos,
+                                 List<ReviewPhotoInfoDto> reviewPhotos,
                                  List<RatingInfoDto> ratings) {
 
         this.review = reviewInfo;
         this.restaurant = restaurant;
-        this.reviewPhotos = reviewphotos;
+        this.reviewPhotos = reviewPhotos;
         this.ratings = ratings;
     }
 
