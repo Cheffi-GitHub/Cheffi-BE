@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cheffi.common.code.ErrorCode;
-import com.cheffi.common.config.exception.business.AuthenticationException;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.review.ReviewService;
 import com.cheffi.review.dto.ReviewInfoDto;
