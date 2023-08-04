@@ -3,6 +3,7 @@ package com.cheffi.avatar.service;
 import org.springframework.stereotype.Service;
 
 import com.cheffi.avatar.dto.request.TagsChangeRequest;
+import com.cheffi.avatar.dto.response.AvatarInfoResponse;
 import com.cheffi.avatar.dto.response.SelfAvatarInfoResponse;
 import com.cheffi.avatar.dto.response.TagsChangeResponse;
 
@@ -17,5 +18,9 @@ public class AvatarService {
 
 	public SelfAvatarInfoResponse getSelfAvatarInfo(Long avatarId) {
 		return SelfAvatarInfoResponse.mock();
+	}
+
+	public AvatarInfoResponse getAvatarInfo(Long avatarId) {
+		return AvatarInfoResponse.mock();
 	}
 }
