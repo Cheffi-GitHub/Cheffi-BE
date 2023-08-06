@@ -1,10 +1,5 @@
 package com.cheffi.review.dto.request;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
@@ -22,9 +17,9 @@ public record WriteReviewRequest(
     @Schema(description = "리뷰 내용")
     String text,
 
-    @Schema(description = "사진")
-    List<MultipartFile> files,
     @NotBlank
-    @Schema(description = "메뉴종류, 가격")
-    Map<String, String> foodInfo) {
+    @Schema(description = "메뉴종류, 가격",
+        example = "[ {\"food\" : \"price\"},{\"food\" : \"price\"}]")
+    String foodInfoJsonArr)
+    {
 }

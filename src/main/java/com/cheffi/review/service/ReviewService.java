@@ -1,17 +1,24 @@
-package com.cheffi.review;
+package com.cheffi.review.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cheffi.common.code.ErrorCode;
+import com.cheffi.common.config.exception.business.AuthenticationException;
 import com.cheffi.common.constant.DetailedAddress;
+import com.cheffi.review.dto.FoodDto;
 import com.cheffi.review.dto.RatingInfoDto;
 import com.cheffi.review.dto.RestaurantInfoDto;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewPhotoInfoDto;
+import com.cheffi.review.dto.request.WriteReviewRequest;
 import com.cheffi.review.dto.response.SearchReviewResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Transactional
 @Service
@@ -68,4 +75,15 @@ public class ReviewService {
         return mockDtos;
     }
 
+    public void writeReview(WriteReviewRequest requestDto, Long writerId) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<FoodDto> foodDtos = Collections.emptyList();
+        try {
+            foodDtos = objectMapper.readValue(requestDto.foodInfoJsonArr(), new TypeReference<List<FoodDto>>() {});
+        } catch (Exception e) {
+            throw new AuthenticationException(ErrorCode.INVALID_FOOD_INFO_FORMAT);
+        }
+
+    }
 }

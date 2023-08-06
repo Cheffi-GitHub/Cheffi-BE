@@ -25,7 +25,10 @@ public enum ErrorCode {
     ALREADY_REGISTERED_MEMBER(HttpStatus.BAD_REQUEST, "M-002", "이미 가입된 회원 입니다."),
     MEMBER_NOT_EXISTS(HttpStatus.BAD_REQUEST, "M-003" , "해당 회원은 존재하지 않습니다."),
 
+    // 리뷰
+    INVALID_FOOD_INFO_FORMAT(HttpStatus.BAD_REQUEST, "R-001", "메뉴의 정보 문자열이 올바른 JSON 포맷이 아닙니다.")
     ;
+
 
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message){
