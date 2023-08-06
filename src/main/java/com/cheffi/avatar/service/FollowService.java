@@ -3,6 +3,7 @@ package com.cheffi.avatar.service;
 import org.springframework.stereotype.Service;
 
 import com.cheffi.avatar.dto.response.AddFollowResponse;
+import com.cheffi.avatar.dto.response.UnfollowResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,5 +13,9 @@ public class FollowService {
 
 	public AddFollowResponse addFollow(Long followerId, Long followeeId) {
 		return new AddFollowResponse(followerId, followeeId);
+	}
+
+	public UnfollowResponse unfollow(Long followerId, Long followeeId) {
+		return new UnfollowResponse(followerId, followeeId);
 	}
 }
