@@ -55,8 +55,7 @@ public class ReviewController {
         security = {@SecurityRequirement(name = "session-token")})
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Void> writeReview(HttpServletRequest request,
-        WriteReviewRequest requestDto,
-        List<MultipartFile> files) {
+                                        WriteReviewRequest requestDto, List<MultipartFile> files) {
 
         String sessionToken = request.getHeader("Authorization");
         if(sessionToken == null || sessionToken.isBlank())
@@ -66,4 +65,5 @@ public class ReviewController {
 
         return ApiResponse.success(null);
     }
+
 }

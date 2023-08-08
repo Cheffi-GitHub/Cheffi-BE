@@ -77,13 +77,5 @@ public class ReviewService {
 
     public void writeReview(WriteReviewRequest requestDto, Long writerId) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<FoodDto> foodDtos = Collections.emptyList();
-        try {
-            foodDtos = objectMapper.readValue(requestDto.foodInfoJsonArr(), new TypeReference<List<FoodDto>>() {});
-        } catch (Exception e) {
-            throw new AuthenticationException(ErrorCode.INVALID_FOOD_INFO_FORMAT);
-        }
-
     }
 }

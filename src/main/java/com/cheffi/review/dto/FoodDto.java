@@ -1,5 +1,8 @@
 package com.cheffi.review.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.ToString;
@@ -13,4 +16,5 @@ public class FoodDto {
 	private String name;
 	@Schema(description = "메뉴 가격", example = "80000")
 	private int price;
+	
 }

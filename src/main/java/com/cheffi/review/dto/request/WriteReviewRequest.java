@@ -1,8 +1,18 @@
 package com.cheffi.review.dto.request;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.cheffi.review.dto.FoodDto;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+@JsonSerialize
+@JsonDeserialize
 public record WriteReviewRequest(
     @NotBlank
     @Schema(description = "식당 이름")
@@ -17,9 +27,7 @@ public record WriteReviewRequest(
     @Schema(description = "리뷰 내용")
     String text,
 
-    @NotBlank
-    @Schema(description = "메뉴종류, 가격",
-        example = "[ {\"food\" : \"price\"},{\"food\" : \"price\"}]")
-    String foodInfoJsonArr)
+    List<FoodDto> foodInfoList)
+
     {
 }
