@@ -29,10 +29,10 @@ public class GlobalExceptionHandler {
 	/**
 	 * 비즈니스 로직 실행 중 오류 발생
 	 */
-	@ExceptionHandler(value = { BusinessException.class })
+	@ExceptionHandler(value = {BusinessException.class})
 	protected ResponseEntity<ErrorResponse> handleConflict(BusinessException e) {
 		log.error("BusinessException", e);
-		ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode().getErrorCode(), e.getMessage());
+		ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode().getCode(), e.getMessage());
 		return ResponseEntity.status(e.getErrorCode().getHttpStatus())
 			.body(errorResponse);
 	}
