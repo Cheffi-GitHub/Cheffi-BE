@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cheffi.avatar.dto.response.AddFollowResponse;
 import com.cheffi.avatar.dto.response.GetFollowResponse;
+import com.cheffi.avatar.dto.response.RecommendFollowResponse;
 import com.cheffi.avatar.dto.response.UnfollowResponse;
 import com.cheffi.avatar.service.FollowService;
 import com.cheffi.common.code.ErrorCode;
@@ -64,5 +65,18 @@ public class FollowController {
 		if(sessionToken == null || sessionToken.isBlank())
 			throw new AuthenticationException(ErrorCode.NOT_VALID_TOKEN);
 		return ApiResponse.success(followService.getFollowee(1L));
+	}
+
+
+	@Tag(name = "Follow")
+	@Operation(summary = "자신의 팔로우 목록 조회 API",
+		description = "팔로우 조회 - 인증 필요",
+		security = {@SecurityRequirement(name = "session-token")})
+	@GetMapping("/recommend")
+	public ApiResponse<List<RecommendFollowResponse>> recommendFollowee(HttpServletRequest request) {
+		String sessionToken = request.getHeader("Authorization");
+		if(sessionToken == null || sessionToken.isBlank())
+			throw new AuthenticationException(ErrorCode.NOT_VALID_TOKEN);
+		return ApiResponse.success(followService.recommendFollowee(1L));
 	}
 }

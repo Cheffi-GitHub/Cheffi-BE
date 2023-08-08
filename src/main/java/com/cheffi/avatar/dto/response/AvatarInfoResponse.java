@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.dto.common.TagDto;
-import com.cheffi.tag.constant.TagType;
 
 import lombok.Builder;
 
@@ -33,12 +32,7 @@ public record AvatarInfoResponse(
 			.follower(1700)
 			.following(158)
 			.post(18)
-			.tagDtos(List.of(TagDto.mock("매운맛", TagType.TASTE),
-				TagDto.mock("짠맛", TagType.TASTE),
-				TagDto.mock("한식", TagType.FOOD),
-				TagDto.mock("양식", TagType.FOOD),
-				TagDto.mock("위스키", TagType.FOOD)
-				))
+			.tagDtos(TagDto.mock())
 			.build();
 	}
 
