@@ -3,6 +3,7 @@ package com.cheffi.review.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -41,10 +42,10 @@ public class ReviewController {
 
 	@Tag(name = "Review")
 	@Operation(summary = "지역별 맛집 조회 API")
-	@GetMapping("/areas")
-	public ApiResponse<List<ReviewInfoDto>> searchRegionalReviews() {
+	@GetMapping("/areas/{area}")
+	public ApiResponse<List<ReviewInfoDto>> searchReviewsByArea(@PathVariable("area") String areaName) {
 
-		return ApiResponse.success(reviewService.searchRegionalReviews());
+		return ApiResponse.success(reviewService.searchReviewsByArea(areaName));
 	}
 
 	@Tag(name = "Review")

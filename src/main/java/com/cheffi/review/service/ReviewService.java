@@ -2,6 +2,7 @@ package com.cheffi.review.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +22,13 @@ public class ReviewService {
 	public SearchReviewResponse searchReview(Long reviewId) {
 
 		List<ReviewPhotoInfoDto> mockReviewPhotoes = new ArrayList<>();
-		for (Long i = 1L; i < 3; i++) {
-			mockReviewPhotoes.add(new ReviewPhotoInfoDto(i, i,
-				"www.photoUrl" + i));
-		}
+		mockReviewPhotoes.add(new ReviewPhotoInfoDto(1L, 5, "https://cdn.mindgil.com/news/photo/202109/72274_10092_4553.jpg"));
+		mockReviewPhotoes.add(new ReviewPhotoInfoDto(2L, 2, "https://dimg.donga.com/wps/NEWS/IMAGE/2011/08/18/39608221.2.jpg"));
+		mockReviewPhotoes.add(new ReviewPhotoInfoDto(3L, 4, "http://www.lampcook.com/wi_files/food_top100/top5/5_8.jpg"));
+		mockReviewPhotoes.add(new ReviewPhotoInfoDto(4L, 1, "http://www.lampcook.com/wi_files/food_top100/top5/5_14.jpg"));
+		mockReviewPhotoes.add(new ReviewPhotoInfoDto(5L, 3, "http://www.lampcook.com/wi_files/food_top100/top5/5_11.jpg"));
+		mockReviewPhotoes.add(new ReviewPhotoInfoDto(6L, 6, "http://www.lampcook.com/wi_files/food_top100/top5/5_17.jpg"));
+
 		List<RatingInfoDto> mockRatingInfoes = new ArrayList<>();
 		mockRatingInfoes.add(new RatingInfoDto("GOOD", 30));
 		mockRatingInfoes.add(new RatingInfoDto("Bad", -7));
@@ -52,14 +56,17 @@ public class ReviewService {
 			.build();
 	}
 
-	public List<ReviewInfoDto> searchRegionalReviews() {
+	public List<ReviewInfoDto> searchReviewsByArea(String areaName) {
 
+		Random random = new Random();
 		List<ReviewInfoDto> mockDtos = new ArrayList<>();
-		for (Long i = 1L; i < 11; i++) {
+		for (Long i = 1L; i <= 200; i++) {
 
 			mockDtos.add(ReviewInfoDto.builder()
 				.id(i)
-				.title("title" + i)
+				.title("title(" + i +")")
+				.text("text(" + i +")")
+				.ratingCnt(random.nextInt(50) +  1)
 				.bookmarked(i % 2 == 0)
 				.build());
 		}
