@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cheffi.user.constant.UserType;
 import com.cheffi.user.domain.Role;
 import com.cheffi.user.domain.User;
 import com.cheffi.user.dto.UserInfoDto;
@@ -24,7 +25,7 @@ public class UserService {
 				.locked(false)
 				.withdrawn(false)
 				.name("안유진")
-				.provider("KAKAO")
+				.userType(UserType.KAKAO)
 				.activated(true)
 				.build(),
 			List.of(new Role("USER"))

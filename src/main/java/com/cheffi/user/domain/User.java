@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.common.domain.BaseTimeEntity;
+import com.cheffi.user.constant.UserType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -46,7 +47,7 @@ public class User extends BaseTimeEntity {
     private String name;
 
     @NotNull
-    private String provider;
+    private UserType userType;
     @NotNull
     private boolean adAgreed;
     @NotNull
@@ -61,15 +62,25 @@ public class User extends BaseTimeEntity {
 
     @Builder
     private User(String email, boolean locked, boolean expired, boolean withdrawn, boolean activated, String name,
-        String provider) {
+        UserType userType) {
         this.email = email;
         this.locked = locked;
         this.expired = expired;
         this.withdrawn = withdrawn;
         this.activated = activated;
         this.name = name;
-        this.provider = provider;
+        this.userType = userType;
     }
 
-    //TODO User 객체 생성 메서드
+    public static User createUser(String email, String name,UserType userType) {
+        return User.builder()
+            .name(email)
+            .email(name)
+            .userType(userType)
+            .locked(false)
+            .expired(false)
+            .withdrawn(false)
+            .activated(true)
+            .build();
+    }
 }
