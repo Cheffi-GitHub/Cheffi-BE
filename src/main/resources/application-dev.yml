@@ -15,20 +15,15 @@ spring:
 
     properties:
       hibernate:
-        # show formatted sql
-        format_sql: true
-        show_sql: true
-
         # set default batch size
         default_batch_fetch_size: 100
     # turn OSIV off
     open-in-view: false
 
-# default host & port is localhost:8080
-#  data:
-#    redis:
-#      host: localhost
-#      port: 6379
+  data:
+    redis:
+      host: redis
+      port: 6379
 
 api:
   prefix: /api/v1

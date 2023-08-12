@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  helper:
+    build:
+      context: ./
+      dockerfile: Dockerfile-helper
+    volumes:
+      - ./build/libs:/app/build/libs:rw
