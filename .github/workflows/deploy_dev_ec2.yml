@@ -39,5 +39,5 @@ jobs:
           key: ${{ secrets.LSH_EC2_KEY }}
           script: |
             cd /home/ec2-user/cheffifolder
-            docker-compose -p cheffi-server build
-            docker-compose -p cheffi-server up -d
+            docker-compose down --rmi local
+            docker-compose up --build -d
