@@ -8,9 +8,12 @@ import org.springframework.util.Assert;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.common.domain.BaseTimeEntity;
+import com.cheffi.user.constant.Password;
 import com.cheffi.user.constant.UserType;
+import com.cheffi.user.dto.UserCreateRequest;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -60,8 +63,8 @@ public class User extends BaseTimeEntity {
 	private boolean adAgreed;
 	@NotNull
 	private boolean analysisAgreed;
-	private String pwHash;
-	private String pwSalt;
+	@Embedded
+	private Password password;
 	private String fcmToken;
 
 	@OneToOne(mappedBy = "user")
@@ -72,7 +75,7 @@ public class User extends BaseTimeEntity {
 
 	@Builder
 	private User(String email, boolean locked, boolean expired, boolean withdrawn, boolean activated, String name,
-		UserType userType) {
+		UserType userType, Password password) {
 		this.email = email;
 		this.locked = locked;
 		this.expired = expired;
@@ -80,6 +83,7 @@ public class User extends BaseTimeEntity {
 		this.activated = activated;
 		this.name = name;
 		this.userType = userType;
+		this.password = password;
 	}
 
 	public void addRoles(List<Role> roles) {
@@ -89,22 +93,27 @@ public class User extends BaseTimeEntity {
 			.forEach(userRoles::add);
 	}
 
-	public static User createUser(String email, String name, UserType userType, List<Role> roles) {
-		Assert.hasText(email,"이메일이 입력되지 않았습니다.");
-		Assert.hasText(name,"이름이 입력되지 않았습니다");
-		Assert.notNull(userType,"유저타입은 null일 수 없습니다.");
-		Assert.notEmpty(roles,"유저 권한(Role)은 최소한 1개는 부여되어야 합니다.");
+	/**
+	 * 소셜 회원가입을 위한 메서드로
+	 * 일반 회원가입시 별도의 메서드 구현 필요
+	 */
+	public static User createUser(UserCreateRequest request) {
+		Assert.hasText(request.email(),"이메일이 입력되지 않았습니다.");
+		Assert.hasText(request.name(),"이름이 입력되지 않았습니다");
+		Assert.notNull(request.userType(),"유저타입은 null일 수 없습니다.");
+		Assert.notEmpty(request.roles(),"유저 권한(Role)은 최소한 1개는 부여되어야 합니다.");
 
 		User createdUser = User.builder()
-			.name(email)
-			.email(name)
-			.userType(userType)
+			.email(request.email())
+			.name(request.name())
+			.userType(request.userType())
 			.locked(false)
 			.expired(false)
 			.withdrawn(false)
 			.activated(true)
+			.password(request.password())
 			.build();
-		createdUser.addRoles(roles);
+		createdUser.addRoles(request.roles());
 		return createdUser;
 	}
 
