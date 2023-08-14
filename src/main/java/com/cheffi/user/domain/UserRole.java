@@ -37,7 +37,7 @@ public class UserRole extends BaseEntity {
 		this.role = role;
 	}
 
-	public static UserRole assignRole(User user, Role role) {
+	public static UserRole mapRoleToUser(User user, Role role) {
 		return new UserRole(user, role);
 	}
 }

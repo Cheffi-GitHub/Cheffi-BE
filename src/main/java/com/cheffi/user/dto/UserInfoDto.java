@@ -3,6 +3,7 @@ package com.cheffi.user.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.cheffi.user.constant.UserType;
 import com.cheffi.user.domain.Role;
 import com.cheffi.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -24,7 +25,7 @@ public class UserInfoDto {
 	@Schema(description = "이름", example = "안유진")
 	private final String name;
 	@Schema(description = "유저가 가입한 플랫폼", example = "KAKAO")
-	private final String provider;
+	private final UserType userType;
 	@Schema(description = "광고 수신 동의 여부", example = "true")
 	private final boolean adAgreed;
 	@Schema(description = "개인정보 분석 이용 동의 여부", example = "true")
@@ -33,13 +34,14 @@ public class UserInfoDto {
 	private final List<String> authorities;
 
 	@Builder
-	private UserInfoDto(String email, LocalDateTime lastPwChangedDate, LocalDateTime createdDate, String name, String provider, boolean adAgreed,
+	private UserInfoDto(String email, LocalDateTime lastPwChangedDate, LocalDateTime createdDate, String name, String provider,
+		UserType userType, boolean adAgreed,
 		boolean analysisAgreed, List<String> authorities) {
 		this.email = email;
 		this.lastPwChangedDate = lastPwChangedDate;
 		this.createdDate = createdDate;
 		this.name = name;
-		this.provider = provider;
+		this.userType = userType;
 		this.adAgreed = adAgreed;
 		this.analysisAgreed = analysisAgreed;
 		this.authorities = authorities;
@@ -54,7 +56,7 @@ public class UserInfoDto {
 			.lastPwChangedDate(LocalDateTime.now())
 			.createdDate(LocalDateTime.now())
 			.name(user.getName())
-			.provider(user.getProvider())
+			.userType(user.getUserType())
 			.adAgreed(user.isAdAgreed())
 			.analysisAgreed(user.isAnalysisAgreed())
 			.authorities(roles.stream().map(Role::getAuthority).toList())
