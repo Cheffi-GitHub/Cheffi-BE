@@ -1,5 +1,7 @@
 package com.cheffi.user.domain;
 
+import com.cheffi.user.constant.RoleType;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,9 +20,13 @@ public class Role {
 	private Long id;
 
 	@NotNull
-	private String authority;
+	private RoleType roleType;
 
-	public Role(String authority) {
-		this.authority = authority;
+	public Role(RoleType roleType) {
+		this.roleType = roleType;
+	}
+
+	public String getAuthority(){
+		return roleType.getAuthority();
 	}
 }

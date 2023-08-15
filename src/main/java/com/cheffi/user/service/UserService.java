@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.config.exception.business.EntityNotFoundException;
+import com.cheffi.user.constant.RoleType;
 import com.cheffi.user.constant.UserType;
 import com.cheffi.user.domain.Role;
 import com.cheffi.user.domain.User;
@@ -35,10 +36,11 @@ public class UserService {
 				.userType(UserType.KAKAO)
 				.activated(true)
 				.build(),
-			List.of(new Role("USER"))
+			List.of(new Role(RoleType.USER))
 		);
 	}
 
+	@Transactional
 	public User signUp(UserCreateRequest request) {
 		if (request.userType().equals(UserType.LOCAL))
 			throw new BusinessException(ErrorCode.EMAIL_LOGIN_NOT_SUPPORTED);
