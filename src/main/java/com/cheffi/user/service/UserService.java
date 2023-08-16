@@ -1,13 +1,13 @@
 package com.cheffi.user.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
-import com.cheffi.common.config.exception.business.EntityNotFoundException;
 import com.cheffi.user.constant.RoleType;
 import com.cheffi.user.constant.UserType;
 import com.cheffi.user.domain.Role;
@@ -47,8 +47,7 @@ public class UserService {
 		return userRepository.save(User.createUser(request));
 	}
 
-	public User findByEmail(String email) {
-		return userRepository.findByEmail(email)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_EXISTS));
+	public Optional<User> findByEmail(String email) {
+		return userRepository.findByEmail(email);
 	}
 }

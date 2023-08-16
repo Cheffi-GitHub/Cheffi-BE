@@ -3,6 +3,8 @@ package com.cheffi.user.domain;
 import com.cheffi.user.constant.RoleType;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,6 +22,7 @@ public class Role {
 	private Long id;
 
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private RoleType roleType;
 
 	public Role(RoleType roleType) {
