@@ -1,29 +1,6 @@
-springdoc:
-  # define target package of swagger scanning
-  packages-to-scan: com.cheffi
-
-
 spring:
-  h2:
-    console:
-      enabled: true
-
-  jpa:
-    hibernate:
-      # ddl-auto strategy
-      ddl-auto: create
-
-    properties:
-      hibernate:
-        # set default batch size
-        default_batch_fetch_size: 100
-    # turn OSIV off
-    open-in-view: false
-
   data:
     redis:
       host: redis
       port: 6379
 
-api:
-  prefix: /api/v1
