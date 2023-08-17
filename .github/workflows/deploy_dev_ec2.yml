@@ -28,8 +28,13 @@ jobs:
         run: echo $OAUTH_SECRET | base64 --decode > $OAUTH_SECRET_DIR/$OAUTH_SECRET_DIR_FILE_NAME
 
       - name: Build with Gradlew
-        run: ./gradlew build -x test
+        run: ./gradlew clean build
 
+  deploy:
+    name: Deploy with SCP and Docker
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: SCP JAR to EC2
         uses: appleboy/scp-action@master
         with:
@@ -48,4 +53,5 @@ jobs:
           script: |
             cd /home/ec2-user/cheffifolder
             docker-compose down --rmi local
+            docker image prune -f
             docker-compose up --build -d
