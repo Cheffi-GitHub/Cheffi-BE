@@ -15,9 +15,9 @@ public class SocialUserCreateRequest implements UserCreateRequest {
 	private final UserType userType;
 	private final List<Role> roles;
 
-	public SocialUserCreateRequest(String name, String email, UserType userType, List<Role> roles) {
-		this.name = name;
+	public SocialUserCreateRequest(String email, String name, UserType userType, List<Role> roles) {
 		this.email = email;
+		this.name = name;
 		this.userType = userType;
 		this.roles = roles;
 	}

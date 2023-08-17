@@ -1,6 +1,10 @@
 package com.cheffi.user.domain;
 
+import com.cheffi.user.constant.RoleType;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,9 +22,14 @@ public class Role {
 	private Long id;
 
 	@NotNull
-	private String authority;
+	@Enumerated(EnumType.STRING)
+	private RoleType roleType;
 
-	public Role(String authority) {
-		this.authority = authority;
+	public Role(RoleType roleType) {
+		this.roleType = roleType;
+	}
+
+	public String getAuthority(){
+		return roleType.getAuthority();
 	}
 }

@@ -1,9 +1,9 @@
-springdoc:
-  # define target package of swagger scanning
-  packages-to-scan: com.cheffi
-
-
 spring:
+  profiles:
+    group:
+      "dev": "dev, oauth"
+      "local": "local, oauth"
+      "default": "local, oauth"
   h2:
     console:
       enabled: true
@@ -24,11 +24,13 @@ spring:
     # turn OSIV off
     open-in-view: false
 
-# default host & port is localhost:8080
-#  data:
-#    redis:
-#      host: localhost
-#      port: 6379
+logging:
+  level:
+    com.cheffi.web.kakao.client: debug
+
+springdoc:
+  # define target package of swagger scanning
+  packages-to-scan: com.cheffi
 
 api:
   prefix: /api/v1

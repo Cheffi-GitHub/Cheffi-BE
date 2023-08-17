@@ -15,6 +15,8 @@ import com.cheffi.user.dto.UserCreateRequest;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,10 +28,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 @Entity
@@ -52,12 +52,12 @@ public class User extends BaseTimeEntity {
 	private LocalDateTime withdrawnDate;
 	@NotNull
 	private boolean activated;
-	@NotNull
 	private LocalDateTime lastPwChangedDate;
 	@NotNull
 	private String name;
 
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private UserType userType;
 	@NotNull
 	private boolean adAgreed;
@@ -94,8 +94,7 @@ public class User extends BaseTimeEntity {
 	}
 
 	/**
-	 * 소셜 회원가입을 위한 메서드로
-	 * 일반 회원가입시 별도의 메서드 구현 필요
+	 * 회원 가입 공통 메서드
 	 */
 	public static User createUser(UserCreateRequest request) {
 		Assert.hasText(request.email(),"이메일이 입력되지 않았습니다.");
@@ -110,7 +109,7 @@ public class User extends BaseTimeEntity {
 			.locked(false)
 			.expired(false)
 			.withdrawn(false)
-			.activated(true)
+			.activated(false)
 			.password(request.password())
 			.build();
 		createdUser.addRoles(request.roles());

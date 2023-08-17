@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.cheffi.user.constant.RoleType;
 import com.cheffi.user.dto.UserCreateRequest;
 import com.cheffi.user.constant.UserType;
 
@@ -21,9 +22,9 @@ import com.cheffi.user.constant.UserType;
 class UserTest {
 
 	public User user;
-	public static final Role ADMIN = new Role("ADMIN");
-	public static final Role USER = new Role("USER");
-	public static final Role GUEST = new Role("GUEST");
+	public static final Role ADMIN = new Role(RoleType.ADMIN);
+	public static final Role USER = new Role(RoleType.USER);
+	public static final Role GUEST = new Role(RoleType.GUEST);
 	public static final List<Role> ROLES = List.of(USER, GUEST);
 	public static final String NAME = "홍길동";
 	public static final String EMAIL = "foo@naver.com";

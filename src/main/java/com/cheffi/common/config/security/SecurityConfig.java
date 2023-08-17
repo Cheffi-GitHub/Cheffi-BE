@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
+import org.springframework.session.web.http.HttpSessionIdResolver;
 
 @Configuration
 @EnableMethodSecurity
@@ -30,5 +32,10 @@ public class SecurityConfig {
 			r.anyRequest().permitAll());
 
 		return http.build();
+	}
+
+	@Bean
+	static HttpSessionIdResolver httpSessionIdResolver() {
+		return new HeaderHttpSessionIdResolver("Authorization");
 	}
 }

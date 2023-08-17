@@ -9,14 +9,17 @@ import com.cheffi.user.domain.Role;
 
 public interface UserCreateRequest {
 	String email();
+
 	String name();
+
 	UserType userType();
+
 	List<Role> roles();
+
 	Password password();
 
 	static UserCreateRequest ofSocial(String email, String name, UserType userType, List<Role> roles) {
 		return new SocialUserCreateRequest(email, name, userType, roles);
 	}
-
 
 }
