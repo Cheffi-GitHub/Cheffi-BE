@@ -27,6 +27,13 @@ jobs:
           OAUTH_SECRET_DIR_FILE_NAME: application-oauth.yml
         run: echo $OAUTH_SECRET | base64 --decode > $OAUTH_SECRET_DIR/$OAUTH_SECRET_DIR_FILE_NAME
 
+      - name: Copy S3 key
+        env:
+          S3_SECRET: ${{ secrets.S3_SECRET }}
+          S3_SECRET_DIR: src/main/resources
+          S3_SECRET_DIR_FILE_NAME: application-s3.yml
+        run: echo $S3_SECRET | base64 --decode > $S3_SECRET_DIR/$S3_SECRET_DIR_FILE_NAME
+
       - name: Build with Gradlew
         run: ./gradlew clean build
 
