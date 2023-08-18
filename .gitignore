@@ -38,6 +38,7 @@ out/
 
 ### secret ###
 application-oauth.yml
+application-s3.yml
 
 ### QueryDSL ###
 **/src/main/generated
