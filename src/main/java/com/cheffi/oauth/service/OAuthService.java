@@ -7,16 +7,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextHolderStrategy;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.AuthenticationException;
+import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.oauth.dto.IdTokenAttributes;
 import com.cheffi.oauth.model.AuthenticationToken;
 import com.cheffi.oauth.model.OAuthAttributes;
@@ -29,19 +25,14 @@ import com.cheffi.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class OAuthService {
 	private final UserService userService;
 	private final RoleService roleService;
+	private final SecurityContextService securityContextService;
 	private final Map<String, OidcLoginApiService> providerMap;
-
-	private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
-
-	private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
 	@Transactional
 	public OidcLoginResponse oidcLogin(OidcLoginRequest loginRequest, String provider, HttpServletRequest request,
@@ -59,19 +50,11 @@ public class OAuthService {
 		User user = userService.findByEmail(oAuthAttributes.email()).orElseGet(() -> signUp(oAuthAttributes));
 
 		Set<GrantedAuthority> authorities = getAuthoritiesFromUser(user);
-		AuthenticationToken authenticationToken = AuthenticationToken.of(user, loginRequest.token(), authorities);
+		AuthenticationToken authenticationToken = AuthenticationToken.of(user, user.getAvatar(), loginRequest.token(), authorities);
 
-		saveToSecurityContext(request, response, authenticationToken);
+		securityContextService.saveToSecurityContext(request, response, authenticationToken);
 
 		return new OidcLoginResponse(authenticationToken);
-	}
-
-	private void saveToSecurityContext(HttpServletRequest request, HttpServletResponse response,
-		AuthenticationToken authenticationToken) {
-		SecurityContext context = SecurityContextHolder.createEmptyContext();
-		context.setAuthentication(authenticationToken);
-		securityContextHolderStrategy.setContext(context);
-		securityContextRepository.saveContext(context, request, response);
 	}
 
 	private User signUp(OAuthAttributes oAuthAttributes) {
