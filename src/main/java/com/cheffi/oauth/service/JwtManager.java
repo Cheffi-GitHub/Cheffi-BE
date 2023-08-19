@@ -18,10 +18,16 @@ import com.cheffi.oauth.dto.IdTokenAttributes;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
+import io.jsonwebtoken.InvalidClaimException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class JwtManager {
 
@@ -35,17 +41,29 @@ public class JwtManager {
 	 * aud, iss, exp 검증
 	 */
 	public Jwt<Header, Claims> getUnsignedTokenClaims(String jwt, String iss, String aud) {
-		return Jwts.parserBuilder()
-			.requireAudience(aud)
-			.requireIssuer(iss)
-			.build()
-			.parseClaimsJwt(getUnsignedToken(jwt));
+		try {
+			return Jwts.parserBuilder()
+				.requireAudience(aud)
+				.requireIssuer(iss)
+				.build()
+				.parseClaimsJwt(getUnsignedToken(jwt));
+		} catch (InvalidClaimException e) {
+			throw new AuthenticationException(ErrorCode.INVALID_PAYLOAD, e);
+		} catch (ExpiredJwtException e) {
+			throw new AuthenticationException(ErrorCode.TOKEN_EXPIRED, e);
+		} catch (UnsupportedJwtException e) {
+			throw new AuthenticationException(ErrorCode.NOT_SUPPORTED_JWT, e);
+		} catch (MalformedJwtException e) {
+			throw new AuthenticationException(ErrorCode.MALFORMED_JWT, e);
+		} catch (Exception e) {
+			throw new BusinessException(e.getMessage());
+		}
 	}
 
 	private String getUnsignedToken(String jwt) {
 		String[] splitToken = jwt.split("\\.");
 		if (splitToken.length != 3)
-			throw new BusinessException(ErrorCode.NOT_VALID_TOKEN);
+			throw new AuthenticationException(ErrorCode.MALFORMED_JWT);
 		return splitToken[0] + "." + splitToken[1] + ".";
 	}
 
@@ -55,8 +73,8 @@ public class JwtManager {
 				.setSigningKey(getRSAPublicKey(modulus, exponent))
 				.build()
 				.parseClaimsJws(token);
-		} catch (ExpiredJwtException e) {
-			throw new AuthenticationException(ErrorCode.TOKEN_EXPIRED);
+		} catch (SignatureException e) {
+			throw new AuthenticationException(ErrorCode.JWT_VERIFY_FAILED, e);
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}
