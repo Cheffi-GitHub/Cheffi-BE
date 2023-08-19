@@ -25,10 +25,8 @@ public class Avatar extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull
     private String nickname;
-    private String pictureUrl;
     private String introduction;
     @Embedded
     private Address address;
@@ -40,12 +38,12 @@ public class Avatar extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Avatar(String nickname, String pictureUrl, User user) {
+    public Avatar(String nickname, User user) {
         this.nickname = nickname;
-        this.pictureUrl = pictureUrl;
         this.user = user;
         this.cheffiCoinCnt = 0;
         this.pointCnt = 0;
+        this.user.setAvatar(this);
     }
 
     public void changeAddress(Address address) {

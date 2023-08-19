@@ -50,11 +50,12 @@ public class OAuthService {
 		User user = userService.findByEmail(oAuthAttributes.email()).orElseGet(() -> signUp(oAuthAttributes));
 
 		Set<GrantedAuthority> authorities = getAuthoritiesFromUser(user);
-		AuthenticationToken authenticationToken = AuthenticationToken.of(user, user.getAvatar(), loginRequest.token(), authorities);
+		AuthenticationToken authenticationToken =
+			AuthenticationToken.of(user, user.getAvatar(), loginRequest.token(), authorities);
 
 		securityContextService.saveToSecurityContext(request, response, authenticationToken);
 
-		return new OidcLoginResponse(authenticationToken);
+		return OidcLoginResponse.of(authenticationToken);
 	}
 
 	private User signUp(OAuthAttributes oAuthAttributes) {

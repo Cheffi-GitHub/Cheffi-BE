@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.user.domain.User;
 
 public class AuthenticationToken extends AbstractAuthenticationToken {
@@ -33,9 +34,9 @@ public class AuthenticationToken extends AbstractAuthenticationToken {
 		return principal;
 	}
 
-	public static AuthenticationToken of(User user, String idToken,
+	public static AuthenticationToken of(User user, Avatar avatar, String idToken,
 		Collection<? extends GrantedAuthority> authorities) {
-		return new AuthenticationToken(UserPrincipal.of(user, authorities), idToken, authorities);
+		return new AuthenticationToken(UserPrincipal.of(user, avatar, authorities), idToken, authorities);
 	}
 
 	@Override

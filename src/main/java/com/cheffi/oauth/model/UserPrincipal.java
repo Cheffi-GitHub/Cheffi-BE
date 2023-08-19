@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.user.constant.UserType;
 import com.cheffi.user.domain.User;
 
@@ -21,6 +22,7 @@ import lombok.ToString;
 @Builder
 public class UserPrincipal implements UserDetails, Serializable {
 
+	private final Long userId;
 	private final String email;
 	private final boolean locked;
 	private final boolean expired;
@@ -31,10 +33,14 @@ public class UserPrincipal implements UserDetails, Serializable {
 	private final boolean adAgreed;
 	private final boolean analysisAgreed;
 	private final String fcmToken;
+	private final Long avatarId;
+	private final String nickname;
 	private final List<GrantedAuthority> authorities;
 
-	public static UserPrincipal of(User user, Collection<? extends GrantedAuthority> authorities) {
+
+	public static UserPrincipal of(User user, Avatar avatar, Collection<? extends GrantedAuthority> authorities) {
 		return UserPrincipal.builder()
+			.userId(user.getId())
 			.email(user.getEmail())
 			.locked(user.isLocked())
 			.expired(user.isExpired())
@@ -45,6 +51,8 @@ public class UserPrincipal implements UserDetails, Serializable {
 			.adAgreed(user.isAdAgreed())
 			.analysisAgreed(user.isAnalysisAgreed())
 			.fcmToken(user.getFcmToken())
+			.avatarId(avatar.getId())
+			.nickname(avatar.getNickname())
 			.authorities(new ArrayList<>(authorities))
 			.build();
 	}

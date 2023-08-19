@@ -19,7 +19,6 @@ public record SelfAvatarInfoResponse(
 		return SelfAvatarInfoResponse.builder()
 			.id(avatar.getId())
 			.nickname(avatar.getNickname())
-			.pictureUrl(avatar.getPictureUrl())
 			.introduction(avatar.getIntroduction())
 			.address(avatar.getAddress())
 			.cheffiCoinCnt(avatar.getCheffiCoinCnt())
