@@ -1,6 +1,5 @@
-package com.cheffi.user.domain;
+package com.cheffi.avatar.domain;
 
-import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.review.domain.Review;
 
@@ -19,7 +18,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class BuyItem extends BaseTimeEntity {
+
+public class Bookmark extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class BuyItem extends BaseTimeEntity {
     @JoinColumn(name = "review_id")
     private Review review;
 
-    public BuyItem(Avatar avatar, Review review) {
+    public Bookmark(Avatar avatar, Review review) {
         this.avatar = avatar;
         this.review = review;
     }
