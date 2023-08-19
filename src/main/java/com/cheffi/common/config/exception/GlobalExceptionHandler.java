@@ -6,6 +6,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.cheffi.common.config.exception.business.AuthenticationException;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.response.ErrorResponse;
 
@@ -23,6 +24,17 @@ public class GlobalExceptionHandler {
 		log.error("handleBindException", e);
 		ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.BAD_REQUEST.toString(), e.getBindingResult());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+			.body(errorResponse);
+	}
+
+	/**
+	 * 비즈니스 로직 실행 중 오류 발생
+	 */
+	@ExceptionHandler(value = {AuthenticationException.class})
+	protected ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException e) {
+		log.error("AuthenticationException", e.getOriginalException());
+		ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode().getCode(), e.getMessage());
+		return ResponseEntity.status(e.getErrorCode().getHttpStatus())
 			.body(errorResponse);
 	}
 

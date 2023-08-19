@@ -29,7 +29,8 @@ public class KakaoApiService implements OidcLoginApiService {
 		@Value("${kakao.oidc.iss}") String iss,
 		@Value("${kakao.oidc.aud.web}") String webAud,
 		@Value("${kakao.oidc.aud.ios}") String iosAud,
-		@Value("${kakao.oidc.aud.aos}") String aosAud
+		@Value("${kakao.oidc.aud.aos}") String aosAud,
+		@Value("${kakao.oidc.aud.rest}") String restAud
 	) {
 		this.oidcService = oidcService;
 		this.kakaoOauthClient = kakaoOauthClient;
@@ -38,6 +39,7 @@ public class KakaoApiService implements OidcLoginApiService {
 		tempMap.put("web", webAud);
 		tempMap.put("ios", iosAud);
 		tempMap.put("aos", aosAud);
+		tempMap.put("rest", restAud);
 		this.kakaoAudMap = Collections.unmodifiableMap(tempMap);
 	}
 

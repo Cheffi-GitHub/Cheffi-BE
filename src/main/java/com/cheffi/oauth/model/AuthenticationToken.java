@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.user.domain.User;
 
 public class AuthenticationToken extends AbstractAuthenticationToken {
@@ -33,9 +34,9 @@ public class AuthenticationToken extends AbstractAuthenticationToken {
 		return principal;
 	}
 
-	public static AuthenticationToken of(User user, String idToken,
+	public static AuthenticationToken of(User user, Avatar avatar, String idToken,
 		Collection<? extends GrantedAuthority> authorities) {
-		return new AuthenticationToken(UserPrincipal.of(user, authorities), idToken, authorities);
+		return new AuthenticationToken(UserPrincipal.of(user, avatar, authorities), idToken, authorities);
 	}
 
 	@Override
@@ -53,4 +54,12 @@ public class AuthenticationToken extends AbstractAuthenticationToken {
 	public int hashCode() {
 		return Objects.hash(super.hashCode(), idToken);
 	}
+
+	/**
+	 * TODO 테스트용 토큰 발급 메서드로 프로덕션에서는 반드시 비활성화 필요
+	 */
+	public static AuthenticationToken mock(Collection<? extends GrantedAuthority> authorities) {
+		return new AuthenticationToken(UserPrincipal.mock(authorities), "test_id_token", authorities);
+	}
+
 }

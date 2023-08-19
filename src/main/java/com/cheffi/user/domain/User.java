@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.util.Assert;
 
 import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.common.code.ErrorCode;
+import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.user.constant.Password;
 import com.cheffi.user.constant.UserType;
@@ -109,11 +111,16 @@ public class User extends BaseTimeEntity {
 			.locked(false)
 			.expired(false)
 			.withdrawn(false)
-			.activated(false)
+			.activated(true)
 			.password(request.password())
 			.build();
 		createdUser.addRoles(request.roles());
 		return createdUser;
 	}
 
+	public void setAvatar(Avatar avatar) {
+		if(this.avatar != null)
+			throw new BusinessException(ErrorCode.AVATAR_ALREADY_EXIST);
+		this.avatar = avatar;
+	}
 }
