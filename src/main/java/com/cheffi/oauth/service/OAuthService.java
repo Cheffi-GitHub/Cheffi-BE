@@ -60,7 +60,7 @@ public class OAuthService {
 
 	private User signUp(OAuthAttributes oAuthAttributes) {
 		return userService.signUp(oAuthAttributes
-			.toUserCreateRequest(List.of(roleService.getUserRole())));
+			.toUserCreateRequest(List.of(roleService.getUserRole(), roleService.getNoProfileRole())));
 	}
 
 	private Set<GrantedAuthority> getAuthoritiesFromUser(User user) {

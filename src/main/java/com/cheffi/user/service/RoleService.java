@@ -24,4 +24,12 @@ public class RoleService {
 			);
 	}
 
+	@Transactional
+	public Role getNoProfileRole() {
+		return roleRepository.findByAuthority(RoleType.NO_PROFILE)
+			.orElseGet(() ->
+				roleRepository.save(new Role(RoleType.NO_PROFILE))
+			);
+	}
+
 }
