@@ -37,7 +37,6 @@ public class UserPrincipal implements UserDetails, Serializable {
 	private final String nickname;
 	private final List<GrantedAuthority> authorities;
 
-
 	public static UserPrincipal of(User user, Avatar avatar, Collection<? extends GrantedAuthority> authorities) {
 		return UserPrincipal.builder()
 			.userId(user.getId())
@@ -91,4 +90,28 @@ public class UserPrincipal implements UserDetails, Serializable {
 	public boolean isEnabled() {
 		return activated;
 	}
+
+	/**
+	 * TODO 테스트용 토큰 발급을 위한 메서드로 프로덕션에서는 반드시 비활성화 필요
+	 */
+	public static UserPrincipal mock(Collection<? extends GrantedAuthority> authorities) {
+		return UserPrincipal.builder()
+			.userId(34L)
+			.email("Mock@mock.com")
+			.expired(false)
+			.locked(false)
+			.name("안유진")
+			.userType(UserType.KAKAO)
+			.activated(true)
+			.lastPwChangedDate(LocalDateTime.now().minusWeeks(2))
+			.userType(UserType.KAKAO)
+			.adAgreed(true)
+			.analysisAgreed(false)
+			.fcmToken("fcm-token")
+			.avatarId(34L)
+			.nickname("댕댕이")
+			.authorities(new ArrayList<>(authorities))
+			.build();
+	}
+
 }

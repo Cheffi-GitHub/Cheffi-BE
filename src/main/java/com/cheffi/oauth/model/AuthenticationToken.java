@@ -54,4 +54,12 @@ public class AuthenticationToken extends AbstractAuthenticationToken {
 	public int hashCode() {
 		return Objects.hash(super.hashCode(), idToken);
 	}
+
+	/**
+	 * TODO 테스트용 토큰 발급 메서드로 프로덕션에서는 반드시 비활성화 필요
+	 */
+	public static AuthenticationToken mock(Collection<? extends GrantedAuthority> authorities) {
+		return new AuthenticationToken(UserPrincipal.mock(authorities), "test_id_token", authorities);
+	}
+
 }
