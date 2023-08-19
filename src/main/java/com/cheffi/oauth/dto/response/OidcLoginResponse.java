@@ -1,4 +1,4 @@
-package com.cheffi.user.dto.response;
+package com.cheffi.oauth.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,21 +10,34 @@ import com.cheffi.oauth.model.AuthenticationToken;
 import com.cheffi.oauth.model.UserPrincipal;
 import com.cheffi.user.constant.UserType;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
 public record OidcLoginResponse(
+	@Schema(description = "이메일", example = "user1234@naver.com")
 	String email,
+	@Schema(description = "계정 잠김 여부")
 	boolean locked,
+	@Schema(description = "계정 만료 여부")
 	boolean expired,
+	@Schema(description = "계정 비활성화 여부")
 	boolean activated,
+	@Schema(description = "마지막 비밀번호 변경 일자")
 	LocalDateTime lastPwChangedDate,
+	@Schema(description = "사용자 이름", name = "안유진")
 	String name,
+	@Schema(description = "유저 가입 유형", example = "KAKAO")
 	UserType userType,
+	@Schema(description = "광고 동의 여부")
 	boolean adAgreed,
+	@Schema(description = "개인정보 사용 동의 여부")
 	boolean analysisAgreed,
+	@Schema(description = "아바타 식별자 (아바타 = 유저 개념)")
 	Long avatarId,
+	@Schema(description = "유저 닉네임")
 	String nickname,
+	@Schema(description = "유저의 권한")
 	List<GrantedAuthority> authorities
 
 ) {

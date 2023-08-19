@@ -19,7 +19,7 @@ public class SwaggerConfig {
 			.info(
 				new Info().title("Cheffi API 문서")
 					.description("API 스펙에 대해서 설명해주는 문서입니다.")
-					.version("0.0.1"))
+					.version("v0.0.2"))
 			.externalDocs(new ExternalDocumentation()
 				.description("외부")
 				.url("URL"))

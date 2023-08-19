@@ -14,11 +14,11 @@ import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.AuthenticationException;
 import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.oauth.dto.IdTokenAttributes;
+import com.cheffi.oauth.dto.request.OidcLoginRequest;
+import com.cheffi.oauth.dto.response.OidcLoginResponse;
 import com.cheffi.oauth.model.AuthenticationToken;
 import com.cheffi.oauth.model.OAuthAttributes;
 import com.cheffi.user.domain.User;
-import com.cheffi.user.dto.request.OidcLoginRequest;
-import com.cheffi.user.dto.response.OidcLoginResponse;
 import com.cheffi.user.service.RoleService;
 import com.cheffi.user.service.UserService;
 
