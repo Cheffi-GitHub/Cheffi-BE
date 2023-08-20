@@ -1,0 +1,43 @@
+name: test on push
+
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set execute permissions for Gradle wrapper
+        run: chmod +x gradlew
+
+      - name: Copy Oauth key
+        env:
+          OAUTH_SECRET: ${{ secrets.OAUTH_SECRET }}
+          OAUTH_SECRET_DIR: src/main/resources
+          OAUTH_SECRET_DIR_FILE_NAME: application-oauth.yml
+        run: echo $OAUTH_SECRET | base64 --decode > $OAUTH_SECRET_DIR/$OAUTH_SECRET_DIR_FILE_NAME
+
+      - name: Copy S3 key
+        env:
+          S3_SECRET: ${{ secrets.S3_SECRET }}
+          S3_SECRET_DIR: src/main/resources
+          S3_SECRET_DIR_FILE_NAME: application-s3.yml
+        run: echo $S3_SECRET | base64 --decode > $S3_SECRET_DIR/$S3_SECRET_DIR_FILE_NAME
+
+      - name: Test with Gradle
+        run: ./gradlew test
