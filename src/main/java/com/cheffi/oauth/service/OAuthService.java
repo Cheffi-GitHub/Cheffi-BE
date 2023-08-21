@@ -22,8 +22,6 @@ import com.cheffi.user.domain.User;
 import com.cheffi.user.service.RoleService;
 import com.cheffi.user.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -35,8 +33,7 @@ public class OAuthService {
 	private final Map<String, OidcLoginApiService> providerMap;
 
 	@Transactional
-	public OidcLoginResponse oidcLogin(OidcLoginRequest loginRequest, String provider, HttpServletRequest request,
-		HttpServletResponse response) {
+	public OidcLoginResponse oidcLogin(OidcLoginRequest loginRequest, String provider) {
 		OidcLoginApiService apiService = providerMap.get(provider.toLowerCase());
 		if (apiService == null)
 			throw new AuthenticationException(ErrorCode.NOT_SUPPORTED_OAUTH_PROVIDER);
@@ -53,7 +50,7 @@ public class OAuthService {
 		AuthenticationToken authenticationToken =
 			AuthenticationToken.of(user, user.getAvatar(), loginRequest.token(), authorities);
 
-		securityContextService.saveToSecurityContext(request, response, authenticationToken);
+		securityContextService.saveToSecurityContext(authenticationToken);
 
 		return OidcLoginResponse.of(authenticationToken);
 	}

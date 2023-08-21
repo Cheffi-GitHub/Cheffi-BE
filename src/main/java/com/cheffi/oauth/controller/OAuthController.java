@@ -14,8 +14,6 @@ import com.cheffi.oauth.service.OAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
@@ -32,9 +30,8 @@ public class OAuthController {
 	@Parameter(name = "provider", description = "소셜 로그인 플랫폼", example = "kakao", required = true)
 	@PostMapping("/oauth/login/{provider}")
 	public ApiResponse<OidcLoginResponse> oidcLogin(@NotBlank @PathVariable String provider,
-		@RequestBody OidcLoginRequest oidcLoginRequest, HttpServletRequest request,
-		HttpServletResponse response) {
-		return ApiResponse.success(oauthService.oidcLogin(oidcLoginRequest, provider, request, response));
+		@RequestBody OidcLoginRequest oidcLoginRequest) {
+		return ApiResponse.success(oauthService.oidcLogin(oidcLoginRequest, provider));
 	}
 
 }
