@@ -26,7 +26,9 @@ public class ReviewPhoto extends BaseTimeEntity {
 
     @NotNull
     private String url;
-
+    private Long size;
+    private Integer width;
+    private Integer height;
     @NotNull
     private Integer givenOrder;
 
@@ -36,8 +38,11 @@ public class ReviewPhoto extends BaseTimeEntity {
     private Review review;
 
     @Builder
-    public ReviewPhoto(String url, Integer givenOrder, Review review) {
+    public ReviewPhoto(String url, Long size, Integer width, Integer height, Integer givenOrder, Review review) {
         this.url = url;
+        this.size = size;
+        this.width = width;
+        this.height = height;
         this.givenOrder = givenOrder;
         this.review = review;
     }

@@ -1,5 +1,7 @@
 package com.cheffi.avatar.domain;
 
+import org.springframework.util.Assert;
+
 import com.cheffi.common.constant.Address;
 import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.user.domain.User;
@@ -37,6 +39,10 @@ public class Avatar extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "photo_id")
+    private ProfilePhoto photo;
 
     public Avatar(String nickname, User user) {
         this.nickname = nickname;
