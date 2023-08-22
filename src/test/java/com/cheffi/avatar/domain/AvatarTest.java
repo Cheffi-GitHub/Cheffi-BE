@@ -4,17 +4,16 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.cheffi.common.constant.Address;
 import com.cheffi.user.domain.User;
 
+@ExtendWith(MockitoExtension.class)
 class AvatarTest {
 
 	public static final String NICKNAME = "Nick";
@@ -34,8 +33,7 @@ class AvatarTest {
 
 	@BeforeEach
 	void setUp() {
-		avatar = new Avatar(NICKNAME, PICTUREURL, user);
-		MockitoAnnotations.initMocks(this);
+		avatar = new Avatar(NICKNAME, user);
 	}
 
 	@Test
