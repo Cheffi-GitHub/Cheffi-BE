@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cheffi.common.constant.S3RootPath;
+import com.cheffi.common.dto.ImageFileInfo;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.common.service.FileUploadService;
 import com.cheffi.common.service.SecurityContextService;
@@ -53,10 +55,10 @@ public class TestController {
 	}
 
 	@Tag(name = "Test")
-	@Operation(summary = "파일 업로드 테스트 API")
+	@Operation(summary = "이미지 업로드 테스트 API")
 	@PostMapping(value = "/upload")
-	public ApiResponse<String> test(MultipartFile file) {
-		return ApiResponse.success(fileUploadService.uploadFileToS3(file));
+	public ApiResponse<ImageFileInfo> upload(MultipartFile file) {
+		return ApiResponse.success(fileUploadService.uploadImageToS3(file, S3RootPath.TEST));
 	}
 
 }

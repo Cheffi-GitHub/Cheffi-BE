@@ -24,6 +24,11 @@ spring:
     # turn OSIV off
     open-in-view: false
 
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
 logging:
   level:
     com.cheffi.web.kakao.client: debug
