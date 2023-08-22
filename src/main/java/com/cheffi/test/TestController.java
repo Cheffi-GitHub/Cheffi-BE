@@ -21,8 +21,6 @@ import com.cheffi.oauth.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -48,8 +46,8 @@ public class TestController {
 	@Tag(name = "Test")
 	@Operation(summary = "테스트용 세션 발급 API")
 	@GetMapping("/session/issue")
-	public ApiResponse<String> provideTestSession(HttpServletRequest request, HttpServletResponse response) {
-		securityContextService.saveToSecurityContext(request, response,
+	public ApiResponse<String> provideTestSession() {
+		securityContextService.saveToSecurityContext(
 			AuthenticationToken.mock(List.of(new SimpleGrantedAuthority("ROLE_USER"))));
 		return ApiResponse.success("테스트용 세션 발급 성공");
 	}

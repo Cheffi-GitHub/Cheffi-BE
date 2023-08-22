@@ -22,20 +22,25 @@ import lombok.ToString;
 @Builder
 public class UserPrincipal implements UserDetails, Serializable {
 
+	// User
 	private final Long userId;
 	private final String email;
-	private final boolean locked;
-	private final boolean expired;
-	private final boolean activated;
-	private final LocalDateTime lastPwChangedDate;
-	private final String name;
+	private boolean locked;
+	private boolean expired;
+	private boolean activated;
+	private LocalDateTime lastPwChangedDate;
+	private String name;
 	private final UserType userType;
-	private final boolean adAgreed;
-	private final boolean analysisAgreed;
-	private final String fcmToken;
+	private boolean adAgreed;
+	private boolean analysisAgreed;
+	private String fcmToken;
+
+	// Avatar
 	private final Long avatarId;
-	private final String nickname;
-	private final List<GrantedAuthority> authorities;
+	private String nickname;
+
+	// Role
+	private List<GrantedAuthority> authorities;
 
 	public static UserPrincipal of(User user, Avatar avatar, Collection<? extends GrantedAuthority> authorities) {
 		return UserPrincipal.builder()
@@ -54,6 +59,11 @@ public class UserPrincipal implements UserDetails, Serializable {
 			.nickname(avatar.getNickname())
 			.authorities(new ArrayList<>(authorities))
 			.build();
+	}
+
+	public UserPrincipal update(Avatar avatar) {
+		this.nickname = avatar.getNickname();
+		return this;
 	}
 
 	@Override
