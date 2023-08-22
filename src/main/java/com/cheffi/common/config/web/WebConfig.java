@@ -19,6 +19,9 @@ public class WebConfig {
 		configuration.setAllowCredentials(true);
 		configuration.setMaxAge(3600L);
 
+		// 웹브라우저에서 노출할 응답 헤더를 설정
+		configuration.addExposedHeader("Authorization");
+
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
