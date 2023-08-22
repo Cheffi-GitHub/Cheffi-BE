@@ -3,13 +3,14 @@ package com.cheffi.common.aspect;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Aspect
-// @Component
+@Component
 public class TimeTraceAspect {
 
 	@Around("execution(* com.cheffi.common.service.FileUploadService.uploadImageToS3(..))")
@@ -21,7 +22,7 @@ public class TimeTraceAspect {
 		Object result = joinPoint.proceed();
 
 		stopWatch.stop();
-		log.info("[{}] end, it took {}", joinPoint.getSignature(), stopWatch.getTotalTimeMillis());
+		log.info("[{}] end, it took {}ms", joinPoint.getSignature(), stopWatch.getTotalTimeMillis());
 		return result;
 	}
 }
