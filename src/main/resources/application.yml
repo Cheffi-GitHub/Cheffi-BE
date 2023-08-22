@@ -1,9 +1,9 @@
 spring:
   profiles:
     group:
-      "dev": "dev, oauth, s3"
-      "local": "local, oauth, s3"
-      "default": "local, oauth, s3"
+      "dev": "dev, oauth, s3, actuator"
+      "local": "local, oauth, s3, actuator"
+      "default": "local, oauth, s3, actuator"
   h2:
     console:
       enabled: true
