@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
 import com.cheffi.user.constant.UserType;
 import com.cheffi.user.domain.User;
 
@@ -61,8 +62,8 @@ public class UserPrincipal implements UserDetails, Serializable {
 			.build();
 	}
 
-	public UserPrincipal update(Avatar avatar) {
-		this.nickname = avatar.getNickname();
+	public UserPrincipal update(SelfAvatarInfo info) {
+		this.nickname = info.nickname();
 		return this;
 	}
 

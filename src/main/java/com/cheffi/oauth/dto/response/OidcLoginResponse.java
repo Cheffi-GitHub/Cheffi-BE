@@ -2,12 +2,16 @@ package com.cheffi.oauth.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.cheffi.avatar.domain.ProfilePhoto;
 import com.cheffi.oauth.model.AuthenticationToken;
 import com.cheffi.oauth.model.UserPrincipal;
+import com.cheffi.user.constant.RoleType;
 import com.cheffi.user.constant.UserType;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,12 +41,16 @@ public record OidcLoginResponse(
 	Long avatarId,
 	@Schema(description = "유저 닉네임")
 	String nickname,
+	@Schema(description = "프로필 URL")
+	String photoUrl,
+	@Schema(description = "프로필 등록 완료 여부")
+	boolean profileCompleted,
 	@Schema(description = "유저의 권한")
 	List<GrantedAuthority> authorities
 
 ) {
 
-	public static OidcLoginResponse of(AuthenticationToken token) {
+	public static OidcLoginResponse of(AuthenticationToken token, ProfilePhoto photo) {
 		UserPrincipal principal = (UserPrincipal)token.getPrincipal();
 		return OidcLoginResponse.builder()
 			.email(principal.getEmail())
@@ -56,7 +64,13 @@ public record OidcLoginResponse(
 			.analysisAgreed(principal.isAnalysisAgreed())
 			.avatarId(principal.getAvatarId())
 			.nickname(principal.getNickname())
+			.photoUrl(photo != null ? photo.getUrl() : null)
+			.profileCompleted(isProfileCompleted(principal.getAuthorities()))
 			.authorities((new ArrayList<>(principal.getAuthorities())))
 			.build();
+	}
+
+	private static boolean isProfileCompleted(Collection<? extends GrantedAuthority> authorities) {
+		return !authorities.contains(new SimpleGrantedAuthority(RoleType.NO_PROFILE.getAuthority()));
 	}
 }

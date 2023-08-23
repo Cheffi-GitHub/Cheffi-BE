@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
 import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.oauth.model.UserPrincipal;
 
@@ -29,18 +29,17 @@ public class SessionUpdateAspect {
 	@Pointcut("@annotation(com.cheffi.common.aspect.annotation.UpdatePrincipal)")
 	private void updatePrincipal(){}
 
-	@Pointcut("execution(com.cheffi.avatar.domain.Avatar update*(..))")
-	private void updateAvatar(){}
+	@Pointcut("execution(com.cheffi.avatar.dto.adapter.SelfAvatarInfo *(..))")
+	private void returnAdapter(){}
 
-	@Around("updateAvatar() && updatePrincipal()")
-	public Object updateAvatarWithToken(ProceedingJoinPoint joinPoint) throws Throwable {
-		Avatar avatar = (Avatar) joinPoint.proceed();
+	@Around("returnAdapter() && updatePrincipal()")
+	public Object updateTokenWithAvatar(ProceedingJoinPoint joinPoint) throws Throwable {
+		SelfAvatarInfo info = (SelfAvatarInfo) joinPoint.proceed();
 		log.info("Avtar 업데이트 완료");
 		UserPrincipal principal = securityContextService.getUserPrincipal();
-		securityContextService.updatePrincipal(principal.update(avatar));
+		securityContextService.updatePrincipal(principal.update(info));
 		log.info("Avtar 변경사항 Principal 적용 완료");
-		return avatar;
+		return info;
 	}
-
 
 }

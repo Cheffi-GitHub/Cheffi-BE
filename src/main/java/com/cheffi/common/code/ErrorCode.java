@@ -32,6 +32,10 @@ public enum ErrorCode {
 	INVALID_MEMBER_TYPE(HttpStatus.BAD_REQUEST, "M-001", "잘못된 회원 타입입니다. (memberType : KAKAO)"),
 	ALREADY_REGISTERED_MEMBER(HttpStatus.BAD_REQUEST, "M-002", "이미 가입된 회원 입니다."),
 	USER_NOT_EXISTS(HttpStatus.BAD_REQUEST, "M-003", "해당 회원은 존재하지 않습니다."),
+	AVATAR_NOT_EXISTS(HttpStatus.BAD_REQUEST, "M-004", "해당 아바타는 존재하지 않습니다."),
+	NICKNAME_CONTAINS_BANNED_WORDS(HttpStatus.BAD_REQUEST, "M-006", "해당 닉네임은 금지어를 포함하고 있습니다."),
+	NICKNAME_ALREADY_IN_USE(HttpStatus.BAD_REQUEST, "M-007", "해당 닉네임은 이미 사용중입니다."),
+	INVALID_NICKNAME_LENGTH(HttpStatus.BAD_REQUEST, "M-008", "닉네임의 길이가 올바르지 않습니다. [최소 2자, 최대 8자]"),
 
 	// 파일
 	NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "F-001", "전송된 파일의 형식이 이미지가 아닙니다."),
