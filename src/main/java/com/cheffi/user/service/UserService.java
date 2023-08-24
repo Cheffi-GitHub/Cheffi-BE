@@ -59,7 +59,7 @@ public class UserService {
 		return RandomStringUtils.randomNumeric(6);
 	}
 
-	public Optional<User> findByEmail(String email) {
-		return userRepository.findByEmail(email);
+	public Optional<User> getByEmailWithAvatar(String email) {
+		return userRepository.findByEmailWithAvatar(email);
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.AuthenticationException;
 import com.cheffi.common.service.SecurityContextService;
@@ -44,15 +45,15 @@ public class OAuthService {
 		// 사용자 정보 가져오기
 		OAuthAttributes oAuthAttributes = apiService.getUserInfo(attributes);
 
-		User user = userService.findByEmail(oAuthAttributes.email()).orElseGet(() -> signUp(oAuthAttributes));
+		User user = userService.getByEmailWithAvatar(oAuthAttributes.email()).orElseGet(() -> signUp(oAuthAttributes));
+		Avatar avatar = user.getAvatar();
 
 		Set<GrantedAuthority> authorities = getAuthoritiesFromUser(user);
 		AuthenticationToken authenticationToken =
-			AuthenticationToken.of(user, user.getAvatar(), loginRequest.token(), authorities);
+			AuthenticationToken.of(user, avatar, loginRequest.token(), authorities);
 
 		securityContextService.saveToSecurityContext(authenticationToken);
-
-		return OidcLoginResponse.of(authenticationToken);
+		return OidcLoginResponse.of(authenticationToken, avatar.getPhoto());
 	}
 
 	private User signUp(OAuthAttributes oAuthAttributes) {
