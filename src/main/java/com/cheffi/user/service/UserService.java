@@ -59,4 +59,16 @@ public class UserService {
 		return userRepository.findByEmailWithRoles(email);
 	}
 
+	@UpdatePrincipal
+	@Transactional
+	public UserInfo changeTermsAgreement(Long userId, Boolean adAgreed, Boolean analysisAgreed) {
+		User user = getById(userId);
+		user.changeTermsAgreement(adAgreed, analysisAgreed);
+		return UserInfo.of(user);
+	}
+
+	public User getById(Long userId) {
+		return userRepository.findById(userId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXISTS));
+	}
 }

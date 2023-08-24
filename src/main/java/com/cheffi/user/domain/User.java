@@ -111,4 +111,8 @@ public class User extends BaseTimeEntity {
 		return createdUser;
 	}
 
+	public void changeTermsAgreement(boolean adAgreed, boolean analysisAgreed) {
+		this.adAgreed = adAgreed;
+		this.analysisAgreed = analysisAgreed;
+	}
 }

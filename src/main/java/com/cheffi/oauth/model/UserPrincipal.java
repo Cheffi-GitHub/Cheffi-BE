@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.cheffi.avatar.domain.Avatar;
@@ -69,6 +70,11 @@ public class UserPrincipal implements UserDetails, Serializable {
 		this.adAgreed = info.adAgreed();
 		this.analysisAgreed = info.analysisAgreed();
 		this.fcmToken = info.fcmToken();
+		if (info.authorities() != null)
+			this.authorities = info.authorities()
+				.stream()
+				.map((a -> (GrantedAuthority)new SimpleGrantedAuthority(a)))
+				.toList();
 		return this;
 	}
 
