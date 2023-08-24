@@ -42,10 +42,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
-    //logback
-    testImplementation 'ch.qos.logback:logback-classic:1.4.11'
-    testImplementation 'ch.qos.logback:logback-core:1.4.11'
-
     //swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
