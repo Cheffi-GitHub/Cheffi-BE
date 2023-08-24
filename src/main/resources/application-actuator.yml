@@ -16,5 +16,3 @@ management:
           - info
           - logfile
 
-env:
-  LOG_DIRECTORY: ${{ secrets.CHEFFI_DIRECTORY }}

@@ -9,7 +9,7 @@
 
         <!-- File Appender -->
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${CHEFFI_DIRECTORY}log/project02.log</file>
+            <file>${CHEFFI_DIRECTORY}/project02.log</file>
             <encoder>
                 <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
                 <charset>utf8</charset>
