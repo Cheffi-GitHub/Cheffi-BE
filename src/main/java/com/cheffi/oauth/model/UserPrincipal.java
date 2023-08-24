@@ -13,6 +13,7 @@ import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
 import com.cheffi.user.constant.UserType;
 import com.cheffi.user.domain.User;
+import com.cheffi.user.dto.adapter.UserInfo;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -60,6 +61,15 @@ public class UserPrincipal implements UserDetails, Serializable {
 			.nickname(avatar.getNickname())
 			.authorities(new ArrayList<>(authorities))
 			.build();
+	}
+
+	public UserPrincipal update(UserInfo info) {
+		this.lastPwChangedDate = info.lastPwChangedDate();
+		this.name = info.name();
+		this.adAgreed = info.adAgreed();
+		this.analysisAgreed = info.analysisAgreed();
+		this.fcmToken = info.fcmToken();
+		return this;
 	}
 
 	public UserPrincipal update(SelfAvatarInfo info) {
