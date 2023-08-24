@@ -65,6 +65,13 @@ dependencies {
 
     //Spring Aop
     implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    //actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    //prometheus
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.11.2'
+    //loki
+    implementation 'com.github.loki4j:loki-logback-appender:1.4.0'
 }
 
 tasks.named('test') {
