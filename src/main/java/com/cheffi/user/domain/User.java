@@ -6,9 +6,6 @@ import java.util.List;
 
 import org.springframework.util.Assert;
 
-import com.cheffi.avatar.domain.Avatar;
-import com.cheffi.common.code.ErrorCode;
-import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.user.constant.Password;
 import com.cheffi.user.constant.UserType;
@@ -23,7 +20,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -69,9 +65,6 @@ public class User extends BaseTimeEntity {
 	private Password password;
 	private String fcmToken;
 
-	@OneToOne(mappedBy = "user")
-	private Avatar avatar;
-
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserRole> userRoles = new ArrayList<>();
 
@@ -99,10 +92,10 @@ public class User extends BaseTimeEntity {
 	 * 회원 가입 공통 메서드
 	 */
 	public static User createUser(UserCreateRequest request) {
-		Assert.hasText(request.email(),"이메일이 입력되지 않았습니다.");
-		Assert.hasText(request.name(),"이름이 입력되지 않았습니다");
-		Assert.notNull(request.userType(),"유저타입은 null일 수 없습니다.");
-		Assert.notEmpty(request.roles(),"유저 권한(Role)은 최소한 1개는 부여되어야 합니다.");
+		Assert.hasText(request.email(), "이메일이 입력되지 않았습니다.");
+		Assert.hasText(request.name(), "이름이 입력되지 않았습니다");
+		Assert.notNull(request.userType(), "유저타입은 null일 수 없습니다.");
+		Assert.notEmpty(request.roles(), "유저 권한(Role)은 최소한 1개는 부여되어야 합니다.");
 
 		User createdUser = User.builder()
 			.email(request.email())
@@ -118,9 +111,4 @@ public class User extends BaseTimeEntity {
 		return createdUser;
 	}
 
-	public void setAvatar(Avatar avatar) {
-		if(this.avatar != null)
-			throw new BusinessException(ErrorCode.AVATAR_ALREADY_EXIST);
-		this.avatar = avatar;
-	}
 }

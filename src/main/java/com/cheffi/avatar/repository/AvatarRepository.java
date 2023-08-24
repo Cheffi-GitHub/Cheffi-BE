@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.NonNull;
 
 import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.user.domain.User;
 
 public interface AvatarRepository extends JpaRepository<Avatar, Long> {
 
@@ -16,5 +16,11 @@ public interface AvatarRepository extends JpaRepository<Avatar, Long> {
 		+ " where a.id = :id")
 	Optional<Avatar> findByIdWithPhoto(@Param("id") Long avatarId);
 
-	boolean existsByNickname(@NonNull String nickname);
+	@Query("select a from Avatar a"
+		+ " left join fetch a.photo p"
+		+ " where a.user = :user")
+	Optional<Avatar> findByUserWithPhoto(@Param("user") User user);
+
+	boolean existsByNickname(String nickname);
+
 }

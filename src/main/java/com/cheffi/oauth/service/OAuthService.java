@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.AuthenticationException;
 import com.cheffi.common.service.SecurityContextService;
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class OAuthService {
 	private final UserService userService;
+	private final AvatarService avatarService;
 	private final RoleService roleService;
 	private final SecurityContextService securityContextService;
 	private final Map<String, OidcLoginApiService> providerMap;
@@ -45,8 +47,9 @@ public class OAuthService {
 		// 사용자 정보 가져오기
 		OAuthAttributes oAuthAttributes = apiService.getUserInfo(attributes);
 
-		User user = userService.getByEmailWithAvatar(oAuthAttributes.email()).orElseGet(() -> signUp(oAuthAttributes));
-		Avatar avatar = user.getAvatar();
+		User user = userService.getByEmailWithRoles(oAuthAttributes.email())
+			.orElseGet(() -> signUp(oAuthAttributes));
+		Avatar avatar = avatarService.getByUserWithPhoto(user);
 
 		Set<GrantedAuthority> authorities = getAuthoritiesFromUser(user);
 		AuthenticationToken authenticationToken =

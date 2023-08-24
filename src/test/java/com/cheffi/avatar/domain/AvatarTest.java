@@ -34,7 +34,6 @@ class AvatarTest {
 
 	@BeforeEach
 	void setUp() {
-		lenient().doNothing().when(user).setAvatar(avatar);
 		avatar = new Avatar(NICKNAME, user);
 	}
 
