@@ -4,7 +4,10 @@ import java.util.List;
 
 import com.cheffi.tag.constant.TagType;
 import com.cheffi.tag.domain.Tag;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record TagDto(
 	Long tagId,
 	String name,
