@@ -1,5 +1,6 @@
 package com.cheffi.avatar.domain;
 
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.cheffi.common.code.ErrorCode;
@@ -62,11 +63,6 @@ public class Avatar extends BaseTimeEntity {
 		this.address = address;
 	}
 
-	public void changeIntroduction(String introduction) {
-		//TODO 불변식
-		this.introduction = introduction;
-	}
-
 	public void changeNickname(String nickname) {
 		if (!StringUtils.hasText(nickname))
 			throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
@@ -75,4 +71,12 @@ public class Avatar extends BaseTimeEntity {
 		this.nickname = nickname;
 	}
 
+	public void changePhoto(ProfilePhoto photo) {
+		Assert.notNull(photo, "변경할 사진은 null 일 수 없습니다.");
+		this.photo = photo;
+	}
+
+	public boolean hasPhoto() {
+		return this.getPhoto() != null;
+	}
 }

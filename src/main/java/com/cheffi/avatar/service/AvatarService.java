@@ -2,8 +2,10 @@ package com.cheffi.avatar.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.avatar.domain.ProfilePhoto;
 import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
 import com.cheffi.avatar.dto.request.TagsChangeRequest;
 import com.cheffi.avatar.dto.response.AvatarInfoResponse;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class AvatarService {
 
 	private final AvatarRepository avatarRepository;
+	private final ProfilePhotoService profilePhotoService;
 
 	@UpdatePrincipal
 	@Transactional
@@ -67,6 +70,29 @@ public class AvatarService {
 
 	public TagsChangeResponse changeTags(Long avatarId, TagsChangeRequest tagsChangeRequest) {
 		return new TagsChangeResponse(tagsChangeRequest.addTags(), tagsChangeRequest.removeTags());
+	}
+
+	@Transactional
+	public String changePhoto(Long avatarId, MultipartFile file, boolean defaultPhoto) {
+		Avatar avatar = getByIdWithPhoto(avatarId);
+		String s3key = null;
+		if (avatar.hasPhoto())
+			s3key = profilePhotoService.deletePhotoFromDB(avatar);
+
+		ProfilePhoto addedPhoto;
+		if (defaultPhoto)
+			addedPhoto = profilePhotoService.addDefaultPhoto(avatar);
+		else
+			addedPhoto = profilePhotoService.addPhoto(avatar, file);
+
+		try {
+			profilePhotoService.deletePhotoFromS3(s3key);
+		} catch (Exception e) {
+			profilePhotoService.deletePhotoFromS3(addedPhoto.getS3Key());
+			throw new BusinessException(e.getMessage());
+		}
+
+		return addedPhoto.getUrl();
 	}
 
 }
