@@ -5,12 +5,16 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
 import com.cheffi.avatar.dto.request.ChangeNicknameRequest;
+import com.cheffi.avatar.dto.request.ChangeProfilePhotoRequest;
 import com.cheffi.avatar.dto.request.TagsChangeRequest;
 import com.cheffi.avatar.dto.response.AvatarInfoResponse;
 import com.cheffi.avatar.dto.response.TagsChangeResponse;
@@ -55,6 +59,20 @@ public class AvatarController {
 			.updateNickname(principal.getAvatarId(), changeNicknameRequest.nickname())
 			.nickname();
 		return ApiResponse.success(nickname);
+	}
+
+	@Tag(name = "Avatar")
+	@Operation(summary = "프로필 사진 변경 API",
+		description = "프로필 사진 변경 - 인증 필요",
+		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("hasRole('USER')")
+	@PostMapping("/photos")
+	public ApiResponse<String> changePhoto(
+		@AuthenticationPrincipal UserPrincipal principal,
+		@RequestPart("file") MultipartFile file,
+		@Valid @RequestPart("request") ChangeProfilePhotoRequest request) {
+		return ApiResponse.success(avatarService.changePhoto(principal.getAvatarId(), file,
+			request.defaultPhoto()));
 	}
 
 	@Tag(name = "Avatar")

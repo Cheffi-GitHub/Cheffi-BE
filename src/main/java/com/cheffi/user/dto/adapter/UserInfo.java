@@ -8,11 +8,14 @@ import com.cheffi.user.domain.Role;
 import com.cheffi.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record UserInfo(
 	@Schema(description = "이메일", example = "kim12345@naver.com")
 	String email,

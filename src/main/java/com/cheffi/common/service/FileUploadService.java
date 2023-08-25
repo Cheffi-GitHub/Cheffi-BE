@@ -78,4 +78,8 @@ public class FileUploadService {
 		}
 	}
 
+	public void removeFromS3(String s3Key) {
+		amazonS3.deleteObject(bucketName, s3Key);
+	}
+
 }
