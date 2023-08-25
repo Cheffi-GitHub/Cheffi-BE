@@ -11,8 +11,15 @@ import com.cheffi.user.domain.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 	@Query("select u"
 		+ " from User u"
-		+ " left join fetch u.avatar a"
-		+ " left join fetch a.photo p"
+		+ " left join fetch u.userRoles ur"
+		+ " left join fetch ur.role r"
 		+ " where u.email = :email")
-	Optional<User> findByEmailWithAvatar(@Param("email") String email);
+	Optional<User> findByEmailWithRoles(@Param("email") String email);
+
+	@Query("select u"
+		+ " from User u"
+		+ " left join fetch u.userRoles ur"
+		+ " left join fetch ur.role r"
+		+ " where u.id = :id")
+	Optional<User> findByIdWithRoles(@Param("id") Long userId);
 }

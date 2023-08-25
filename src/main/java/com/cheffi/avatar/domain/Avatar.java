@@ -54,7 +54,6 @@ public class Avatar extends BaseTimeEntity {
 		this.user = user;
 		this.cheffiCoinCnt = 0;
 		this.pointCnt = 0;
-		this.user.setAvatar(this);
 	}
 
 	public void changeAddress(Address address) {

@@ -9,20 +9,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.repository.AvatarRepository;
+import com.cheffi.common.aspect.annotation.UpdatePrincipal;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
-import com.cheffi.user.constant.RoleType;
 import com.cheffi.user.constant.UserType;
 import com.cheffi.user.domain.Role;
 import com.cheffi.user.domain.User;
+import com.cheffi.user.domain.UserRole;
 import com.cheffi.user.dto.UserCreateRequest;
-import com.cheffi.user.dto.UserInfoDto;
+import com.cheffi.user.dto.adapter.UserInfo;
 import com.cheffi.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -31,19 +30,16 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final AvatarRepository avatarRepository;
 
-	public UserInfoDto getUserInfo() {
-		return UserInfoDto.of(
-			User.builder()
-				.email("Mock@mock.com")
-				.expired(false)
-				.locked(false)
-				.withdrawn(false)
-				.name("안유진")
-				.userType(UserType.KAKAO)
-				.activated(true)
-				.build(),
-			List.of(new Role(RoleType.USER))
-		);
+	@UpdatePrincipal
+	public UserInfo getUserInfo(Long userId) {
+		User user = getByIdWithRoles(userId);
+		List<Role> roles = user.getUserRoles().stream().map(UserRole::getRole).toList();
+		return UserInfo.of(user, roles);
+	}
+
+	public User getByIdWithRoles(Long userId) {
+		return userRepository.findByIdWithRoles(userId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXISTS));
 	}
 
 	@Transactional
@@ -59,7 +55,20 @@ public class UserService {
 		return RandomStringUtils.randomNumeric(6);
 	}
 
-	public Optional<User> getByEmailWithAvatar(String email) {
-		return userRepository.findByEmailWithAvatar(email);
+	public Optional<User> getByEmailWithRoles(String email) {
+		return userRepository.findByEmailWithRoles(email);
+	}
+
+	@UpdatePrincipal
+	@Transactional
+	public UserInfo changeTermsAgreement(Long userId, Boolean adAgreed, Boolean analysisAgreed) {
+		User user = getById(userId);
+		user.changeTermsAgreement(adAgreed, analysisAgreed);
+		return UserInfo.of(user);
+	}
+
+	public User getById(Long userId) {
+		return userRepository.findById(userId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXISTS));
 	}
 }

@@ -13,6 +13,7 @@ import com.cheffi.common.aspect.annotation.UpdatePrincipal;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.config.exception.business.EntityNotFoundException;
+import com.cheffi.user.domain.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +27,7 @@ public class AvatarService {
 	@UpdatePrincipal
 	@Transactional
 	public SelfAvatarInfo updateNickname(Long avatarId, String nickname) {
-		if(nickname.contains("쉐피"))
+		if (nickname.contains("쉐피"))
 			throw new BusinessException(ErrorCode.NICKNAME_CONTAINS_BANNED_WORDS);
 		if (isNicknameInUse(nickname))
 			throw new BusinessException(ErrorCode.NICKNAME_ALREADY_IN_USE);
@@ -47,6 +48,11 @@ public class AvatarService {
 
 	public Avatar getById(Long avatarId) {
 		return avatarRepository.findById(avatarId)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
+	}
+
+	public Avatar getByUserWithPhoto(User user) {
+		return avatarRepository.findByUserWithPhoto(user)
 			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
 	}
 
