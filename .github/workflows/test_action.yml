@@ -1,4 +1,4 @@
-name: test on push
+name: test before merging
 
 
 on:
@@ -48,7 +48,7 @@ jobs:
           status: ${{ job.status }}
           author_name: dev-deploy-job
           text: 'test failed'
-          fields: repo,message,commit,author,action,ref,workflow,job,took,pullRequest
+          fields: repo,commit,author,ref,workflow,job,took,pullRequest
           mention: 'U05BT7J8YV8,U05BT2V4C58'
           if_mention: failure
         env:
