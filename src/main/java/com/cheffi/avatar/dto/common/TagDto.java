@@ -7,10 +7,15 @@ import com.cheffi.tag.domain.Tag;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record TagDto(
+	@Schema(description = "태그의 식별자")
 	Long tagId,
+	@Schema(description = "태그의 이름")
 	String name,
+	@Schema(description = "태그의 타입")
 	TagType tagType
 ) {
 

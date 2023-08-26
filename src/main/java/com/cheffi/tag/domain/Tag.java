@@ -18,17 +18,21 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Tag {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private TagType tagType;
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private TagType tagType;
 
-    @NotNull
-    private String name;
+	@NotNull
+	private String name;
 
+	public Tag(TagType tagType, String name) {
+		this.tagType = tagType;
+		this.name = name;
+	}
 }
 
 
