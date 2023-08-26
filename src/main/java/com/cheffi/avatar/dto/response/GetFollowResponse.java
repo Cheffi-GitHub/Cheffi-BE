@@ -3,13 +3,14 @@ package com.cheffi.avatar.dto.response;
 import java.util.List;
 
 import com.cheffi.avatar.domain.Avatar;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record GetFollowResponse(
 	Long avatarId,
 	String nickname
 ) {
-
-	public static final String PICTURE_URL = "https://undongin.com/data/editor/0107/1609980770_6067.jpg";
 	public static GetFollowResponse of(Avatar avatar) {
 		return new GetFollowResponse(avatar.getId(), avatar.getNickname());
 	}

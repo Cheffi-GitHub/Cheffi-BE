@@ -3,7 +3,10 @@ package com.cheffi.avatar.dto.response;
 import java.util.List;
 
 import com.cheffi.avatar.dto.common.TagDto;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record RecommendFollowResponse(
 	Long avatarId,
 	String nickname,

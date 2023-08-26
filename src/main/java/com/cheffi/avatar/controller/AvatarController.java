@@ -1,5 +1,6 @@
 package com.cheffi.avatar.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import com.cheffi.common.response.ApiResponse;
 import com.cheffi.oauth.model.UserPrincipal;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -63,12 +65,14 @@ public class AvatarController {
 
 	@Tag(name = "Avatar")
 	@Operation(summary = "프로필 사진 변경 API",
-		description = "프로필 사진 변경 - 인증 필요",
+		description = "프로필 사진 변경 - 인증 필요, swagger 에서는 오류가 발생합니다. request 부분을 application/json"
+			+ "으로 설정해서 요청을 보내주세요.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
-	@PostMapping("/photos")
+	@PostMapping(value = "/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ApiResponse<String> changePhoto(
 		@AuthenticationPrincipal UserPrincipal principal,
+		@Parameter(description = "변경할 프로필 사진 파일")
 		@RequestPart("file") MultipartFile file,
 		@Valid @RequestPart("request") ChangeProfilePhotoRequest request) {
 		return ApiResponse.success(avatarService.changePhoto(principal.getAvatarId(), file,

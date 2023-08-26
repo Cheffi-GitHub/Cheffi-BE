@@ -13,11 +13,14 @@ import com.cheffi.oauth.model.AuthenticationToken;
 import com.cheffi.oauth.model.UserPrincipal;
 import com.cheffi.user.constant.RoleType;
 import com.cheffi.user.constant.UserType;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record OidcLoginResponse(
 	@Schema(description = "이메일", example = "user1234@naver.com")
 	String email,
