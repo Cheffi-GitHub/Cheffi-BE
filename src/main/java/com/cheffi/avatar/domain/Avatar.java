@@ -1,5 +1,8 @@
 package com.cheffi.avatar.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -16,6 +19,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -49,6 +53,9 @@ public class Avatar extends BaseTimeEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "photo_id")
 	private ProfilePhoto photo;
+
+	@OneToMany(mappedBy = "avatar")
+	private List<AvatarTag> avatarTags = new ArrayList<>();
 
 	public Avatar(String nickname, User user) {
 		this.nickname = nickname;
