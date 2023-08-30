@@ -7,15 +7,14 @@
 
     <springProfile name="dev">
 
-        <!-- File Appender -->
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${CHEFFI_DIRECTORY}/project02.log</file>
+            <file>${CHEFFI_DIRECTORY}/cheffilog/project02.log</file>
             <encoder>
                 <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
                 <charset>utf8</charset>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${CHEFFI_DIRECTORY}/backup/app-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+                <fileNamePattern>${CHEFFI_DIRECTORY}/cheffilog/backup/app-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
                 <maxFileSize>100MB</maxFileSize>
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>3GB</totalSizeCap>
