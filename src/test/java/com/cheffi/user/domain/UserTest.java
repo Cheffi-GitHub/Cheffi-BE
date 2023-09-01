@@ -25,6 +25,7 @@ class UserTest {
 	public static final Role ROLE_ADMIN = new Role(RoleType.ADMIN);
 	public static final Role ROLE_USER = new Role(RoleType.USER);
 	public static final Role ROLE_GUEST = new Role(RoleType.GUEST);
+	public static final Role NO_PROFILE = new Role(RoleType.NO_PROFILE);
 	public static final List<Role> ROLES = List.of(ROLE_USER, ROLE_GUEST);
 	public static final String USER_NAME = "홍길동";
 	public static final String USER_EMAIL = "foo@naver.com";
@@ -44,7 +45,7 @@ class UserTest {
 	}
 
 	@Nested
-	@DisplayName("AddRoles 메서드")
+	@DisplayName("addRoles 메서드")
 	class AddRoles {
 
 		@Test
@@ -61,7 +62,7 @@ class UserTest {
 		}
 
 		@Test
-		@DisplayName("중복된 ROLE Entity 중복 매핑되지 않는다.")
+		@DisplayName("중복된 ROLE Entity 는 매핑되지 않는다.")
 		void givenDuplicatedRolesWhenAddRolesThenUnique() {
 			//when
 			user.addRoles(List.of(ROLE_ADMIN, ROLE_USER));
@@ -76,9 +77,45 @@ class UserTest {
 			assertThat(roles).contains(ROLE_ADMIN, ROLE_USER, ROLE_GUEST);
 		}
 
-
 	}
 
+	@Nested
+	@DisplayName("removeRoles 메서드")
+	class RemoveRoles {
+
+		@Test
+		@DisplayName("주어진 Role 을 유저가 갖고 있으면 Role 정상적으로 삭제된다.")
+		void givenRolesThatUserHasThenRemoved() {
+			//given
+			user.getUserRoles().add(UserRole.mapRoleToUser(user, NO_PROFILE));
+			user.getUserRoles().add(UserRole.mapRoleToUser(user, ROLE_GUEST));
+			user.getUserRoles().add(UserRole.mapRoleToUser(user, ROLE_USER));
+
+			//when
+			user.removeRole(NO_PROFILE);
+
+			//then
+			List<Role> roles = user.getUserRoles().stream().map(UserRole::getRole).toList();
+			assertThat(roles).hasSize(2).contains(ROLE_USER);
+		}
+
+		@Test
+		@DisplayName("주어진 Role 을 유저가 갖고 있지 않으면 상태 변화가 없다. ")
+		void givenRolesThatUserDoesNotHaveThenNoChanges() {
+			//given
+			user.getUserRoles().add(UserRole.mapRoleToUser(user, NO_PROFILE));
+			user.getUserRoles().add(UserRole.mapRoleToUser(user, ROLE_GUEST));
+			user.getUserRoles().add(UserRole.mapRoleToUser(user, ROLE_USER));
+
+			//when
+			user.removeRole(ROLE_ADMIN);
+
+			//then
+			List<Role> roles = user.getUserRoles().stream().map(UserRole::getRole).collect(Collectors.toList());
+			assertThat(roles).hasSize(3).contains(NO_PROFILE, ROLE_USER, ROLE_GUEST);
+		}
+
+	}
 
 	@Nested
 	@DisplayName("createUser 메서드")
@@ -119,6 +156,7 @@ class UserTest {
 			assertThatThrownBy(() -> User.createUser(createRequest))
 				.isInstanceOf(IllegalArgumentException.class);
 		}
+
 		@Test
 		@DisplayName("이메일이 null 이면 예외를 던진다")
 		void givenNullEmailWhenCreateUserThenSuccess() {
@@ -174,8 +212,5 @@ class UserTest {
 		}
 
 	}
-
-
-
 
 }

@@ -12,6 +12,7 @@ import com.cheffi.avatar.repository.AvatarRepository;
 import com.cheffi.common.aspect.annotation.UpdatePrincipal;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
+import com.cheffi.user.constant.RoleType;
 import com.cheffi.user.constant.UserType;
 import com.cheffi.user.domain.Role;
 import com.cheffi.user.domain.User;
@@ -29,6 +30,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final AvatarRepository avatarRepository;
+	private final RoleService roleService;
 
 	@UpdatePrincipal
 	public UserInfo getUserInfo(Long userId) {
@@ -70,5 +72,17 @@ public class UserService {
 	public User getById(Long userId) {
 		return userRepository.findById(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXISTS));
+	}
+
+	public boolean hasNoProfileRole(Long userId) {
+		User user = getByIdWithRoles(userId);
+		return user.getUserRoles().stream()
+			.anyMatch(ur -> ur.getRole().getRoleType().equals(RoleType.NO_PROFILE));
+	}
+
+	@Transactional
+	public void removeNoProfileRole(Long userId) {
+		User user = getByIdWithRoles(userId);
+		user.removeRole(roleService.getNoProfileRole());
 	}
 }

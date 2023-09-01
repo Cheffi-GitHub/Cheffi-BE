@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.constant.Address;
@@ -148,6 +150,38 @@ class AvatarTest {
 				List<AvatarTag> avatarTags = avatar.getAvatarTags();
 				assertThat(avatarTags).hasSize(1);
 			}
+		}
+
+		@Nested
+		@DisplayName("hasTags 메서드")
+		class HasTags {
+
+			@Test
+			@DisplayName("아바타가 갖고 있는 태그가 있으면 true 를 반환한다.")
+			void givenTagsThatAvatarHas() {
+				//given
+				avatar.getAvatarTags().add(AvatarTag.mapTagToAvatar(avatar, KOREAN_TAG));
+
+				//when
+				boolean hasTags = avatar.hasTags();
+
+				//then
+				assertThat(hasTags).isTrue();
+			}
+
+			@Test
+			@DisplayName("아바타가 갖고 있는 태그가 없으면 false 를 반환한다.")
+			void givenTagsThatAvatarDoesNotHave() {
+				//given
+				ReflectionTestUtils.setField(avatar, "avatarTags", Collections.emptyList());
+
+				//when
+				boolean hasTags = avatar.hasTags();
+
+				//then
+				assertThat(hasTags).isFalse();
+			}
+
 		}
 
 	}

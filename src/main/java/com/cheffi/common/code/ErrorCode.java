@@ -36,12 +36,14 @@ public enum ErrorCode {
 	NICKNAME_CONTAINS_BANNED_WORDS(HttpStatus.BAD_REQUEST, "M-006", "해당 닉네임은 금지어를 포함하고 있습니다."),
 	NICKNAME_ALREADY_IN_USE(HttpStatus.BAD_REQUEST, "M-007", "해당 닉네임은 이미 사용중입니다."),
 	INVALID_NICKNAME_LENGTH(HttpStatus.BAD_REQUEST, "M-008", "닉네임의 길이가 올바르지 않습니다. [최소 2자, 최대 8자]"),
+	PROFILE_ALREADY_REGISTERED(HttpStatus.BAD_REQUEST, "M-009", "해당 계정은 이미 프로필 등록이 완료되었습니다."),
+	PROFILE_NOT_COMPLETED(HttpStatus.BAD_REQUEST, "M-010", "해당 계정의 프로필 등록이 완료된 상태가 아닙니다."),
 
 	// 파일
 	NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "F-001", "전송된 파일의 형식이 이미지가 아닙니다."),
 
 	// 태그
-	BAD_AVATAR_TAG_REQUEST(HttpStatus.BAD_REQUEST,"T-001" , "아바타 관련 태그 요청이 잘못 됐습니다."),
+	BAD_AVATAR_TAG_REQUEST(HttpStatus.BAD_REQUEST, "T-001", "아바타 관련 태그 요청이 잘못 됐습니다."),
 
 	//기타
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "I-001", "내부 에러가 발생했습니다."),
