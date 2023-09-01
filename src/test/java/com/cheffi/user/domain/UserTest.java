@@ -15,26 +15,26 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.cheffi.user.constant.RoleType;
-import com.cheffi.user.dto.UserCreateRequest;
 import com.cheffi.user.constant.UserType;
+import com.cheffi.user.dto.UserCreateRequest;
 
 @ExtendWith(MockitoExtension.class)
 class UserTest {
 
 	public User user;
-	public static final Role ADMIN = new Role(RoleType.ADMIN);
-	public static final Role USER = new Role(RoleType.USER);
-	public static final Role GUEST = new Role(RoleType.GUEST);
-	public static final List<Role> ROLES = List.of(USER, GUEST);
-	public static final String NAME = "홍길동";
-	public static final String EMAIL = "foo@naver.com";
+	public static final Role ROLE_ADMIN = new Role(RoleType.ADMIN);
+	public static final Role ROLE_USER = new Role(RoleType.USER);
+	public static final Role ROLE_GUEST = new Role(RoleType.GUEST);
+	public static final List<Role> ROLES = List.of(ROLE_USER, ROLE_GUEST);
+	public static final String USER_NAME = "홍길동";
+	public static final String USER_EMAIL = "foo@naver.com";
 	public static final UserType USER_TYPE = UserType.KAKAO;
 
 	@BeforeEach
 	void setUp() {
 		user = User.builder()
-			.name(NAME)
-			.email(EMAIL)
+			.name(USER_NAME)
+			.email(USER_EMAIL)
 			.activated(true)
 			.withdrawn(false)
 			.expired(false)
@@ -43,34 +43,41 @@ class UserTest {
 			.build();
 	}
 
-	@Test
-	void givenRolesWhenAddRolesThenApplied() {
-		//when
-		user.addRoles(List.of(ADMIN, USER));
+	@Nested
+	@DisplayName("AddRoles 메서드")
+	class AddRoles {
 
-		//then
-		List<UserRole> userRoles = user.getUserRoles();
-		List<Role> roles = userRoles.stream().map(UserRole::getRole).collect(Collectors.toList());
-		assertThat(userRoles).hasSize(2);
-		assertThat(roles).contains(ADMIN, USER);
+		@Test
+		@DisplayName("Role 추가가 정상적으로 반영된다.")
+		void givenRolesWhenAddRolesThenApplied() {
+			//when
+			user.addRoles(List.of(ROLE_ADMIN, ROLE_USER));
+
+			//then
+			List<UserRole> userRoles = user.getUserRoles();
+			List<Role> roles = userRoles.stream().map(UserRole::getRole).collect(Collectors.toList());
+			assertThat(userRoles).hasSize(2);
+			assertThat(roles).contains(ROLE_ADMIN, ROLE_USER);
+		}
+
+		@Test
+		@DisplayName("중복된 ROLE Entity 중복 매핑되지 않는다.")
+		void givenDuplicatedRolesWhenAddRolesThenUnique() {
+			//when
+			user.addRoles(List.of(ROLE_ADMIN, ROLE_USER));
+			user.addRoles(List.of(ROLE_ADMIN, ROLE_USER, ROLE_GUEST));
+			user.addRoles(List.of(ROLE_ADMIN));
+			user.addRoles(List.of(ROLE_ADMIN, ROLE_GUEST));
+
+			//then
+			List<UserRole> userRoles = user.getUserRoles();
+			List<Role> roles = userRoles.stream().map(UserRole::getRole).collect(Collectors.toList());
+			assertThat(userRoles).hasSize(3);
+			assertThat(roles).contains(ROLE_ADMIN, ROLE_USER, ROLE_GUEST);
+		}
+
+
 	}
-
-	@Test
-	void givenDuplicatedRolesWhenAddRolesThenUnique() {
-		//when
-		user.addRoles(List.of(ADMIN, USER));
-		user.addRoles(List.of(ADMIN, USER, GUEST));
-		user.addRoles(List.of(ADMIN));
-		user.addRoles(List.of(ADMIN, GUEST));
-
-		//then
-		List<UserRole> userRoles = user.getUserRoles();
-		List<Role> roles = userRoles.stream().map(UserRole::getRole).collect(Collectors.toList());
-		assertThat(userRoles).hasSize(3);
-		assertThat(roles).contains(ADMIN, USER, GUEST);
-	}
-
-
 
 
 	@Nested
@@ -83,8 +90,8 @@ class UserTest {
 		@BeforeEach
 		void setUp() {
 			// lenient() 메서드는 스터빙이 호출되지 않아서 생기는 Unnecessary Stubbing Exception 예외를 방지해준다.
-			lenient().when(createRequest.email()).thenReturn(EMAIL);
-			lenient().when(createRequest.name()).thenReturn(NAME);
+			lenient().when(createRequest.email()).thenReturn(USER_EMAIL);
+			lenient().when(createRequest.name()).thenReturn(USER_NAME);
 			lenient().when(createRequest.userType()).thenReturn(USER_TYPE);
 			lenient().when(createRequest.roles()).thenReturn(ROLES);
 		}
@@ -99,8 +106,8 @@ class UserTest {
 			User newUser = User.createUser(createRequest);
 
 			//then
-			assertThat(newUser.getEmail()).isEqualTo(EMAIL);
-			assertThat(newUser.getName()).isEqualTo(NAME);
+			assertThat(newUser.getEmail()).isEqualTo(USER_EMAIL);
+			assertThat(newUser.getName()).isEqualTo(USER_NAME);
 			assertThat(newUser.getUserType()).isEqualTo(USER_TYPE);
 		}
 

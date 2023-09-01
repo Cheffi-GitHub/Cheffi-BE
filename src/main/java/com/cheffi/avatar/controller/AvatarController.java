@@ -16,9 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
 import com.cheffi.avatar.dto.request.ChangeNicknameRequest;
 import com.cheffi.avatar.dto.request.ChangeProfilePhotoRequest;
-import com.cheffi.avatar.dto.request.TagsChangeRequest;
 import com.cheffi.avatar.dto.response.AvatarInfoResponse;
-import com.cheffi.avatar.dto.response.TagsChangeResponse;
 import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.oauth.model.UserPrincipal;
@@ -77,16 +75,6 @@ public class AvatarController {
 		@Valid @RequestPart("request") ChangeProfilePhotoRequest request) {
 		return ApiResponse.success(avatarService.changePhoto(principal.getAvatarId(), file,
 			request.defaultPhoto()));
-	}
-
-	@Tag(name = "Avatar")
-	@Operation(summary = "아바타 취향 변경 MOCK API",
-		description = "자신의 취향 변경 - 인증 필요",
-		security = {@SecurityRequirement(name = "session-token")})
-	@PreAuthorize("hasRole('USER')")
-	@PatchMapping("/tags")
-	public ApiResponse<TagsChangeResponse> changeTags(@RequestBody TagsChangeRequest tagsChangeRequest) {
-		return ApiResponse.success(avatarService.changeTags(1L, tagsChangeRequest));
 	}
 
 	@Tag(name = "Avatar")

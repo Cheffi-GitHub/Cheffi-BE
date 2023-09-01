@@ -23,4 +23,10 @@ public interface AvatarRepository extends JpaRepository<Avatar, Long> {
 
 	boolean existsByNickname(String nickname);
 
+	@Query("select a from Avatar a"
+		+ " left join fetch a.avatarTags at"
+		+ " left join fetch at.tag t"
+		+ " where a.id = :id")
+	Optional<Avatar> findByIdWithTags(@Param("id") Long avatarId);
+
 }

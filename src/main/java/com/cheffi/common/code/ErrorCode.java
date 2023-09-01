@@ -40,6 +40,9 @@ public enum ErrorCode {
 	// 파일
 	NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "F-001", "전송된 파일의 형식이 이미지가 아닙니다."),
 
+	// 태그
+	BAD_AVATAR_TAG_REQUEST(HttpStatus.BAD_REQUEST,"T-001" , "아바타 관련 태그 요청이 잘못 됐습니다."),
+
 	//기타
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "I-001", "내부 에러가 발생했습니다."),
 	AVATAR_ALREADY_EXIST(HttpStatus.INTERNAL_SERVER_ERROR, "I-002", "아바타가 이미 존재합니다.");

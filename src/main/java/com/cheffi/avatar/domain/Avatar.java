@@ -1,5 +1,8 @@
 package com.cheffi.avatar.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -7,8 +10,10 @@ import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.constant.Address;
 import com.cheffi.common.domain.BaseTimeEntity;
+import com.cheffi.tag.domain.Tag;
 import com.cheffi.user.domain.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +21,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -50,6 +56,9 @@ public class Avatar extends BaseTimeEntity {
 	@JoinColumn(name = "photo_id")
 	private ProfilePhoto photo;
 
+	@OneToMany(mappedBy = "avatar", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<AvatarTag> avatarTags = new ArrayList<>();
+
 	public Avatar(String nickname, User user) {
 		this.nickname = nickname;
 		this.user = user;
@@ -78,5 +87,17 @@ public class Avatar extends BaseTimeEntity {
 
 	public boolean hasPhoto() {
 		return this.getPhoto() != null;
+	}
+
+	public void addTags(List<Tag> tagsToAdd) {
+		List<Tag> tagList = avatarTags.stream().map(AvatarTag::getTag).toList();
+		tagsToAdd.stream()
+			.filter(t -> !tagList.contains(t))
+			.map(t -> AvatarTag.mapTagToAvatar(this, t))
+			.forEach(avatarTags::add);
+	}
+
+	public void removeTags(List<Tag> tagsToRemove) {
+		avatarTags.removeIf(at -> tagsToRemove.contains(at.getTag()));
 	}
 }

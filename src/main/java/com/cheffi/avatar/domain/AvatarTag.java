@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class UserTag extends BaseTimeEntity {
+public class AvatarTag extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +34,13 @@ public class UserTag extends BaseTimeEntity {
 	@JoinColumn(name = "tag_id")
 	private Tag tag;
 
-	public UserTag(Avatar avatar, Tag tag) {
+	private AvatarTag(Avatar avatar, Tag tag) {
 		this.avatar = avatar;
 		this.tag = tag;
 	}
+
+	public static AvatarTag mapTagToAvatar(Avatar avatar, Tag tag) {
+		return new AvatarTag(avatar, tag);
+	}
+
 }
