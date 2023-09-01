@@ -7,9 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.ProfilePhoto;
 import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
-import com.cheffi.avatar.dto.request.TagsChangeRequest;
 import com.cheffi.avatar.dto.response.AvatarInfoResponse;
-import com.cheffi.avatar.dto.response.TagsChangeResponse;
 import com.cheffi.avatar.repository.AvatarRepository;
 import com.cheffi.common.aspect.annotation.UpdatePrincipal;
 import com.cheffi.common.code.ErrorCode;
@@ -66,10 +64,6 @@ public class AvatarService {
 
 	public AvatarInfoResponse getAvatarInfo(Long avatarId) {
 		return AvatarInfoResponse.mock();
-	}
-
-	public TagsChangeResponse changeTags(Long avatarId, TagsChangeRequest tagsChangeRequest) {
-		return new TagsChangeResponse(tagsChangeRequest.addTags(), tagsChangeRequest.removeTags());
 	}
 
 	@Transactional

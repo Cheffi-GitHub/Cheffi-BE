@@ -34,8 +34,13 @@ public class AvatarTag extends BaseTimeEntity {
 	@JoinColumn(name = "tag_id")
 	private Tag tag;
 
-	public AvatarTag(Avatar avatar, Tag tag) {
+	private AvatarTag(Avatar avatar, Tag tag) {
 		this.avatar = avatar;
 		this.tag = tag;
 	}
+
+	public static AvatarTag mapTagToAvatar(Avatar avatar, Tag tag) {
+		return new AvatarTag(avatar, tag);
+	}
+
 }

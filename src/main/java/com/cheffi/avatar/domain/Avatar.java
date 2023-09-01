@@ -10,8 +10,10 @@ import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.constant.Address;
 import com.cheffi.common.domain.BaseTimeEntity;
+import com.cheffi.tag.domain.Tag;
 import com.cheffi.user.domain.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -54,7 +56,7 @@ public class Avatar extends BaseTimeEntity {
 	@JoinColumn(name = "photo_id")
 	private ProfilePhoto photo;
 
-	@OneToMany(mappedBy = "avatar")
+	@OneToMany(mappedBy = "avatar", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<AvatarTag> avatarTags = new ArrayList<>();
 
 	public Avatar(String nickname, User user) {
@@ -85,5 +87,17 @@ public class Avatar extends BaseTimeEntity {
 
 	public boolean hasPhoto() {
 		return this.getPhoto() != null;
+	}
+
+	public void addTags(List<Tag> tagsToAdd) {
+		List<Tag> tagList = avatarTags.stream().map(AvatarTag::getTag).toList();
+		tagsToAdd.stream()
+			.filter(t -> !tagList.contains(t))
+			.map(t -> AvatarTag.mapTagToAvatar(this, t))
+			.forEach(avatarTags::add);
+	}
+
+	public void removeTags(List<Tag> tagsToRemove) {
+		avatarTags.removeIf(at -> tagsToRemove.contains(at.getTag()));
 	}
 }

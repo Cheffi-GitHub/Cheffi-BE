@@ -43,6 +43,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		tagRepository.save(new Tag(TagType.TASTE, "시원한"));
 		tagRepository.save(new Tag(TagType.TASTE, "얼큰한"));
 		tagRepository.save(new Tag(TagType.TASTE, "달달한"));
+		tagRepository.save(new Tag(TagType.TASTE, "깔끔한"));
+		tagRepository.save(new Tag(TagType.TASTE, "깊은맛"));
+		tagRepository.save(new Tag(TagType.TASTE, "새콤한"));
+		tagRepository.save(new Tag(TagType.TASTE, "조용한"));
+		tagRepository.save(new Tag(TagType.TASTE, "데이트"));
 
 		alreadySetup = true;
 	}
