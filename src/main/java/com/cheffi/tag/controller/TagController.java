@@ -15,8 +15,8 @@ import com.cheffi.tag.service.TagService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -31,7 +31,7 @@ public class TagController {
 	@GetMapping
 	public ApiResponse<List<TagDto>> getTagsByType(
 		@Parameter(description = "조회할 태그의 종류", example = "TASTE")
-		@RequestParam @Valid @Nullable TagType type) {
+		@RequestParam("type") @Valid @NotNull TagType type) {
 		return ApiResponse.success(tagService.getTagsByType(type));
 	}
 
