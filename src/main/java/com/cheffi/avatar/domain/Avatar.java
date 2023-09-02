@@ -100,4 +100,8 @@ public class Avatar extends BaseTimeEntity {
 	public void removeTags(List<Tag> tagsToRemove) {
 		avatarTags.removeIf(at -> tagsToRemove.contains(at.getTag()));
 	}
+
+	public boolean hasTags() {
+		return !avatarTags.isEmpty();
+	}
 }

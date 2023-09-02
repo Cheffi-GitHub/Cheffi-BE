@@ -47,25 +47,6 @@ public class AvatarService {
 		return SelfAvatarInfo.of(avatar, avatar.getPhoto());
 	}
 
-	public Avatar getById(Long avatarId) {
-		return avatarRepository.findById(avatarId)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
-	}
-
-	public Avatar getByUserWithPhoto(User user) {
-		return avatarRepository.findByUserWithPhoto(user)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
-	}
-
-	public Avatar getByIdWithPhoto(Long avatarId) {
-		return avatarRepository.findByIdWithPhoto(avatarId)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
-	}
-
-	public AvatarInfoResponse getAvatarInfo(Long avatarId) {
-		return AvatarInfoResponse.mock();
-	}
-
 	@Transactional
 	public String changePhoto(Long avatarId, MultipartFile file, boolean defaultPhoto) {
 		Avatar avatar = getByIdWithPhoto(avatarId);
@@ -87,6 +68,37 @@ public class AvatarService {
 		}
 
 		return addedPhoto.getUrl();
+	}
+
+	public boolean checkIfCompleteProfile(Long avatarId) {
+		Avatar avatar = getByIdWithTagsAndPhoto(avatarId);
+		return avatar.hasTags() &&
+			avatar.hasPhoto() &&
+			!avatar.getNickname().contains("쉐피");
+	}
+
+	public AvatarInfoResponse getAvatarInfo(Long avatarId) {
+		return AvatarInfoResponse.mock();
+	}
+
+	public Avatar getById(Long avatarId) {
+		return avatarRepository.findById(avatarId)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
+	}
+
+	public Avatar getByUserWithPhoto(User user) {
+		return avatarRepository.findByUserWithPhoto(user)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
+	}
+
+	public Avatar getByIdWithPhoto(Long avatarId) {
+		return avatarRepository.findByIdWithPhoto(avatarId)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
+	}
+
+	public Avatar getByIdWithTagsAndPhoto(Long avatarId) {
+		return avatarRepository.findByIdWithTagsAndPhoto(avatarId)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
 	}
 
 }

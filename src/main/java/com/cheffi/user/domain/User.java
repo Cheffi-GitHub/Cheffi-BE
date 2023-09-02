@@ -88,6 +88,10 @@ public class User extends BaseTimeEntity {
 			.forEach(userRoles::add);
 	}
 
+	public void removeRole(Role role) {
+		userRoles.removeIf(ur -> ur.getRole().equals(role));
+	}
+
 	/**
 	 * 회원 가입 공통 메서드
 	 */
