@@ -49,11 +49,13 @@ public record OidcLoginResponse(
 	@Schema(description = "프로필 등록 완료 여부")
 	boolean profileCompleted,
 	@Schema(description = "유저의 권한")
-	List<GrantedAuthority> authorities
+	List<GrantedAuthority> authorities,
 
+	@Schema(description = "신규 유저 여부")
+	boolean isNewUser
 ) {
 
-	public static OidcLoginResponse of(AuthenticationToken token, ProfilePhoto photo) {
+	public static OidcLoginResponse of(AuthenticationToken token, ProfilePhoto photo, boolean isNewUser) {
 		UserPrincipal principal = (UserPrincipal)token.getPrincipal();
 		return OidcLoginResponse.builder()
 			.email(principal.getEmail())
@@ -70,6 +72,7 @@ public record OidcLoginResponse(
 			.photoUrl(photo != null ? photo.getUrl() : null)
 			.profileCompleted(isProfileCompleted(principal.getAuthorities()))
 			.authorities((new ArrayList<>(principal.getAuthorities())))
+			.isNewUser(isNewUser)
 			.build();
 	}
 

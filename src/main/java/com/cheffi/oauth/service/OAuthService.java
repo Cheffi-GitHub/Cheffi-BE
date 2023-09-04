@@ -2,6 +2,7 @@ package com.cheffi.oauth.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,8 +48,10 @@ public class OAuthService {
 		// 사용자 정보 가져오기
 		OAuthAttributes oAuthAttributes = apiService.getUserInfo(attributes);
 
-		User user = userService.getByEmailWithRoles(oAuthAttributes.email())
-			.orElseGet(() -> signUp(oAuthAttributes));
+		Optional<User> optionalUser = userService.getByEmailWithRoles(oAuthAttributes.email());
+		boolean isNewUser = optionalUser.isEmpty();
+		User user = optionalUser.orElseGet(() -> signUp(oAuthAttributes));
+
 		Avatar avatar = avatarService.getByUserWithPhoto(user);
 
 		Set<GrantedAuthority> authorities = getAuthoritiesFromUser(user);
@@ -56,7 +59,7 @@ public class OAuthService {
 			AuthenticationToken.of(user, avatar, loginRequest.token(), authorities);
 
 		securityContextService.saveToSecurityContext(authenticationToken);
-		return OidcLoginResponse.of(authenticationToken, avatar.getPhoto());
+		return OidcLoginResponse.of(authenticationToken, avatar.getPhoto(), isNewUser);
 	}
 
 	private User signUp(OAuthAttributes oAuthAttributes) {
