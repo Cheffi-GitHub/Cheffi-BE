@@ -78,6 +78,13 @@ public class AvatarController {
 	}
 
 	@Tag(name = "Avatar")
+	@Operation(summary = "닉네임 중복 확인 API")
+	@GetMapping(value = "/nickname/inuse")
+	public ApiResponse<Boolean> checkNicknameIsInUse(String nickname) {
+		return ApiResponse.success(avatarService.isNicknameInUse(nickname));
+	}
+
+	@Tag(name = "Avatar")
 	@Operation(summary = "타인의 아바타 조회 MOCK API")
 	@GetMapping("/{id}")
 	public ApiResponse<AvatarInfoResponse> getAvatarInfo(@PathVariable(name = "id") Long avatarId) {
