@@ -39,6 +39,7 @@ public class UserController {
 		return ApiResponse.success(userService.getUserInfo(principal.getUserId()));
 	}
 
+	@Tag(name = "SignUp")
 	@Tag(name = "User")
 	@Operation(summary = "유저 약관 동의 변경 API",
 		description = "약관 동의 여부 변경 - 인증 필요",
@@ -51,6 +52,7 @@ public class UserController {
 			request.adAgreed(), request.analysisAgreed()));
 	}
 
+	@Tag(name = "SignUp")
 	@Tag(name = "User")
 	@Operation(summary = "유저 프로필 완료 등록 API",
 		description = "프로필 완료 등록 - 인증 필요 "
