@@ -46,11 +46,11 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: dev-deploy-job
-          text: 'test failed'
+          author_name: 'Test Fail Notification'
+          text: '테스트에 실패했습니다.'
           fields: repo,commit,author,ref,workflow,job,took,pullRequest
           mention: 'U05BT7J8YV8,U05BT2V4C58'
           if_mention: failure
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: failure() # Pick up events even if the job fails or is canceled.
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BACKEND_WEBHOOK_URL }} # required
+        if: failure()
