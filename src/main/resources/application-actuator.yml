@@ -1,0 +1,19 @@
+
+management:
+
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    logfile:
+      enabled: true
+
+  endpoints:
+    web:
+      exposure:
+        include:
+          - prometheus
+          - info
+          - logfile
+
