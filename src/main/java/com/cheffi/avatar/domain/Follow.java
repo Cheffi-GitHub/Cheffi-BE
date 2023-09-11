@@ -39,5 +39,9 @@ public class Follow extends BaseTimeEntity {
     }
 
     //TODO 팔로우 메서드 추가
+    // public static Follow create
+    static public Follow createFollowRelationship(Avatar subject, Avatar target) {
+        return new Follow(subject, target);
+    }
 
 }
