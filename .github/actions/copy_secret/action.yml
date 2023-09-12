@@ -15,9 +15,6 @@ inputs:
   prod-db-secret:
     description: 'production db secret file'
 
-env:
-  SECRET_DIR: src/main/resources
-
 runs:
   using: "composite"
   steps:
@@ -27,14 +24,19 @@ runs:
       OAUTH_SECRET_DIR_FILE_NAME: application-oauth.yml
       S3_SECRET: ${{ inputs.s3-secret }}
       S3_SECRET_DIR_FILE_NAME: application-s3.yml
-    run: echo $OAUTH_SECRET | base64 --decode > $SECRET_DIR/$OAUTH_SECRET_DIR_FILE_NAME
-      echo $S3_SECRET | base64 --decode > $S3_SECRET_DIR/$S3_SECRET_DIR_FILE_NAME
+      SECRET_DIR: src/main/resources
+    shell: bash
+    run: | 
+      echo $OAUTH_SECRET | base64 --decode > $SECRET_DIR/$OAUTH_SECRET_DIR_FILE_NAME
+      echo $S3_SECRET | base64 --decode > $SECRET_DIR/$S3_SECRET_DIR_FILE_NAME
 
   - name: Copy Dev DB Secrets
     if: inputs.profile == 'dev'
     env:
       DEV_DB_SECRET: ${{ inputs.dev-db-secret }}
       DEV_DB_DIR_FILE_NAME: application-dev-db.yml
+      SECRET_DIR: src/main/resources
+    shell: bash
     run: echo $DEV_DB_SECRET | base64 --decode > $SECRET_DIR/$DEV_DB_DIR_FILE_NAME
 
   - name: Copy Prod DB Secrets
@@ -43,5 +45,7 @@ runs:
       PROD_DB_SECRET: ${{ inputs.prod-db-secret }}
       PROD_DB_SECRET_DIR: src/main/resources
       PROD_DB_DIR_FILE_NAME: application-prod-db.yml
+      SECRET_DIR: src/main/resources
+    shell: bash
     run: echo $PROD_DB_SECRET | base64 --decode > $SECRET_DIR/$PROD_DB_DIR_FILE_NAME
 
