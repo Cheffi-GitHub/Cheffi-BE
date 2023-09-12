@@ -1,9 +1,10 @@
-name: Deploy to EC2
+name: Deploy to Development Server
 
 on:
   push:
     branches:
       - develop
+      - feature/config/db
   workflow_dispatch:
 
 jobs:
@@ -20,19 +21,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Copy Oauth key
-        env:
-          OAUTH_SECRET: ${{ secrets.OAUTH_SECRET }}
-          OAUTH_SECRET_DIR: src/main/resources
-          OAUTH_SECRET_DIR_FILE_NAME: application-oauth.yml
-        run: echo $OAUTH_SECRET | base64 --decode > $OAUTH_SECRET_DIR/$OAUTH_SECRET_DIR_FILE_NAME
-
-      - name: Copy S3 key
-        env:
-          S3_SECRET: ${{ secrets.S3_SECRET }}
-          S3_SECRET_DIR: src/main/resources
-          S3_SECRET_DIR_FILE_NAME: application-s3.yml
-        run: echo $S3_SECRET | base64 --decode > $S3_SECRET_DIR/$S3_SECRET_DIR_FILE_NAME
+      - name: Copy Secrets
+        uses: ./.github/actions/copy_secret
+        with:
+          profile: dev
+          oauth-secret: ${{ secrets.OAUTH_SECRET }}
+          s3-secret: ${{ secrets.S3_SECRET }}
+          dev-db-secret: ${{ secrets.DEV_DB_SECRET }}
 
       - name: Build with Gradlew
         env:
