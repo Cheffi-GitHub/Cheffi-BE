@@ -38,10 +38,17 @@ public class Follow extends BaseTimeEntity {
         this.target = target;
     }
 
-    //TODO 팔로우 메서드 추가
-    // public static Follow create
-    static public Follow createFollowRelationship(Avatar subject, Avatar target) {
+    public static Follow createFollowRelationship(Avatar subject, Avatar target) {
+
+        isSelfFollowAttempt(subject, target);
         return new Follow(subject, target);
+    }
+
+    private static void isSelfFollowAttempt(Avatar subject, Avatar target) {
+
+        if (subject.getId() == target.getId()) {
+            throw new IllegalArgumentException("자신을 팔로우하는 작업은 허용되지 않습니다.");
+        }
     }
 
 }

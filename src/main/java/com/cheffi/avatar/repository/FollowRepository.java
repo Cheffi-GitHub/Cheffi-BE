@@ -10,4 +10,7 @@ import com.cheffi.avatar.domain.Follow;
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
 	Optional<Follow> findBySubjectAndTarget(Avatar subject, Avatar target);
+
+	boolean existsBySubjectAndTarget(Avatar subject, Avatar target);
+
 }

@@ -42,6 +42,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    //mockito
+    testImplementation 'org.mockito:mockito-inline:3.11.2'
+
     //swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
@@ -72,6 +75,7 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus:1.11.2'
     //loki
     implementation 'com.github.loki4j:loki-logback-appender:1.4.0'
+
 }
 
 tasks.named('test') {

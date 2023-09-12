@@ -28,27 +28,18 @@ public class FollowService {
 
 	public AddFollowResponse addFollow(Long followerId, Long followeeId) {
 
-		Avatar follower = avatarRepository
-			.findById(followerId)
+		Avatar follower = avatarRepository.findById(followerId)
 			.orElseThrow( () -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
-		Avatar followee = avatarRepository
-			.findById(followeeId)
+		Avatar followee = avatarRepository.findById(followeeId)
 			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
 
-		boolean isAlreadyFollowed = followRepository
-			.findBySubjectAndTarget(followee, follower)
-			.isPresent();
-		if (isAlreadyFollowed) {
+		if (followRepository.existsBySubjectAndTarget(followee, follower)) {
 			throw new BusinessException(ErrorCode.ALREADY_FOLLOWED);
 		}
 
-		Follow toCreateFollow = Follow.createFollowRelationship(follower, followee);
-		Follow createdFollow = followRepository.save(toCreateFollow);
+		Follow createdFollow = followRepository.save(Follow.createFollowRelationship(follower, followee));
 
-		return new AddFollowResponse(
-			createdFollow.getSubject().getId(),
-			createdFollow.getTarget().getId()
-		);
+		return AddFollowResponse.from(createdFollow);
 	}
 
 	public UnfollowResponse unfollow(Long followerId, Long followeeId) {
