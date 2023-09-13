@@ -1,24 +1,16 @@
 spring:
   profiles:
     group:
-      "dev": "dev, oauth, s3, actuator"
+      "dev": "dev, oauth, s3, actuator, dev-db"
       "local": "local, oauth, s3, actuator"
       "default": "local, oauth, s3, actuator"
-  h2:
-    console:
-      enabled: true
 
   jpa:
     hibernate:
       # ddl-auto strategy
-      ddl-auto: create
+      ddl-auto: update
 
     properties:
-      hibernate:
-        # show formatted sql
-        format_sql: true
-        show_sql: true
-
         # set default batch size
         default_batch_fetch_size: 100
     # turn OSIV off
