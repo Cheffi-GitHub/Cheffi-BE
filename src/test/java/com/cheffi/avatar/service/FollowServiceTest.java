@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.Follow;
 import com.cheffi.avatar.dto.response.AddFollowResponse;
+import com.cheffi.avatar.dto.response.UnfollowResponse;
 import com.cheffi.avatar.repository.AvatarRepository;
 import com.cheffi.avatar.repository.FollowRepository;
 import com.cheffi.common.config.exception.business.EntityNotFoundException;
@@ -38,35 +39,37 @@ class FollowServiceTest {
 	private Avatar follower;
 	@Mock
 	private Avatar followee;
+	@Mock
+	private Follow follow;
 
 	private static long FOLLOWER_ID = 1L;
 	private static long FOLLOWEE_ID = 2L;
 
 	@Nested
 	@DisplayName("addFollow 메서드")
-	class addFollow{
+	class AddFollow{
 
 		@Test
-		@DisplayName("follow 등록 성공")
+		@DisplayName("성공 - 팔로우 등록")
 		void successAddFollow() {
 
 			MockedStatic<Follow> staticFollow = Mockito.mockStatic(Follow.class);
 			MockedStatic<AddFollowResponse> staticAddFollowResponse = Mockito.mockStatic(AddFollowResponse.class);
-			AddFollowResponse mockAddFollowResponse = new AddFollowResponse(FOLLOWER_ID, FOLLOWEE_ID);
+			AddFollowResponse addFollowResponse = new AddFollowResponse(FOLLOWER_ID, FOLLOWEE_ID);
 
 			try {
 				when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
 				when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.of(followee));
 				when(followRepository
-					.existsBySubjectAndTarget(any(Avatar.class), any(Avatar.class)))
+					.existsBySubjectAndTarget(followee, follower))
 					.thenReturn(false);
 				staticFollow
 					.when(() -> Follow.createFollowRelationship(follower, followee))
-					.thenReturn(mock(Follow.class));
+					.thenReturn(follow);
 				staticAddFollowResponse
-					.when(() -> AddFollowResponse.from(any(Follow.class)))
-					.thenReturn(mockAddFollowResponse);
-				when(followRepository.save(any(Follow.class))).thenReturn(mock(Follow.class));
+					.when(() -> AddFollowResponse.from(follow))
+					.thenReturn(addFollowResponse);
+				when(followRepository.save(follow)).thenReturn(follow);
 
 				AddFollowResponse response = followService.addFollow(FOLLOWER_ID, FOLLOWEE_ID);
 
@@ -80,7 +83,7 @@ class FollowServiceTest {
 		}
 
 		@Test
-		@DisplayName("등록실패 - 존재하지 않는 아바타")
+		@DisplayName("실패 - 존재하지 않는 아바타에 대한 팔로우 시도")
 		void failAddFollow_AVATAR_NOT_EXISTS() {
 
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
@@ -92,7 +95,7 @@ class FollowServiceTest {
 		}
 
 		@Test
-		@DisplayName("등록실패 - 이미 팔로우 중인 아바타")
+		@DisplayName("실패 - 이미 팔로우 중인 아바타에 대한 팔로우 시도")
 		void failAddFollow_ALREADY_FOLLOWED() {
 
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
@@ -104,5 +107,66 @@ class FollowServiceTest {
 				followService.addFollow(FOLLOWER_ID, FOLLOWEE_ID);
 			});
 		}
+
 	}
+
+	@Nested
+	@DisplayName("unFollow 메서드")
+	class Unfollow{
+
+		@Test
+		@DisplayName("성공 - 팔로우 취소")
+		void successUnFollow() {
+
+			MockedStatic<UnfollowResponse> staticUnFollowResponse = Mockito.mockStatic(UnfollowResponse.class);
+			UnfollowResponse unfollowResponse = new UnfollowResponse(FOLLOWER_ID, FOLLOWEE_ID);
+
+			try {
+				when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
+				when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.of(followee));
+				when(followRepository
+					.findBySubjectAndTarget(follower, followee))
+					.thenReturn(Optional.of(follow));
+				doNothing().when(followRepository).delete(follow);
+				staticUnFollowResponse
+					.when(() -> UnfollowResponse.from(follow))
+					.thenReturn(unfollowResponse);
+
+				UnfollowResponse response = followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID);
+
+				assertEquals(FOLLOWER_ID, response.followerId());
+				assertEquals(FOLLOWEE_ID, response.followeeId());
+			} finally {
+				staticUnFollowResponse.close();
+			}
+		}
+
+		@Test
+		@DisplayName("실패 - 존재하지 않는 아바타에대한 팔로우 시도")
+		void failAddFollow_AVATAR_NOT_EXISTS() {
+
+			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
+			when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.empty());
+
+			assertThrows(EntityNotFoundException.class, () -> {
+				followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID);
+			});
+		}
+
+		@Test
+		@DisplayName("실패 - 팔로우 상태가 아닌 아바타에 대한 언팔로우 시도")
+		void failAddFollow_ALREADY_FOLLOWED() {
+
+			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
+			when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.of(followee));
+			when(followRepository.findBySubjectAndTarget(follower, followee))
+				.thenReturn(Optional.empty());
+
+			assertThrows(RuntimeException.class, () -> {
+				followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID);
+			});
+		}
+
+	}
+
 }

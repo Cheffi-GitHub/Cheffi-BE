@@ -49,8 +49,11 @@ public class FollowController {
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
 	@DeleteMapping
-	public ApiResponse<UnfollowResponse> unfollow(Long avatarId) {
-		return ApiResponse.success(followService.unfollow(1L, avatarId));
+	public ApiResponse<UnfollowResponse> unfollow(
+		@AuthenticationPrincipal UserPrincipal principal,
+		Long avatarId) {
+
+		return ApiResponse.success(followService.unfollow(principal.getAvatarId(), avatarId));
 	}
 
 	@Tag(name = "Follow")

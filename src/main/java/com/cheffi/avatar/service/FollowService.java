@@ -3,6 +3,7 @@ package com.cheffi.avatar.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.Follow;
@@ -18,6 +19,7 @@ import com.cheffi.common.config.exception.business.EntityNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class FollowService {
@@ -26,12 +28,11 @@ public class FollowService {
 	private final FollowRepository followRepository;
 
 
+	@Transactional
 	public AddFollowResponse addFollow(Long followerId, Long followeeId) {
 
-		Avatar follower = avatarRepository.findById(followerId)
-			.orElseThrow( () -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
-		Avatar followee = avatarRepository.findById(followeeId)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
+		Avatar follower = fetchFollow(followerId);
+		Avatar followee = fetchFollow(followeeId);
 
 		if (followRepository.existsBySubjectAndTarget(followee, follower)) {
 			throw new BusinessException(ErrorCode.ALREADY_FOLLOWED);
@@ -42,8 +43,18 @@ public class FollowService {
 		return AddFollowResponse.from(createdFollow);
 	}
 
+	@Transactional
 	public UnfollowResponse unfollow(Long followerId, Long followeeId) {
-		return new UnfollowResponse(followerId, followeeId);
+
+		Avatar follower = fetchFollow(followerId);
+		Avatar followee = fetchFollow(followeeId);
+
+		Follow followToDelete = followRepository.findBySubjectAndTarget(follower, followee)
+			.orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOLLOWED));
+
+		followRepository.delete(followToDelete);
+
+		return UnfollowResponse.from(followToDelete);
 	}
 
 	public List<GetFollowResponse> getFollowee(Long userId) {
@@ -52,5 +63,11 @@ public class FollowService {
 
 	public List<RecommendFollowResponse> recommendFollowee(Long userId) {
 		return RecommendFollowResponse.mock();
+	}
+
+
+	private Avatar fetchFollow(Long followerId) {
+		return avatarRepository.findById(followerId)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
 	}
 }
