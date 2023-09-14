@@ -66,7 +66,7 @@ public class FollowService {
 	}
 
 
-	private Avatar fetchFollow(Long followerId) {
+	public Avatar fetchFollow(Long followerId) {
 		return avatarRepository.findById(followerId)
 			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
 	}
