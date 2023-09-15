@@ -75,8 +75,8 @@ jobs:
 
       - name: Setting environment variables..
         run: |
-          echo "AWS_DEFAULT_REGION=ap-northeast-1" &gt;&gt; $GITHUB_ENV
-          echo "AWS_SG_NAME=dev-ec2-security-group" &gt;&gt; $GITHUB_ENV
+          echo "AWS_DEFAULT_REGION=ap-northeast-2" >> $GITHUB_ENV
+          echo "AWS_SG_NAME=dev-ec2-security-group" >> $GITHUB_ENV
 
       - name: Add Github Actions IP to Security group
         run: |
