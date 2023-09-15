@@ -9,8 +9,10 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+@Getter
 public class ApiPageResponse<T> {
 
 	@Schema(description = "데이터")
