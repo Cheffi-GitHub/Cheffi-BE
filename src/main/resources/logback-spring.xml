@@ -12,7 +12,7 @@
         </root>
     </springProfile>
 
-    <springProfile name="dev">
+    <springProfile name="!dev">
 
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${CHEFFI_DIRECTORY}/cheffilog/project02.log</file>
