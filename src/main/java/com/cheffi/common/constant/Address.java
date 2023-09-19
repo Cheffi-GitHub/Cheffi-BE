@@ -1,5 +1,10 @@
 package com.cheffi.common.constant;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Embeddable;
@@ -9,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Access(AccessType.FIELD)
@@ -17,15 +23,14 @@ import lombok.NoArgsConstructor;
 public class Address {
 
 	// 시, 도
+	@Schema(description = "식당의 시/도 주소(1차)", example = "서울시")
 	@NotNull
 	private String province;
 
 	// 구, 시, 군
+	@Schema(description = "식당의 시/군/구 주소(2차)", example = "마포구")
 	@NotNull
 	private String city;
-
-	// 동, 읍, 면, 리
-
 
 	protected Address(String province, String city) {
 		this.province = province;
@@ -36,6 +41,7 @@ public class Address {
 		return new Address(province, city);
 	}
 
+	@JsonIgnore
 	public boolean isSimpleAddress() {
 		return this.getClass() == Address.class;
 	}
