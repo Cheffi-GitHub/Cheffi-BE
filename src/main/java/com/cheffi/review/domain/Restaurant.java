@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,19 +18,23 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Restaurant extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @NotNull
-    private String name;
+	@NotNull
+	private String name;
 
-    @Embedded
-    private DetailedAddress detailedAddress;
+	@NotNull
+	private String nameForQuery;
 
-    @Builder
-    public Restaurant(String name, DetailedAddress detailedAddress) {
-        this.name = name;
-        this.detailedAddress = detailedAddress;
-    }
+	@Embedded
+	private DetailedAddress detailedAddress;
+
+	public Restaurant(String name, DetailedAddress detailedAddress) {
+		String trimmedName = name.trim().replaceAll("\\s+", " ");
+		this.name = trimmedName;
+		this.nameForQuery = trimmedName.replace(" ", "");
+		this.detailedAddress = detailedAddress;
+	}
 }

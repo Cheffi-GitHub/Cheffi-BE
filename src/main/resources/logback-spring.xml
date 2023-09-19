@@ -4,8 +4,16 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
+    <springProfile name="local, default">
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE" />
+        </root>
+    </springProfile>
 
-    <springProfile name="dev">
+    <springProfile name="!dev">
 
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${CHEFFI_DIRECTORY}/cheffilog/project02.log</file>
