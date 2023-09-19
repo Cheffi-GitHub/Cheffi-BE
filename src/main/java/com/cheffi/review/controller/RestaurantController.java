@@ -2,6 +2,7 @@ package com.cheffi.review.controller;
 
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,10 +15,10 @@ import com.cheffi.review.service.RestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
+@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/restaurants")
@@ -31,7 +32,7 @@ public class RestaurantController {
 	@PageableAsQueryParam
 	@GetMapping
 	public ApiPageResponse<RestaurantInfoDto> searchRestaurantsByName(
-		@RequestParam @Valid @NotBlank String name,
+		@RequestParam @NotBlank String name,
 		@Parameter(hidden = true) Pageable pageable) {
 		return ApiPageResponse.success(restaurantService.searchRestaurantByName(name, pageable));
 	}
