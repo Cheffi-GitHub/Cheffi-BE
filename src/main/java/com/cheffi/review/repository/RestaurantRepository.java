@@ -9,9 +9,8 @@ import org.springframework.data.repository.query.Param;
 import com.cheffi.review.domain.Restaurant;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
-	@Query("select r"
-		+ " from Restaurant r"
-		+ " where r.nameForQuery LIKE %:name% ")
-	Page<Restaurant> findByNameLike(@Param("name") String name, Pageable pageable);
+
+	@Query("select r from Restaurant r where r.name like concat('%', :name, '%')")
+	Page<Restaurant> findByNameContaining(@Param("name") String name, Pageable pageable);
 
 }

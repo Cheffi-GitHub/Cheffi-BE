@@ -47,7 +47,7 @@ class RestaurantServiceTest {
 		@DisplayName("공백이 있는 검색어가 주어져도 공백을 제거하고 쿼리한다.")
 		void givenNameWithSpacesWhenSearchByNameThenReturnResultWithoutSpaces() {
 			//given
-			when(restaurantRepository.findByNameLike(KEYWORD_WITHOUT_SPACES, pageable))
+			when(restaurantRepository.findByNameContaining(KEYWORD_WITHOUT_SPACES, pageable))
 				.thenReturn(resultWithNoSpaces);
 
 			when(resultWithNoSpaces.map(Mockito.<Function>any())).thenReturn(dtoWithNoSpaces);

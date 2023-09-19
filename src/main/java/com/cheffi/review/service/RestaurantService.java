@@ -20,6 +20,6 @@ public class RestaurantService {
 	public Page<RestaurantInfoDto> searchRestaurantByName(String name, Pageable pageable) {
 		String keyword = name.trim().replace(" ", "");
 
-		return restaurantRepository.findByNameLike(keyword, pageable).map(RestaurantInfoDto::of);
+		return restaurantRepository.findByNameContaining(keyword, pageable).map(RestaurantInfoDto::of);
 	}
 }
