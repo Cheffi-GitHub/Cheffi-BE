@@ -59,13 +59,13 @@ class FollowServiceTest {
 	class AddFollow{
 
 		@Test
-		@DisplayName("성공 - 팔로우 등록")
+		@DisplayName("success - 팔로우 등록")
 		void successAddFollow() {
 
 			AddFollowResponse addFollowResponse = new AddFollowResponse(FOLLOWER_ID, FOLLOWEE_ID);
 
-			try (MockedStatic<Follow> staticFollow = Mockito.mockStatic(
-				Follow.class); MockedStatic<AddFollowResponse> staticAddFollowResponse = Mockito.mockStatic(
+			try (MockedStatic<Follow> staticFollow = Mockito.mockStatic(Follow.class);
+				 MockedStatic<AddFollowResponse> staticAddFollowResponse = Mockito.mockStatic(
 				AddFollowResponse.class)) {
 				when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
 				when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.of(followee));
@@ -89,7 +89,7 @@ class FollowServiceTest {
 		}
 
 		@Test
-		@DisplayName("실패 - 존재하지 않는 아바타에 대한 팔로우 시도")
+		@DisplayName("fail - 존재하지 않는 아바타에 대한 팔로우 시도")
 		void failAddFollow_AVATAR_NOT_EXISTS() {
 
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
@@ -101,7 +101,7 @@ class FollowServiceTest {
 		}
 
 		@Test
-		@DisplayName("실패 - 이미 팔로우 중인 아바타에 대한 팔로우 시도")
+		@DisplayName("fail - 이미 팔로우 중인 아바타에 대한 팔로우 시도")
 		void failAddFollow_ALREADY_FOLLOWED() {
 
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
@@ -121,7 +121,7 @@ class FollowServiceTest {
 	class Unfollow{
 
 		@Test
-		@DisplayName("성공 - 팔로우 취소")
+		@DisplayName("success - 팔로우 취소")
 		void successUnFollow() {
 
 				when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
@@ -138,7 +138,7 @@ class FollowServiceTest {
 		}
 
 		@Test
-		@DisplayName("실패 - 존재하지 않는 아바타에대한 팔로우 시도")
+		@DisplayName("fail - 존재하지 않는 아바타에대한 팔로우 시도")
 		void failAddFollow_AVATAR_NOT_EXISTS() {
 
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
@@ -150,7 +150,7 @@ class FollowServiceTest {
 		}
 
 		@Test
-		@DisplayName("실패 - 팔로우 상태가 아닌 아바타에 대한 언팔로우 시도")
+		@DisplayName("fail - 팔로우 상태가 아닌 아바타에 대한 언팔로우 시도")
 		void failAddFollow_ALREADY_FOLLOWED() {
 
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
