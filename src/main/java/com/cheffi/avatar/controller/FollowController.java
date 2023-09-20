@@ -3,6 +3,7 @@ package com.cheffi.avatar.controller;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import com.cheffi.avatar.dto.response.RecommendFollowResponse;
 import com.cheffi.avatar.dto.response.UnfollowResponse;
 import com.cheffi.avatar.service.FollowService;
 import com.cheffi.common.response.ApiResponse;
+import com.cheffi.oauth.model.UserPrincipal;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -22,7 +24,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-
 @RequiredArgsConstructor
 @RequestMapping("${api.prefix}/avatars/follow")
 public class FollowController {
@@ -35,8 +36,11 @@ public class FollowController {
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
 	@PostMapping
-	public ApiResponse<AddFollowResponse> addFollow(Long avatarId) {
-		return ApiResponse.success(followService.addFollow(1L, avatarId));
+	public ApiResponse<AddFollowResponse> addFollow(
+		@AuthenticationPrincipal UserPrincipal principal,
+		Long avatarId) {
+
+		return ApiResponse.success(followService.addFollow(principal.getAvatarId(), avatarId));
 	}
 
 	@Tag(name = "Follow")
@@ -45,8 +49,11 @@ public class FollowController {
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
 	@DeleteMapping
-	public ApiResponse<UnfollowResponse> unfollow(Long avatarId) {
-		return ApiResponse.success(followService.unfollow(1L, avatarId));
+	public ApiResponse<UnfollowResponse> unfollow(
+		@AuthenticationPrincipal UserPrincipal principal,
+		Long avatarId) {
+
+		return ApiResponse.success(followService.unfollow(principal.getAvatarId(), avatarId));
 	}
 
 	@Tag(name = "Follow")
