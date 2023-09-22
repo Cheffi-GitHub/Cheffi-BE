@@ -28,6 +28,8 @@ public class Restaurant extends BaseTimeEntity {
 	@NotNull
 	private String nameForQuery;
 
+	private int reviewCnt;
+
 	@Embedded
 	private DetailedAddress detailedAddress;
 
@@ -36,5 +38,6 @@ public class Restaurant extends BaseTimeEntity {
 		this.name = trimmedName;
 		this.nameForQuery = trimmedName.replace(" ", "");
 		this.detailedAddress = detailedAddress;
+		this.reviewCnt = 0;
 	}
 }

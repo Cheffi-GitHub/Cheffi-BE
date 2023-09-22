@@ -12,12 +12,11 @@ import com.cheffi.review.dto.RatingInfoDto;
 import com.cheffi.review.dto.RestaurantInfoDto;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewPhotoInfoDto;
-import com.cheffi.review.dto.request.WriteReviewRequest;
 import com.cheffi.review.dto.response.SearchReviewResponse;
 
-@Transactional
 @Service
-public class ReviewService {
+@Transactional(readOnly = true)
+public class ReviewSearchService {
 
 	public SearchReviewResponse searchReview(Long reviewId) {
 
@@ -77,9 +76,5 @@ public class ReviewService {
 		}
 
 		return mockDtos;
-	}
-
-	public Long writeReview(WriteReviewRequest requestDto, Long writerId) {
-		return 1L;
 	}
 }
