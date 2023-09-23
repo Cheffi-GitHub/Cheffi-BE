@@ -20,7 +20,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -117,5 +116,9 @@ public class User extends BaseTimeEntity {
 	public void changeTermsAgreement(boolean adAgreed, boolean analysisAgreed) {
 		this.adAgreed = adAgreed;
 		this.analysisAgreed = analysisAgreed;
+	}
+
+	public List<Role> getRoles() {
+		return this.getUserRoles().stream().map(UserRole::getRole).toList();
 	}
 }

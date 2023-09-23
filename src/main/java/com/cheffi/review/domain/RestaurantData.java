@@ -1,13 +1,17 @@
 package com.cheffi.review.domain;
 
+import com.cheffi.common.code.ErrorCode;
+import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.constant.DetailedAddress;
-import com.cheffi.common.domain.BaseTimeEntity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Restaurant extends BaseTimeEntity {
+public class RestaurantData {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,19 +29,19 @@ public class Restaurant extends BaseTimeEntity {
 	@NotNull
 	private String name;
 
-	@NotNull
-	private String nameForQuery;
-
-	private int reviewCnt;
-
 	@Embedded
 	private DetailedAddress detailedAddress;
 
-	public Restaurant(String name, DetailedAddress detailedAddress) {
-		String trimmedName = name.trim().replaceAll("\\s+", " ");
-		this.name = trimmedName;
-		this.nameForQuery = trimmedName.replace(" ", "");
-		this.detailedAddress = detailedAddress;
-		this.reviewCnt = 0;
+	private boolean registered;
+
+	@Nullable
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Restaurant restaurant;
+
+	public Restaurant toRestaurant() {
+		if (registered)
+			throw new BusinessException(ErrorCode.RESTAURANT_ALREADY_REGISTERED);
+		this.registered = true;
+		return new Restaurant(name, detailedAddress);
 	}
 }
