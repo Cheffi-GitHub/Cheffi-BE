@@ -23,7 +23,7 @@ public class ReviewCudService {
 
 	private final ReviewRepository reviewRepository;
 	private final AvatarService avatarService;
-	private final RestaurantService restaurantService;
+	private final RestaurantInfoService restaurantInfoService;
 	private final ReviewTagService reviewTagService;
 	private final MenuService menuService;
 	private final ReviewPhotoService reviewPhotoService;
@@ -31,7 +31,8 @@ public class ReviewCudService {
 	@Transactional
 	public Long registerReview(Long authorId, RegisterReviewRequest request, List<MultipartFile> images) {
 		Avatar author = avatarService.getById(authorId);
-		Restaurant restaurant = restaurantService.getOrRegisterById(request.getRestaurantId(), request.isRegistered());
+		Restaurant restaurant = restaurantInfoService.getOrRegisterById(request.getRestaurantId(),
+			request.isRegistered());
 		Review review = Review.of(new ReviewCreateRequest(request.getTitle(), request.getText()), restaurant, author);
 
 		menuService.addMenus(review, request.getMenus());
