@@ -48,11 +48,12 @@ public class ReviewSearchService {
 				.build())
 			.restaurant(RestaurantInfoDto.builder()
 				.id(1L)
-				.name("태초밥")
+				.name("크레이지카츠")
 				.detailedAddress(
 					DetailedAddress.of("서울시",
-						"강북구",
-						"평화로 45길 12-11 502호")
+						"마포구",
+						"포은로2나길 44, 2층",
+						"합정동 391-5 2층")
 				)
 				.build())
 			.reviewPhotos(mockReviewPhotoes)
@@ -64,7 +65,7 @@ public class ReviewSearchService {
 
 		Random random = new Random();
 		List<ReviewInfoDto> mockDtos = new ArrayList<>();
-		for (Long i = 1L; i <= 200; i++) {
+		for (long i = 1L; i <= 200; i++) {
 
 			mockDtos.add(ReviewInfoDto.builder()
 				.id(i)
