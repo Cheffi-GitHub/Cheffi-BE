@@ -41,7 +41,7 @@ public class Restaurant extends BaseTimeEntity implements RestaurantInfo {
 	@Column(precision = 15, scale = 9)
 	private BigDecimal x;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private RestaurantStatus status;
 
 	private int reviewCnt;

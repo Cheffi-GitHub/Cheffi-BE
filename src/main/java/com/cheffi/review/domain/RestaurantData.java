@@ -46,7 +46,7 @@ public class RestaurantData implements RestaurantInfo {
 	@Column(precision = 15, scale = 9)
 	private BigDecimal x;
 	@NotNull
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private RestaurantStatus status;
 	@Embedded
 	private DetailedAddress detailedAddress;

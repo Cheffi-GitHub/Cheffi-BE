@@ -23,7 +23,7 @@ class RestaurantTest {
 	@DisplayName("Restaurant 생성자는 쿼리용으로 식당이름에서 공백을 제거한 nameForQuery를 갖는다.")
 	void givenRestaurantWhenConstruct() {
 		//when
-		Restaurant restaurant = new Restaurant(RESTAURANT_NAME, detailedAddress, RestaurantStatus.OPEN);
+		Restaurant restaurant = new Restaurant(RESTAURANT_NAME, detailedAddress, RestaurantStatus.OPENED);
 
 		//then
 		assertThat(restaurant.getNameForQuery()).isEqualTo(RESTAURANT_NAME_FOR_QUERY);
