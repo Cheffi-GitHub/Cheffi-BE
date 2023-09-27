@@ -18,6 +18,7 @@ public enum ErrorCode {
 	INVALID_PAYLOAD(HttpStatus.UNAUTHORIZED, "A-005", "페이로드 검증에 실패했습니다."),
 	JWT_VERIFY_FAILED(HttpStatus.UNAUTHORIZED, "A-006", "JWT 시그니처가 올바르지 않습니다."),
 	NOT_ACCESS_TOKEN_TYPE(HttpStatus.UNAUTHORIZED, "A-007", "해당 토큰은 ACCESS TOKEN이 아닙니다."),
+	NOT_AUTHENTICATED(HttpStatus.INTERNAL_SERVER_ERROR, "A-011", "권한이 없습니다."),
 
 	//403 에러
 	FORBIDDEN_ADMIN(HttpStatus.FORBIDDEN, "A-008", "관리자 Role이 아닙니다."),
@@ -26,7 +27,7 @@ public enum ErrorCode {
 	NOT_SUPPORTED_OAUTH_PROVIDER(HttpStatus.BAD_REQUEST, "A-009", "지원하지 않는 OAuth 프로바이더 입니다."),
 
 	// 500 에러
-	EMAIL_LOGIN_NOT_SUPPORTED(HttpStatus.INTERNAL_SERVER_ERROR, "A-009", "UserType 이 LOCAL입니다. (일반 로그인은 지원하지 않습니다.)"),
+	EMAIL_LOGIN_NOT_SUPPORTED(HttpStatus.INTERNAL_SERVER_ERROR, "A-010", "UserType 이 LOCAL입니다. (일반 로그인은 지원하지 않습니다.)"),
 
 	// 회원
 	INVALID_MEMBER_TYPE(HttpStatus.BAD_REQUEST, "M-001", "잘못된 회원 타입입니다. (memberType : KAKAO)"),
@@ -49,12 +50,16 @@ public enum ErrorCode {
 	RESTAURANT_DATA_NOT_EXIST(HttpStatus.BAD_REQUEST, "R-003", "공공 데이터에 "
 		+ "식별자에 해당하는 식당 데이터가 없습니다."),
 	RESTAURANT_ALREADY_REGISTERED(HttpStatus.BAD_REQUEST, "R-003", "해당 데이터로 생성된 식당이 이미 존재합니다."),
+	REVIEW_NOT_EXIST(HttpStatus.BAD_REQUEST, "R-004", "해당 식별자는 올바른 리뷰의 식별자가 아닙니다."),
 
 	// 파일
 	NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "F-001", "전송된 파일의 형식이 이미지가 아닙니다."),
 
 	// 태그
 	BAD_AVATAR_TAG_REQUEST(HttpStatus.BAD_REQUEST, "T-001", "아바타 관련 태그 요청이 잘못 됐습니다."),
+
+	// 쉐피코인
+	NOT_ENOUGH_CHEFFI_COIN(HttpStatus.BAD_REQUEST, "C-001", "쉐피코인이 부족합니다."),
 
 	//기타
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "I-001", "내부 에러가 발생했습니다."),
