@@ -1,5 +1,7 @@
 package com.cheffi.avatar.service;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,13 @@ public class CheffiCoinService {
 		Review review = reviewService.getById(reviewId);
 		CheffiCoin cheffiCoin = CheffiCoin.of(avatarService.getById(avatarId), CHEFFI_COIN_FOR_REVIEW,
 			"'" + review.getTitle() + "' 게시글을 조회하는데 사용했습니다.");
+		cheffiCoinRepository.save(cheffiCoin);
+	}
+
+	@Transactional
+	public void earnCheffiCoinForLogin(Long avatarId) {
+		CheffiCoin cheffiCoin = CheffiCoin.of(avatarService.getById(avatarId)
+			, CHEFFI_COIN_FOR_LOGIN, "매일 접속 쉐피 코인 획득! 날짜: " + LocalDate.now());
 		cheffiCoinRepository.save(cheffiCoin);
 	}
 }
