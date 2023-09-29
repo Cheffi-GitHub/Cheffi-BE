@@ -31,7 +31,7 @@ class ReviewTest {
 
 	@BeforeEach
 	void setReview() {
-		review = new Review(TITLE, TEXT, restaurant, writer);
+		review = new Review(TITLE, TEXT, 24, restaurant, writer);
 	}
 
 	@Nested
