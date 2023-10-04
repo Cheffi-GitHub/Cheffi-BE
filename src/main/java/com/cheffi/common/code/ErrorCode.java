@@ -51,6 +51,8 @@ public enum ErrorCode {
 		+ "식별자에 해당하는 식당 데이터가 없습니다."),
 	RESTAURANT_ALREADY_REGISTERED(HttpStatus.BAD_REQUEST, "R-003", "해당 데이터로 생성된 식당이 이미 존재합니다."),
 	REVIEW_NOT_EXIST(HttpStatus.BAD_REQUEST, "R-004", "해당 식별자는 올바른 리뷰의 식별자가 아닙니다."),
+	REVIEW_NOT_UNLOCKED(HttpStatus.BAD_REQUEST, "R-005", "유저가 해당 리뷰를 구매하지 않았습니다."),
+	REVIEW_ALREADY_UNLOCKED(HttpStatus.BAD_REQUEST, "R-006", "유저가 해당 리뷰를 이미 구매했습니다."),
 
 	// 파일
 	NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "F-001", "전송된 파일의 형식이 이미지가 아닙니다."),
