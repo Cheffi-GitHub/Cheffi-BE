@@ -1,7 +1,7 @@
-package com.cheffi.avatar.domain;
+package com.cheffi.review.domain;
 
+import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.common.domain.BaseTimeEntity;
-import com.cheffi.review.domain.Review;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,22 +21,26 @@ import lombok.NoArgsConstructor;
 
 public class Bookmark extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "avatar_id")
-    private Avatar avatar;
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "avatar_id")
+	private Avatar avatar;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_id")
-    private Review review;
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "review_id")
+	private Review review;
 
-    public Bookmark(Avatar avatar, Review review) {
-        this.avatar = avatar;
-        this.review = review;
+	private Bookmark(Avatar avatar, Review review) {
+		this.avatar = avatar;
+		this.review = review;
+	}
+
+    public static Bookmark of(Avatar avatar, Review review) {
+        return new Bookmark(avatar, review);
     }
 }
