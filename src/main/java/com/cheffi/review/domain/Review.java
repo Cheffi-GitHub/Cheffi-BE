@@ -1,5 +1,6 @@
 package com.cheffi.review.domain;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,8 @@ public class Review extends BaseTimeEntity {
 
 	private int ratingCnt;
 
+	private LocalDateTime timeToLock;
+
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "restaurant_id")
@@ -62,16 +65,17 @@ public class Review extends BaseTimeEntity {
 	@OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ReviewTag> reviewTags = new ArrayList<>();
 
-	Review(String title, String text, Restaurant restaurant, Avatar writer) {
+	Review(String title, String text, int lockAfterHours, Restaurant restaurant, Avatar writer) {
 		this.title = title;
 		this.text = text;
+		this.timeToLock = LocalDateTime.now().plusHours(lockAfterHours);
 		this.restaurant = restaurant;
 		this.writer = writer;
 		this.ratingCnt = 0;
 	}
 
 	public static Review of(ReviewCreateRequest request, Restaurant restaurant, Avatar writer) {
-		return new Review(request.title(), request.text(), restaurant, writer);
+		return new Review(request.title(), request.text(), request.lockAfterHours(), restaurant, writer);
 	}
 
 	public void addPhotos(List<ReviewPhoto> photos) {
@@ -98,5 +102,9 @@ public class Review extends BaseTimeEntity {
 
 	public void removeTags(List<Tag> tagsToRemove) {
 		reviewTags.removeIf(rt -> tagsToRemove.contains(rt.getTag()));
+	}
+
+	public boolean isLocked() {
+		return LocalDateTime.now().isAfter(timeToLock);
 	}
 }

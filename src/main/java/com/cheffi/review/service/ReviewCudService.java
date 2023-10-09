@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class ReviewCudService {
 
+	private static final int LOCK_AFTER_HOURS = 24;
+
 	private final ReviewRepository reviewRepository;
 	private final AvatarService avatarService;
 	private final RestaurantInfoService restaurantInfoService;
@@ -33,7 +35,8 @@ public class ReviewCudService {
 		Avatar author = avatarService.getById(authorId);
 		Restaurant restaurant = restaurantInfoService.getOrRegisterById(request.getRestaurantId(),
 			request.isRegistered());
-		Review review = Review.of(new ReviewCreateRequest(request.getTitle(), request.getText()), restaurant, author);
+		Review review = Review.of(new ReviewCreateRequest(request.getTitle(), request.getText(), LOCK_AFTER_HOURS),
+			restaurant, author);
 
 		menuService.addMenus(review, request.getMenus());
 		reviewTagService.changeTags(review, request.getTag());
