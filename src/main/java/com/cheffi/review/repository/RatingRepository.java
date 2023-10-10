@@ -10,7 +10,7 @@ import com.cheffi.review.domain.Rating;
 
 public interface RatingRepository extends JpaRepository<Rating, Long> {
 	@Query("select r from Rating r "
-		+ "where r.review.id = :avatar "
-		+ "and r.avatar.id = :review")
+		+ "where r.review.id = :review "
+		+ "and r.avatar.id = :avatar ")
 	Optional<Rating> findByAvatarAndReview(@Param("avatar") Long avatarId, @Param("review") Long reviewId);
 }
