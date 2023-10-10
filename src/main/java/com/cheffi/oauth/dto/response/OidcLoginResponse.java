@@ -33,7 +33,7 @@ public record OidcLoginResponse(
 	boolean activated,
 	@Schema(description = "마지막 비밀번호 변경 일자")
 	LocalDateTime lastPwChangedDate,
-	@Schema(description = "사용자 이름", name = "안유진")
+	@Schema(description = "사용자 이름", example = "안유진")
 	String name,
 	@Schema(description = "유저 가입 유형", example = "KAKAO")
 	UserType userType,
@@ -55,7 +55,6 @@ public record OidcLoginResponse(
 	boolean profileCompleted,
 	@Schema(description = "유저의 권한")
 	List<GrantedAuthority> authorities,
-
 	@Schema(description = "신규 유저 여부")
 	boolean isNewUser
 ) {
