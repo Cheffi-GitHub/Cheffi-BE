@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cheffi.common.constant.DetailedAddress;
-import com.cheffi.review.dto.RatingInfoDto;
 import com.cheffi.review.dto.RestaurantInfoDto;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewPhotoInfoDto;
@@ -34,10 +33,6 @@ public class ReviewSearchService {
 		mockReviewPhotoes.add(
 			new ReviewPhotoInfoDto(6L, 6, "http://www.lampcook.com/wi_files/food_top100/top5/5_17.jpg"));
 
-		List<RatingInfoDto> mockRatingInfoes = new ArrayList<>();
-		mockRatingInfoes.add(new RatingInfoDto("GOOD", 30));
-		mockRatingInfoes.add(new RatingInfoDto("Bad", -7));
-
 		return SearchReviewResponse.builder()
 			.reviewInfo(ReviewInfoDto.builder()
 				.id(5L)
@@ -57,7 +52,7 @@ public class ReviewSearchService {
 				)
 				.build())
 			.reviewPhotos(mockReviewPhotoes)
-			.ratings(mockRatingInfoes)
+			.ratings(new ArrayList<>())
 			.build();
 	}
 
