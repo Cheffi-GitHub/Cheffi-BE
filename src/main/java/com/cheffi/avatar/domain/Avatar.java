@@ -106,8 +106,9 @@ public class Avatar extends BaseTimeEntity {
 	}
 
 	void applyCheffiCoinBy(int value) {
-		if(cheffiCoinCnt + value < 0)
+		if (cheffiCoinCnt + value < 0)
 			throw new BusinessException(ErrorCode.NOT_ENOUGH_CHEFFI_COIN);
 		this.cheffiCoinCnt += value;
 	}
+
 }

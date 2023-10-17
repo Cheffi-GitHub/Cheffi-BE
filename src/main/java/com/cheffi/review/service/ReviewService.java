@@ -22,4 +22,9 @@ public class ReviewService {
 			.orElseThrow(() -> new BusinessException(ErrorCode.REVIEW_NOT_EXIST));
 	}
 
+	public Review getByIdWithEntities(Long reviewId) {
+		return reviewRepository.findByIdWithEntities(reviewId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.REVIEW_NOT_EXIST));
+	}
+
 }

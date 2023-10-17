@@ -7,53 +7,51 @@ import java.util.Random;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cheffi.common.constant.DetailedAddress;
-import com.cheffi.review.dto.RestaurantInfoDto;
+import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.avatar.service.PurchasedItemService;
+import com.cheffi.common.code.ErrorCode;
+import com.cheffi.common.config.exception.business.AuthenticationException;
+import com.cheffi.common.config.exception.business.BusinessException;
+import com.cheffi.review.domain.Review;
 import com.cheffi.review.dto.ReviewInfoDto;
-import com.cheffi.review.dto.ReviewPhotoInfoDto;
-import com.cheffi.review.dto.response.SearchReviewResponse;
+import com.cheffi.review.dto.response.GetReviewResponse;
+import com.cheffi.review.dto.response.ReviewWriterInfoDto;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
 public class ReviewSearchService {
 
 	public SearchReviewResponse searchReview(Long reviewId) {
 
-		List<ReviewPhotoInfoDto> mockReviewPhotoes = new ArrayList<>();
-		mockReviewPhotoes.add(
-			new ReviewPhotoInfoDto(1L, 5, "https://cdn.mindgil.com/news/photo/202109/72274_10092_4553.jpg"));
-		mockReviewPhotoes.add(
-			new ReviewPhotoInfoDto(2L, 2, "https://dimg.donga.com/wps/NEWS/IMAGE/2011/08/18/39608221.2.jpg"));
-		mockReviewPhotoes.add(
-			new ReviewPhotoInfoDto(3L, 4, "http://www.lampcook.com/wi_files/food_top100/top5/5_8.jpg"));
-		mockReviewPhotoes.add(
-			new ReviewPhotoInfoDto(4L, 1, "http://www.lampcook.com/wi_files/food_top100/top5/5_14.jpg"));
-		mockReviewPhotoes.add(
-			new ReviewPhotoInfoDto(5L, 3, "http://www.lampcook.com/wi_files/food_top100/top5/5_11.jpg"));
-		mockReviewPhotoes.add(
-			new ReviewPhotoInfoDto(6L, 6, "http://www.lampcook.com/wi_files/food_top100/top5/5_17.jpg"));
+	private final ReviewService reviewService;
+	private final PurchasedItemService purchasedItemService;
+	private final ReviewAvatarService reviewAvatarService;
 
-		return SearchReviewResponse.builder()
-			.reviewInfo(ReviewInfoDto.builder()
-				.id(5L)
-				.title("리뷰 제목")
-				.text("리뷰 내용")
-				.ratingCnt(27)
-				.bookmarked(true)
-				.build())
-			.restaurant(RestaurantInfoDto.builder()
-				.id(1L)
-				.name("크레이지카츠")
-				.detailedAddress(
-					DetailedAddress.of("서울시",
-						"마포구",
-						"포은로2나길 44, 2층",
-						"합정동 391-5 2층")
-				)
-				.build())
-			.reviewPhotos(mockReviewPhotoes)
-			.ratings(new ArrayList<>())
-			.build();
+	@Transactional
+	public GetReviewResponse getReviewInfoOfNotAuthenticated(Long reviewId) {
+		Review review = reviewService.getByIdWithEntities(reviewId);
+		Avatar writer = review.getWriter();
+		if (review.isLocked())
+			throw new AuthenticationException(ErrorCode.NOT_AUTHENTICATED);
+
+		review.read();
+		return GetReviewResponse.ofNotAuthenticated(review, ReviewWriterInfoDto.of(writer));
+	}
+
+	@Transactional
+	public GetReviewResponse getReviewInfoOfAuthenticated(Long reviewId, Long viewerId) {
+		Review review = reviewService.getByIdWithEntities(reviewId);
+		Avatar writer = review.getWriter();
+		if (review.isLocked() && !purchasedItemService.hasUnlocked(viewerId, reviewId)) {
+			throw new BusinessException(ErrorCode.REVIEW_NOT_UNLOCKED);
+		}
+
+		review.read();
+		return GetReviewResponse.ofAuthenticated(review, reviewAvatarService.getInfoOfViewer(viewerId, reviewId),
+			ReviewWriterInfoDto.of(writer, writer.getId().equals(viewerId)));
 	}
 
 	public List<ReviewInfoDto> searchReviewsByArea(String areaName) {
@@ -73,4 +71,5 @@ public class ReviewSearchService {
 
 		return mockDtos;
 	}
+
 }

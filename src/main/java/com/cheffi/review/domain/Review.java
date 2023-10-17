@@ -1,13 +1,16 @@
 package com.cheffi.review.domain;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.domain.BaseTimeEntity;
+import com.cheffi.review.constant.RatingType;
 import com.cheffi.tag.domain.Tag;
 
 import jakarta.persistence.CascadeType;
@@ -38,10 +41,11 @@ public class Review extends BaseTimeEntity {
 
 	@NotNull
 	private String text;
-
-	private int ratingCnt;
-
+	private int goodRatingCnt;
+	private int averageRatingCnt;
+	private int badRatingCnt;
 	private LocalDateTime timeToLock;
+	private int viewCnt;
 
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -71,7 +75,10 @@ public class Review extends BaseTimeEntity {
 		this.timeToLock = LocalDateTime.now().plusHours(lockAfterHours);
 		this.restaurant = restaurant;
 		this.writer = writer;
-		this.ratingCnt = 0;
+		this.goodRatingCnt = 0;
+		this.averageRatingCnt = 0;
+		this.badRatingCnt = 0;
+		this.viewCnt = 0;
 	}
 
 	public static Review of(ReviewCreateRequest request, Restaurant restaurant, Avatar writer) {
@@ -107,4 +114,18 @@ public class Review extends BaseTimeEntity {
 	public boolean isLocked() {
 		return LocalDateTime.now().isAfter(timeToLock);
 	}
+
+	public Long getTimeLeftToLock() {
+		return Duration.between(getCreatedDate(), getTimeToLock()).toMillis();
+	}
+
+	public Map<RatingType, Integer> getRatingInfoMap() {
+		return Map.of(RatingType.GOOD, goodRatingCnt, RatingType.AVERAGE, averageRatingCnt, RatingType.BAD,
+			badRatingCnt);
+	}
+
+	public void read() {
+		this.viewCnt += 1;
+	}
+
 }
