@@ -24,8 +24,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class ReviewSearchService {
 
-	public SearchReviewResponse searchReview(Long reviewId) {
-
 	private final ReviewService reviewService;
 	private final PurchasedItemService purchasedItemService;
 	private final ReviewAvatarService reviewAvatarService;
