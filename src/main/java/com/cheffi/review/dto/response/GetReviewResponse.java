@@ -38,7 +38,9 @@ public class GetReviewResponse {
 	private boolean ratedByUser;
 	@Schema(description = "본인 평가 타입", example = "GOOD")
 	private RatingType ratingType;
+	@Schema(description = "생성일자")
 	private LocalDateTime createdDate;
+	@Schema(description = "잠금까지 남은 시간 (ms 단위)", example = "86399751")
 	private Long timeLeftToLock;
 	@Schema(description = "태그 일치 개수", example = "3")
 	private Long matchedTagNum;
@@ -46,7 +48,8 @@ public class GetReviewResponse {
 	private RestaurantInfoDto restaurant;
 	@Schema(description = "리뷰 작성자 정보")
 	private ReviewWriterInfoDto writer;
-	@Schema(description = "리뷰의 평가 정보")
+	@Schema(description = "리뷰의 평가 정보 각 ratings.{평가} 는 해당 리뷰가 받은 평가의 개수입니다."
+		+ "평가의 종류: GOOD - 좋아요, BAD - 싫어요, AVERAGE - 그냥 그래요")
 	private Map<RatingType, Integer> ratings;
 	@Schema(description = "리뷰의 사진 정보")
 	private List<ReviewPhotoInfoDto> photos;

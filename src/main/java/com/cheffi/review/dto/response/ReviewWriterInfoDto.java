@@ -12,7 +12,6 @@ import lombok.Getter;
 public class ReviewWriterInfoDto {
 	@Schema(description = "리뷰 작성자 ID", example = "1")
 	private final Long id;
-
 	@Schema(description = "리뷰 작성자 닉네임", example = "닉네임1234")
 	private final String name;
 	@Schema(description = "리뷰 작성자 프로필 사진 URL")
