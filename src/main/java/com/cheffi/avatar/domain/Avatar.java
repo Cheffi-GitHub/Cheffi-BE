@@ -111,4 +111,8 @@ public class Avatar extends BaseTimeEntity {
 		this.cheffiCoinCnt += value;
 	}
 
+	public boolean hasSameIdWith(Long idToCompare) {
+		return getId().equals(idToCompare);
+	}
+
 }

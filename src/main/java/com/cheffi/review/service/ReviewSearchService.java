@@ -43,11 +43,14 @@ public class ReviewSearchService {
 	public GetReviewResponse getReviewInfoOfAuthenticated(Long reviewId, Long viewerId) {
 		Review review = reviewService.getByIdWithEntities(reviewId);
 		Avatar writer = review.getWriter();
-		if (review.isLocked() && !purchasedItemService.hasUnlocked(viewerId, reviewId)) {
-			throw new BusinessException(ErrorCode.REVIEW_NOT_UNLOCKED);
+
+		if (!writer.hasSameIdWith(viewerId)) {
+			if (review.isLocked() && !purchasedItemService.hasUnlocked(viewerId, reviewId)) {
+				throw new BusinessException(ErrorCode.REVIEW_NOT_UNLOCKED);
+			}
+			review.read();
 		}
 
-		review.read();
 		return GetReviewResponse.ofAuthenticated(review, reviewAvatarService.getInfoOfViewer(viewerId, reviewId),
 			ReviewWriterInfoDto.of(writer, writer.getId().equals(viewerId)));
 	}
