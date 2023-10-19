@@ -27,14 +27,14 @@ public class RestaurantController {
 	private final RestaurantInfoService restaurantInfoService;
 
 	@Tag(name = "Restaurant")
-	@Operation(summary = "게시글 등록 용 식당 검색 API",
-		description = "게시글 등록 용 식당 검색 API 입니다. 최대 10개 까지의 검색 결과만 제공됩니다.")
+	@Operation(summary = "게시글 등록용 식당 검색 API",
+		description = "게시글 등록용 식당 검색 API 입니다. 최대 10개 까지의 검색 결과만 제공됩니다.")
 	@Parameter(name = "name", description = "검색할 식당의 이름(쿼리 파라미터)", required = true)
-	@Parameter(name = "province", description = "검색할 지역의 시/도 (쿼리 파라미터)")
-	@Parameter(name = "city", description = "검색할 지역의 시/군/구 (쿼리 파라미터)")
+	@Parameter(name = "province", description = "검색할 지역의 시/도 (쿼리 파라미터) - 아직 식당의 지역검색은 지원되지 않습니다.")
+	@Parameter(name = "city", description = "검색할 지역의 시/군/구 (쿼리 파라미터) - 아직 식당의 지역검색은 지원되지 않습니다.")
 	@GetMapping
 	public ApiResponse<List<RestaurantInfoDto>> searchRestaurantsByName(
-		@RequestParam @NotBlank String name, @RequestParam String city, @RequestParam String province) {
+		@RequestParam @NotBlank String name) {
 		return ApiResponse.success(restaurantInfoService.searchRestaurantByName(name, PageRequest.of(0, 10)));
 	}
 
