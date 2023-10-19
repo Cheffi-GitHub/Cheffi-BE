@@ -2,6 +2,7 @@ package com.cheffi.common.service;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
@@ -14,6 +15,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.cheffi.oauth.model.UserPrincipal;
+import com.cheffi.user.constant.RoleType;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -70,5 +72,10 @@ public class SecurityContextService {
 
 	public UserPrincipal getUserPrincipal() {
 		return (UserPrincipal)getContext().getAuthentication().getPrincipal();
+	}
+
+	public boolean hasUserAuthority(UserPrincipal principal) {
+		return principal != null && principal.getAuthorities()
+			.contains(new SimpleGrantedAuthority(RoleType.USER.getAuthority()));
 	}
 }
