@@ -18,7 +18,7 @@ public enum ErrorCode {
 	INVALID_PAYLOAD(HttpStatus.UNAUTHORIZED, "A-005", "페이로드 검증에 실패했습니다."),
 	JWT_VERIFY_FAILED(HttpStatus.UNAUTHORIZED, "A-006", "JWT 시그니처가 올바르지 않습니다."),
 	NOT_ACCESS_TOKEN_TYPE(HttpStatus.UNAUTHORIZED, "A-007", "해당 토큰은 ACCESS TOKEN이 아닙니다."),
-	NOT_AUTHENTICATED(HttpStatus.INTERNAL_SERVER_ERROR, "A-011", "권한이 없습니다."),
+	ANONYMOUS_USER_CANNOT_ACCESS_LOCKED_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR, "A-011", "비회원은 잠긴 리뷰를 조회할 수 없습니다."),
 
 	//403 에러
 	FORBIDDEN_ADMIN(HttpStatus.FORBIDDEN, "A-008", "관리자 Role이 아닙니다."),
