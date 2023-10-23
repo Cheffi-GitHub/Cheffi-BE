@@ -33,7 +33,7 @@ public class ReviewSearchService {
 		Review review = reviewService.getByIdWithEntities(reviewId);
 		Avatar writer = review.getWriter();
 		if (review.isLocked())
-			throw new AuthenticationException(ErrorCode.NOT_AUTHENTICATED);
+			throw new AuthenticationException(ErrorCode.ANONYMOUS_USER_CANNOT_ACCESS_LOCKED_REVIEW);
 
 		review.read();
 		return GetReviewResponse.ofNotAuthenticated(review, ReviewWriterInfoDto.of(writer));
