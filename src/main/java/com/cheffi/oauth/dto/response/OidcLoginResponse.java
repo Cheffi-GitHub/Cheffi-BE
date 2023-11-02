@@ -42,7 +42,7 @@ public record OidcLoginResponse(
 	@Schema(description = "개인정보 사용 동의 여부")
 	boolean analysisAgreed,
 	@Schema(description = "아바타 식별자 (아바타 = 유저 개념)")
-	Long avatarId,
+	Long id,
 	@Schema(description = "현재 쉐피 코인 개수")
 	int cheffiCoinCount,
 	@Schema(description = "현재 포인트 양")
@@ -71,7 +71,7 @@ public record OidcLoginResponse(
 			.userType(principal.getUserType())
 			.adAgreed(principal.isAdAgreed())
 			.analysisAgreed(principal.isAnalysisAgreed())
-			.avatarId(principal.getAvatarId())
+			.id(principal.getAvatarId())
 			.cheffiCoinCount(avatar.getCheffiCoinCnt())
 			.pointCnt(avatar.getPointCnt())
 			.nickname(principal.getNickname())
