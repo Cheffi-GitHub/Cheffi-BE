@@ -27,6 +27,7 @@ public class ReviewSearchService {
 	private final ReviewService reviewService;
 	private final PurchasedItemService purchasedItemService;
 	private final ReviewAvatarService reviewAvatarService;
+	private final ViewHistoryService viewHistoryService;
 
 	@Transactional
 	public GetReviewResponse getReviewInfoOfNotAuthenticated(Long reviewId) {
@@ -35,7 +36,8 @@ public class ReviewSearchService {
 		if (review.isLocked())
 			throw new AuthenticationException(ErrorCode.ANONYMOUS_USER_CANNOT_ACCESS_LOCKED_REVIEW);
 
-		review.read();
+		viewHistoryService.readReviewAnonymous(reviewId);
+
 		return GetReviewResponse.ofNotAuthenticated(review, ReviewWriterInfoDto.of(writer));
 	}
 
@@ -48,7 +50,7 @@ public class ReviewSearchService {
 			if (review.isLocked() && !purchasedItemService.hasUnlocked(viewerId, reviewId)) {
 				throw new BusinessException(ErrorCode.REVIEW_NOT_UNLOCKED);
 			}
-			review.read();
+			viewHistoryService.readReview(viewerId, reviewId);
 		}
 
 		return GetReviewResponse.ofAuthenticated(review, reviewAvatarService.getInfoOfViewer(viewerId, reviewId),
