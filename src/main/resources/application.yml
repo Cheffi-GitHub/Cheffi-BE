@@ -1,9 +1,11 @@
 spring:
   profiles:
     group:
-      "dev": "dev, oauth, s3, actuator, dev-db"
-      "local": "local, oauth, s3, actuator"
-      "default": "local, oauth, s3, actuator"
+      "dev": "dev, oauth, s3, actuator, dev-db, regions"
+      "local": "local, oauth, s3, actuator, regions"
+      "default": "local, oauth, s3, actuator, regions"
+  config:
+    import: classpath:data/application-regions.yml
 
   jpa:
     hibernate:
@@ -31,3 +33,5 @@ springdoc:
 
 api:
   prefix: /api/v1
+
+
