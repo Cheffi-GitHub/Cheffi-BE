@@ -69,6 +69,9 @@ public class Review extends BaseTimeEntity {
 	@OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ReviewTag> reviewTags = new ArrayList<>();
 
+	@OneToMany(mappedBy = "review")
+	private List<ViewHistory> viewHistories = new ArrayList<>();
+
 	Review(String title, String text, int lockAfterHours, Restaurant restaurant, Avatar writer) {
 		this.title = title;
 		this.text = text;
