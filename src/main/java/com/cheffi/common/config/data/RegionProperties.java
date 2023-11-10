@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties
+@ConfigurationProperties(prefix = "env")
 public class RegionProperties {
 
 	private List<Region> regions;
