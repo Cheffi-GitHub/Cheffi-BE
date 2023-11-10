@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 public class Address {
 
 	// 시, 도
-	@Schema(description = "식당의 시/도 주소(1차)", example = "서울시")
+	@Schema(description = "식당의 시/도 주소(1차)", example = "서울특별시")
 	@NotNull
 	private String province;
 
@@ -35,6 +35,10 @@ public class Address {
 	protected Address(String province, String city) {
 		this.province = province;
 		this.city = city;
+	}
+
+	public String getCombined() {
+		return getProvince() + " " + getCity();
 	}
 
 	public static Address cityAddress(String province, String city) {
