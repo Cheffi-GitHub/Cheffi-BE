@@ -1,8 +1,9 @@
-package com.cheffi.review.service;
+package com.cheffi.region.service;
+
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.cheffi.common.config.data.RegionProperties;
 import com.cheffi.common.constant.Address;
 
 import lombok.RequiredArgsConstructor;
@@ -15,5 +16,10 @@ public class RegionService {
 
 	public boolean contains(Address address) {
 		return regionProperties.contains(address);
+	}
+
+	public List<RegionDto> getRegion() {
+		List<RegionProperties.Region> regions = regionProperties.getRegions();
+		return regions.stream().map(RegionDto::new).toList();
 	}
 }

@@ -1,4 +1,4 @@
-package com.cheffi.common.config.data;
+package com.cheffi.region.service;
 
 import java.util.List;
 
@@ -14,13 +14,13 @@ import lombok.Setter;
 @Setter
 @Configuration
 @ConfigurationProperties(prefix = "env")
-public class RegionProperties {
+class RegionProperties {
 
 	private List<Region> regions;
 
 	@Getter
 	@Setter
-	public static class Region {
+	static class Region {
 		private String province;
 		private List<String> cities;
 
@@ -29,7 +29,7 @@ public class RegionProperties {
 		}
 	}
 
-	public boolean contains(Address address) {
+	boolean contains(Address address) {
 		return regions.stream().anyMatch(region -> region.match(address));
 	}
 }
