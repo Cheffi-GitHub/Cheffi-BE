@@ -19,7 +19,7 @@ public class RegionProperties {
 	@Getter
 	@Setter
 	public static class Region {
-		private String name;
-		private List<String> districts;
+		private String province;
+		private List<String> cities;
 	}
 }
