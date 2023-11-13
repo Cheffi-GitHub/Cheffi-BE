@@ -21,6 +21,8 @@ public class ApiCursorPageResponse<T, C> {
 	private final C end;
 	@Schema(description = "다음 조회할 데이터의 첫 커서 ()")
 	private final C next;
+	@Schema(description = "다음 데이터 존재 여부")
+	private final boolean hasNext;
 	@Schema(description = "비어있는 지 여부", example = "false")
 	private final boolean empty;
 	@Schema(description = "페이지 사이즈", example = "16")
@@ -35,6 +37,7 @@ public class ApiCursorPageResponse<T, C> {
 		this.first = data.getFirst();
 		this.end = data.getEnd();
 		this.next = data.getNext();
+		this.hasNext = data.isHasNext();
 		this.empty = data.isEmpty();
 		this.size = data.getSize();
 		this.code = code;
