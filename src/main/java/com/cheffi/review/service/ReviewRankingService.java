@@ -23,7 +23,7 @@ public class ReviewRankingService {
 	private final ViewHistoryService viewHistoryService;
 
 	@Transactional(readOnly = true)
-	public Set<ZSetOperations.TypedTuple<Object>> getRanking(Address address, LocalDateTime from, LocalDateTime to) {
+	public Set<ZSetOperations.TypedTuple<Object>> calculateRanking(Address address, LocalDateTime from, LocalDateTime to) {
 		ReviewRanking reviewRanking = new ReviewRanking(reviewService.getByAddress(address));
 
 		List<Long> ids = reviewRanking.getIds();
