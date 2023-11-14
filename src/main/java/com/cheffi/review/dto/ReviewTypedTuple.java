@@ -4,6 +4,9 @@ import java.util.Objects;
 
 import org.springframework.data.redis.core.ZSetOperations;
 
+import com.cheffi.common.code.ErrorCode;
+import com.cheffi.common.config.exception.business.BusinessException;
+
 public class ReviewTypedTuple implements ZSetOperations.TypedTuple<Object> {
 
 	private final Long reviewId;
@@ -20,10 +23,10 @@ public class ReviewTypedTuple implements ZSetOperations.TypedTuple<Object> {
 	}
 
 	@Override
-	public int compareTo(ZSetOperations.TypedTuple<Object> objectTypedTuple) {
-		if (objectTypedTuple.getScore() == null)
+	public int compareTo(ZSetOperations.TypedTuple<Object> tuple) {
+		if (tuple.getScore() == null)
 			return -1;
-		return Double.compare(objectTypedTuple.getScore(), this.score);
+		return Double.compare(tuple.getScore(), this.score);
 	}
 
 	public Long getReviewId() {
@@ -40,7 +43,9 @@ public class ReviewTypedTuple implements ZSetOperations.TypedTuple<Object> {
 	}
 
 	public static ReviewTypedTuple of(ZSetOperations.TypedTuple<Object> tuple) {
-		return new ReviewTypedTuple((Long)tuple.getValue(), tuple.getScore());
+		if (tuple.getValue() instanceof Integer integer)
+			return new ReviewTypedTuple(integer.longValue(), tuple.getScore());
+		throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
 	}
 
 	@Override
