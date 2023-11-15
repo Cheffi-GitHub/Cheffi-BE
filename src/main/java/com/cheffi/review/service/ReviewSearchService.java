@@ -1,8 +1,6 @@
 package com.cheffi.review.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +10,12 @@ import com.cheffi.avatar.service.PurchasedItemService;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.AuthenticationException;
 import com.cheffi.common.config.exception.business.BusinessException;
+import com.cheffi.common.dto.CursorPage;
+import com.cheffi.region.service.RegionService;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.dto.ReviewInfoDto;
+import com.cheffi.review.dto.ReviewTypedTuple;
+import com.cheffi.review.dto.request.AreaSearchRequest;
 import com.cheffi.review.dto.response.GetReviewResponse;
 import com.cheffi.review.dto.response.ReviewWriterInfoDto;
 
@@ -25,9 +27,11 @@ import lombok.RequiredArgsConstructor;
 public class ReviewSearchService {
 
 	private final ReviewService reviewService;
+	private final RegionService regionService;
 	private final PurchasedItemService purchasedItemService;
 	private final ReviewAvatarService reviewAvatarService;
 	private final ViewHistoryService viewHistoryService;
+	private final ReviewTrendingService reviewTrendingService;
 
 	@Transactional
 	public GetReviewResponse getReviewInfoOfNotAuthenticated(Long reviewId) {
@@ -57,22 +61,26 @@ public class ReviewSearchService {
 			ReviewWriterInfoDto.of(writer, writer.getId().equals(viewerId)));
 	}
 
-	public List<ReviewInfoDto> searchReviewsByArea(String areaName) {
-
-		Random random = new Random();
-		List<ReviewInfoDto> mockDtos = new ArrayList<>();
-		for (long i = 1L; i <= 200; i++) {
-
-			mockDtos.add(ReviewInfoDto.builder()
-				.id(i)
-				.title("title(" + i + ")")
-				.text("text(" + i + ")")
-				.ratingCnt(random.nextInt(50) + 1)
-				.bookmarked(i % 2 == 0)
-				.build());
-		}
-
-		return mockDtos;
+	public CursorPage<ReviewInfoDto, Integer> searchReviewsByArea(AreaSearchRequest request, Long viewerId) {
+		if (!regionService.contains(request.getAddress()))
+			throw new BusinessException(ErrorCode.ADDRESS_NOT_EXIST);
+		List<ReviewInfoDto> reviewDtos = reviewService.getAllByIdWithBookmark(getTrendingReviewIndex(request),
+			viewerId, request.getCursor());
+		return CursorPage.of(reviewDtos, request.getSize(), ReviewInfoDto::getNumber);
 	}
 
+	public CursorPage<ReviewInfoDto, Integer> searchReviewsByArea(AreaSearchRequest request) {
+		if (!regionService.contains(request.getAddress()))
+			throw new BusinessException(ErrorCode.ADDRESS_NOT_EXIST);
+		List<ReviewInfoDto> reviewDtos = reviewService.getAllById(getTrendingReviewIndex(request), request.getCursor());
+		return CursorPage.of(reviewDtos, request.getSize(), ReviewInfoDto::getNumber);
+	}
+
+	private List<Long> getTrendingReviewIndex(AreaSearchRequest request) {
+		return reviewTrendingService.getTrendingReviewTuple(request)
+			.stream()
+			.map(ReviewTypedTuple::getReviewId)
+			.toList();
+	}
 }
+

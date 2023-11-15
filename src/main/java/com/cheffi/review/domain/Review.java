@@ -119,7 +119,7 @@ public class Review extends BaseTimeEntity {
 	}
 
 	public Long getTimeLeftToLock() {
-		return Duration.between(getCreatedDate(), getTimeToLock()).toMillis();
+		return Duration.between(LocalDateTime.now(), getTimeToLock()).toMillis();
 	}
 
 	public Map<RatingType, Integer> getRatingInfoMap() {

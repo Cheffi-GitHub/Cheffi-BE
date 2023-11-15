@@ -26,7 +26,7 @@ public class CursorPage<T, C> {
 		}
 		this.hasNext = hasNext;
 		this.end = cursorGetter.apply(data.get(this.size - 1));
-		this.data = data.subList(0, this.size - 1);
+		this.data = data.subList(0, this.size);
 	}
 
 	private CursorPage(List<T> data) {

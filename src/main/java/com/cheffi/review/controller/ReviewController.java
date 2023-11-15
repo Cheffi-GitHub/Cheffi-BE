@@ -2,12 +2,12 @@ package com.cheffi.review.controller;
 
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cheffi.common.response.ApiCursorPageResponse;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.oauth.model.UserPrincipal;
 import com.cheffi.review.dto.ReviewInfoDto;
+import com.cheffi.review.dto.request.AreaSearchRequest;
 import com.cheffi.review.dto.request.RegisterReviewRequest;
 import com.cheffi.review.dto.response.GetReviewResponse;
 import com.cheffi.review.service.ReviewCudService;
@@ -48,16 +50,23 @@ public class ReviewController {
 	@GetMapping
 	public ApiResponse<GetReviewResponse> getReviewInfoAuthenticated(@AuthenticationPrincipal UserPrincipal principal,
 		@RequestParam("id") Long reviewId) {
-		if (!securityContextService.hasUserAuthority(principal))
-			return ApiResponse.success(reviewSearchService.getReviewInfoOfNotAuthenticated(reviewId));
-		return ApiResponse.success(reviewSearchService.getReviewInfoOfAuthenticated(reviewId, principal.getAvatarId()));
+		if (securityContextService.hasUserAuthority(principal))
+			return ApiResponse.success(
+				reviewSearchService.getReviewInfoOfAuthenticated(reviewId, principal.getAvatarId()));
+		return ApiResponse.success(reviewSearchService.getReviewInfoOfNotAuthenticated(reviewId));
 	}
 
 	@Tag(name = "Review")
-	@Operation(summary = "지역별 맛집 조회 API")
-	@GetMapping("/areas/{area}")
-	public ApiResponse<List<ReviewInfoDto>> searchReviewsByArea(@PathVariable("area") String areaName) {
-		return ApiResponse.success(reviewSearchService.searchReviewsByArea(areaName));
+	@Operation(summary = "지역별 맛집 조회 API",
+		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
+	@GetMapping("/areas")
+	public ApiCursorPageResponse<ReviewInfoDto, Integer> searchReviewsByArea(
+		@ParameterObject @Valid AreaSearchRequest request,
+		@AuthenticationPrincipal UserPrincipal principal) {
+		if (securityContextService.hasUserAuthority(principal))
+			return ApiCursorPageResponse.success(
+				reviewSearchService.searchReviewsByArea(request, principal.getAvatarId()));
+		return ApiCursorPageResponse.success(reviewSearchService.searchReviewsByArea(request));
 	}
 
 	@Tag(name = "Review")
