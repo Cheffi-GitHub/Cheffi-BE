@@ -34,13 +34,14 @@ public class ReviewTrendingService {
 		if (!typedTupleSet.isEmpty())
 			return typedTupleSet;
 
-		if (reviewRedisRepository.hasKey(key)) {
+		if (reviewRedisRepository.hasKey(key))
 			return List.of();
-		}
 
 		// 키가 없을 경우 새로 인기급등 맛집을 계산한다.
 		ExactPeriod ep = reviewSearchPeriodStrategy.getTrendingSearchPeriod(now);
 		var info = reviewRankingService.calculateRanking(request.getAddress(), ep.getStart(), ep.getEnd());
+		if (info.isEmpty())
+			return List.of();
 		reviewRedisRepository.addZSet(key, info, SearchConstant.TRENDING_UPDATE_CYCLE);
 		return reviewRedisRepository.getTypedTupleList(key, size, offset);
 	}
