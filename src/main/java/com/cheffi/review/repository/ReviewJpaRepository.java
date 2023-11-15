@@ -30,6 +30,8 @@ public class ReviewJpaRepository {
 	}
 
 	public List<ReviewInfoDto> findAllById(List<Long> ids) {
+		if(ids.isEmpty())
+			return List.of();
 
 		JPAQuery<ReviewInfoDto> query = queryFactory
 			.select(new QReviewInfoDto(
@@ -50,6 +52,9 @@ public class ReviewJpaRepository {
 	}
 
 	public List<ReviewInfoDto> findAllByIdWithBookmark(List<Long> ids, Long viewerId) {
+		if(ids.isEmpty())
+			return List.of();
+
 		JPAQuery<ReviewInfoDto> query = queryFactory
 			.select(new QReviewInfoDto(
 				review.id,
