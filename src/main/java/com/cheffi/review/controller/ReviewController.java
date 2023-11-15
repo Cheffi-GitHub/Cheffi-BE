@@ -2,6 +2,7 @@ package com.cheffi.review.controller;
 
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cheffi.common.constant.Address;
 import com.cheffi.common.response.ApiCursorPageResponse;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.common.service.SecurityContextService;
@@ -58,19 +58,11 @@ public class ReviewController {
 
 	@Tag(name = "Review")
 	@Operation(summary = "지역별 맛집 조회 API",
-	description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
+		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
 	@GetMapping("/areas")
 	public ApiCursorPageResponse<ReviewInfoDto, Integer> searchReviewsByArea(
-		@Parameter(description = "검색할 시 / 도")
-		@RequestParam String province,
-		@Parameter(description = "검색할 시 / 군 / 구")
-		@RequestParam String city,
-		@Parameter(description = "검색을 시작할 커서(포함) 최초 조회시는 0을 넣어주세요")
-		@RequestParam Long cursor,
-		@Parameter(description = "검색 사이즈")
-		@RequestParam Integer size,
+		@ParameterObject @Valid AreaSearchRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
-		var request = new AreaSearchRequest(Address.cityAddress(province, city), cursor, size);
 		if (securityContextService.hasUserAuthority(principal))
 			return ApiCursorPageResponse.success(
 				reviewSearchService.searchReviewsByArea(request, principal.getAvatarId()));

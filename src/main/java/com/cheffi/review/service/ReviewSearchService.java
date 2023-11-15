@@ -65,14 +65,14 @@ public class ReviewSearchService {
 		if (!regionService.contains(request.getAddress()))
 			throw new BusinessException(ErrorCode.ADDRESS_NOT_EXIST);
 		List<ReviewInfoDto> reviewDtos = reviewService.getAllByIdWithBookmark(getTrendingReviewIndex(request),
-			viewerId, request.getOffset());
+			viewerId, request.getCursor());
 		return CursorPage.of(reviewDtos, request.getSize(), ReviewInfoDto::getNumber);
 	}
 
 	public CursorPage<ReviewInfoDto, Integer> searchReviewsByArea(AreaSearchRequest request) {
 		if (!regionService.contains(request.getAddress()))
 			throw new BusinessException(ErrorCode.ADDRESS_NOT_EXIST);
-		List<ReviewInfoDto> reviewDtos = reviewService.getAllById(getTrendingReviewIndex(request), request.getOffset());
+		List<ReviewInfoDto> reviewDtos = reviewService.getAllById(getTrendingReviewIndex(request), request.getCursor());
 		return CursorPage.of(reviewDtos, request.getSize(), ReviewInfoDto::getNumber);
 	}
 

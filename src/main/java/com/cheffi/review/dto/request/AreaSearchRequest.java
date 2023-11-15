@@ -1,21 +1,31 @@
 package com.cheffi.review.dto.request;
 
-import com.cheffi.common.constant.Address;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import org.hibernate.validator.constraints.Range;
 
+import com.cheffi.common.constant.Address;
+
+import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 
 @Getter
-@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class AreaSearchRequest {
+	@Valid
 	private final Address address;
-	private final Long offset;
-	private final Integer size;
+	@Parameter(description = "검색을 시작할 커서(포함) 최초 조회시는 0을 넣어주세요")
+	@NotNull
+	@PositiveOrZero
+	private final Long cursor;
+	@Parameter(description = "검색 사이즈")
+	@NotNull
+	@Range(min = 1, max = 16)
+	final Integer size;
 
-	public AreaSearchRequest(Address address, Long offset, Integer size) {
-		this.address = address;
-		this.offset = offset;
+	public AreaSearchRequest(String province, String city, Long cursor, Integer size) {
+		this.address = Address.cityAddress(province, city);
+		this.cursor = cursor;
 		this.size = size;
 	}
 }

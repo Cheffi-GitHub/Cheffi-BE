@@ -27,7 +27,7 @@ public class ReviewTrendingService {
 	public List<ReviewTypedTuple> getTrendingReviewTuple(AreaSearchRequest request) {
 		LocalDateTime now = LocalDateTime.now();
 		String key = reviewRedisKeyGenerator.getTrendingSearchKey(request.getAddress(), now);
-		Long offset = request.getOffset();
+		Long offset = request.getCursor();
 		Integer size = request.getSize();
 
 		List<ReviewTypedTuple> typedTupleSet = reviewRedisRepository.getTypedTupleList(key, size, offset);
