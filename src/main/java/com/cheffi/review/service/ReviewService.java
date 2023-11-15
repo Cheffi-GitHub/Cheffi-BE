@@ -30,10 +30,14 @@ public class ReviewService {
 	}
 
 	public List<ReviewInfoDto> getAllByIdWithBookmark(List<Long> ids, Long viewerId, Long offset) {
+		if (ids.isEmpty())
+			return List.of();
 		return updateNumber(ids, reviewJpaRepository.findAllByIdWithBookmark(ids, viewerId), offset);
 	}
 
 	public List<ReviewInfoDto> getAllById(List<Long> ids, Long offset) {
+		if(ids.isEmpty())
+			return List.of();
 		return updateNumber(ids, reviewJpaRepository.findAllById(ids), offset);
 	}
 
