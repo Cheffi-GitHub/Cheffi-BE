@@ -11,10 +11,13 @@ import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.review.constant.RatingType;
+import com.cheffi.review.constant.ReviewStatus;
 import com.cheffi.tag.domain.Tag;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -47,6 +50,9 @@ public class Review extends BaseTimeEntity {
 	private LocalDateTime timeToLock;
 	private int viewCnt;
 
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private ReviewStatus status;
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "restaurant_id")
@@ -82,6 +88,7 @@ public class Review extends BaseTimeEntity {
 		this.averageRatingCnt = 0;
 		this.badRatingCnt = 0;
 		this.viewCnt = 0;
+		this.status = ReviewStatus.ACTIVE;
 	}
 
 	public static Review of(ReviewCreateRequest request, Restaurant restaurant, Avatar writer) {

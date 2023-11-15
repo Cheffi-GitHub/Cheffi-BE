@@ -30,7 +30,7 @@ public class ReviewJpaRepository {
 	}
 
 	public List<ReviewInfoDto> findAllById(List<Long> ids) {
-		if(ids.isEmpty())
+		if (ids.isEmpty())
 			return List.of();
 
 		JPAQuery<ReviewInfoDto> query = queryFactory
@@ -41,7 +41,8 @@ public class ReviewJpaRepository {
 				new QReviewPhotoInfoDto(reviewPhoto.id, reviewPhoto.givenOrder, reviewPhoto.url),
 				review.timeToLock,
 				Expressions.FALSE,
-				review.viewCnt
+				review.viewCnt,
+				review.status
 			))
 			.from(review)
 			.leftJoin(review.photos, reviewPhoto)
@@ -52,7 +53,7 @@ public class ReviewJpaRepository {
 	}
 
 	public List<ReviewInfoDto> findAllByIdWithBookmark(List<Long> ids, Long viewerId) {
-		if(ids.isEmpty())
+		if (ids.isEmpty())
 			return List.of();
 
 		JPAQuery<ReviewInfoDto> query = queryFactory
@@ -63,7 +64,8 @@ public class ReviewJpaRepository {
 				new QReviewPhotoInfoDto(reviewPhoto.id, reviewPhoto.givenOrder, reviewPhoto.url),
 				review.timeToLock,
 				bookmark.isNotNull(),
-				review.viewCnt
+				review.viewCnt,
+				review.status
 			))
 			.from(review)
 			.leftJoin(review.photos, reviewPhoto)

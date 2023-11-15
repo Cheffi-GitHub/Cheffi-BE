@@ -3,6 +3,7 @@ package com.cheffi.review.dto;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import com.cheffi.review.constant.ReviewStatus;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
@@ -30,13 +31,23 @@ public class ReviewInfoDto {
 	private boolean locked;
 	@Schema(description = "북마크 여부", example = "true")
 	private Boolean bookmarked;
+	@Schema(description = "누적 조회수", example = "100")
 	private Integer viewCount;
+	@Schema(description = "랭킹(커서)", example = "10")
 	private Integer number;
+	@Schema(description = "리뷰의 현재 상태", example = "ACTIVE")
+	private ReviewStatus reviewStatus;
+	@Schema(description = "리뷰의 활성화 여부 'ACTIVE' 상태이면 true", example = "true")
+	private boolean active;
 
 	@QueryProjection
 	public ReviewInfoDto(Long id, String title, String text, ReviewPhotoInfoDto photo,
-		LocalDateTime timeToLock, Boolean bookmarked, Integer viewCount) {
+		LocalDateTime timeToLock, Boolean bookmarked, Integer viewCount, ReviewStatus reviewStatus) {
+		this.reviewStatus = reviewStatus;
 		this.id = id;
+		if (!ReviewStatus.ACTIVE.equals(reviewStatus))
+			return;
+		this.active = true;
 		this.title = title;
 		this.text = text;
 		this.photo = photo;
