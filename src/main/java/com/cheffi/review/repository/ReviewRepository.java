@@ -13,7 +13,9 @@ import com.cheffi.review.domain.Review;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 	@Query("""
 		select r from Review r
-		where r.restaurant.detailedAddress.province = :province and r.restaurant.detailedAddress.city = :city""")
+		where r.restaurant.detailedAddress.province = :province 
+		and r.restaurant.detailedAddress.city = :city
+		and r.status = 'ACTIVE'""")
 	List<Review> findByCity(@Param("province") @NonNull String province,
 		@Param("city") @NonNull String city);
 
