@@ -39,6 +39,7 @@ public enum ErrorCode {
 	INVALID_NICKNAME_LENGTH(HttpStatus.BAD_REQUEST, "M-008", "닉네임의 길이가 올바르지 않습니다. [최소 2자, 최대 8자]"),
 	PROFILE_ALREADY_REGISTERED(HttpStatus.BAD_REQUEST, "M-009", "해당 계정은 이미 프로필 등록이 완료되었습니다."),
 	PROFILE_NOT_COMPLETED(HttpStatus.BAD_REQUEST, "M-010", "해당 계정의 프로필 등록이 완료된 상태가 아닙니다."),
+	EMAIL_IS_REGISTER_WITH_OTHER_PROVIDER(HttpStatus.BAD_REQUEST, "M-011", "같은 이메일이 다른 소셜 로그인 플랫폼으로 가입되어 있습니다."),
 
 	//팔로우
 	ALREADY_FOLLOWED(HttpStatus.BAD_REQUEST, "FW-001", "해당 아바타는 이미 팔로우 중입니다."),

@@ -54,6 +54,10 @@ public class OAuthService {
 		boolean isNewUser = optionalUser.isEmpty();
 		User user = optionalUser.orElseGet(() -> signUp(oAuthAttributes));
 
+		// 이메일로 등록된 유저의 플랫폼과 현재 로그인을 시도하는 플랫폼과 다르면 에러 throw
+		if (!isNewUser && !user.isUserOf(provider))
+			throw new AuthenticationException(ErrorCode.EMAIL_IS_REGISTER_WITH_OTHER_PROVIDER);
+
 		Avatar avatar = avatarService.getByUserWithPhoto(user);
 		if (isNewUser || !user.hasLoggedInToday()) {
 			user.updateLastLoginDate();
