@@ -30,8 +30,8 @@ public enum ErrorCode {
 	EMAIL_LOGIN_NOT_SUPPORTED(HttpStatus.INTERNAL_SERVER_ERROR, "A-010", "UserType 이 LOCAL입니다. (일반 로그인은 지원하지 않습니다.)"),
 
 	// 회원
-	INVALID_MEMBER_TYPE(HttpStatus.BAD_REQUEST, "M-001", "잘못된 회원 타입입니다. (memberType : KAKAO)"),
-	ALREADY_REGISTERED_MEMBER(HttpStatus.BAD_REQUEST, "M-002", "이미 가입된 회원 입니다."),
+	INVALID_USER_TYPE(HttpStatus.BAD_REQUEST, "M-001", "잘못된 회원 타입입니다. (memberType : KAKAO)"),
+	ALREADY_REGISTERED_USER(HttpStatus.BAD_REQUEST, "M-002", "이미 가입된 회원 입니다."),
 	USER_NOT_EXISTS(HttpStatus.BAD_REQUEST, "M-003", "해당 회원은 존재하지 않습니다."),
 	AVATAR_NOT_EXISTS(HttpStatus.BAD_REQUEST, "M-004", "해당 아바타는 존재하지 않습니다."),
 	NICKNAME_CONTAINS_BANNED_WORDS(HttpStatus.BAD_REQUEST, "M-006", "해당 닉네임은 금지어를 포함하고 있습니다."),
@@ -39,7 +39,7 @@ public enum ErrorCode {
 	INVALID_NICKNAME_LENGTH(HttpStatus.BAD_REQUEST, "M-008", "닉네임의 길이가 올바르지 않습니다. [최소 2자, 최대 8자]"),
 	PROFILE_ALREADY_REGISTERED(HttpStatus.BAD_REQUEST, "M-009", "해당 계정은 이미 프로필 등록이 완료되었습니다."),
 	PROFILE_NOT_COMPLETED(HttpStatus.BAD_REQUEST, "M-010", "해당 계정의 프로필 등록이 완료된 상태가 아닙니다."),
-	EMAIL_IS_REGISTER_WITH_OTHER_PROVIDER(HttpStatus.BAD_REQUEST, "M-011", "같은 이메일이 다른 소셜 로그인 플랫폼으로 가입되어 있습니다."),
+	EMAIL_IS_REGISTER_WITH_ANOTHER_PROVIDER(HttpStatus.BAD_REQUEST, "M-011", "같은 이메일이 다른 소셜 로그인 플랫폼으로 가입되어 있습니다."),
 
 	//팔로우
 	ALREADY_FOLLOWED(HttpStatus.BAD_REQUEST, "FW-001", "해당 아바타는 이미 팔로우 중입니다."),
