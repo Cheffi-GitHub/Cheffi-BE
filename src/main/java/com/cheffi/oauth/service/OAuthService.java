@@ -16,6 +16,7 @@ import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.avatar.service.CheffiCoinService;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.AuthenticationException;
+import com.cheffi.common.config.exception.business.DuplicatedEmailException;
 import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.oauth.dto.IdTokenAttributes;
 import com.cheffi.oauth.dto.request.OidcLoginRequest;
@@ -53,6 +54,10 @@ public class OAuthService {
 		Optional<User> optionalUser = userService.getByEmailWithRoles(oAuthAttributes.email());
 		boolean isNewUser = optionalUser.isEmpty();
 		User user = optionalUser.orElseGet(() -> signUp(oAuthAttributes));
+
+		// 이메일로 등록된 유저의 플랫폼과 현재 로그인을 시도하는 플랫폼과 다르면 에러 throw
+		if (!isNewUser && !user.isUserOf(provider))
+			throw new DuplicatedEmailException(ErrorCode.EMAIL_IS_REGISTER_WITH_ANOTHER_PROVIDER, user.getUserType());
 
 		Avatar avatar = avatarService.getByUserWithPhoto(user);
 		if (isNewUser || !user.hasLoggedInToday()) {
