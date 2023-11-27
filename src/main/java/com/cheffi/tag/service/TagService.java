@@ -19,8 +19,9 @@ public class TagService {
 	private final TagRepository tagRepository;
 
 	public List<TagDto> getTagsByType(TagType type) {
-		return tagRepository.findByTagType(type).stream().map(TagDto::of)
-			.toList();
+		if (TagType.ALL.equals(type))
+			return tagRepository.findAll().stream().map(TagDto::of).toList();
+		return tagRepository.findByTagType(type).stream().map(TagDto::of).toList();
 	}
 
 	public List<Tag> getAllById(List<Long> ids) {

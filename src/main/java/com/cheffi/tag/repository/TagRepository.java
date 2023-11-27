@@ -12,8 +12,12 @@ import com.cheffi.tag.domain.Tag;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-	@Cacheable(cacheNames = "Tag", cacheManager = "localCacheManager")
+	@Cacheable(cacheNames = "Tag", key = "new org.springframework.cache.interceptor.SimpleKey(#type)"
+		, cacheManager = "localCacheManager")
 	List<Tag> findByTagType(TagType type);
+
+	@Cacheable(cacheNames = "Tag", cacheManager = "localCacheManager")
+	List<Tag> findAll();
 
 	@Query("select t from Review r "
 		+ "left join r.reviewTags rt "

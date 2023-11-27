@@ -13,12 +13,11 @@ import org.ehcache.config.units.MemoryUnit;
 import org.ehcache.jsr107.Eh107Configuration;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-
-import com.cheffi.tag.constant.TagType;
 
 @Configuration
 @EnableCaching
@@ -34,16 +33,16 @@ public class EhcacheConfig {
 		CachingProvider provider = Caching.getCachingProvider();
 		javax.cache.CacheManager cacheManager = provider.getCacheManager();
 
-		javax.cache.configuration.Configuration<TagType, List> tagTypeCacheConfiguration =
+		javax.cache.configuration.Configuration<SimpleKey, List> tagTypeCacheConfiguration =
 			Eh107Configuration.fromEhcacheCacheConfiguration(config());
 		cacheManager.createCache("Tag", tagTypeCacheConfiguration);
 
 		return cacheManager;
 	}
 
-	private CacheConfigurationBuilder<TagType, List> config() {
+	private CacheConfigurationBuilder<SimpleKey, List> config() {
 		return CacheConfigurationBuilder.newCacheConfigurationBuilder(
-				TagType.class,
+				SimpleKey.class,
 				List.class,
 				ResourcePoolsBuilder
 					.heap(100)
