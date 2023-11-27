@@ -18,6 +18,7 @@ import com.cheffi.review.dto.ReviewTypedTuple;
 import com.cheffi.review.dto.request.AreaSearchRequest;
 import com.cheffi.review.dto.response.GetReviewResponse;
 import com.cheffi.review.dto.response.ReviewWriterInfoDto;
+import com.cheffi.review.helper.ReviewSearchPeriodStrategy;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +33,7 @@ public class ReviewSearchService {
 	private final ReviewAvatarService reviewAvatarService;
 	private final ViewHistoryService viewHistoryService;
 	private final ReviewTrendingService reviewTrendingService;
+	private final ReviewSearchPeriodStrategy reviewSearchPeriodStrategy;
 
 	@Transactional
 	public GetReviewResponse getReviewInfoOfNotAuthenticated(Long reviewId) {
@@ -66,18 +68,19 @@ public class ReviewSearchService {
 			throw new BusinessException(ErrorCode.ADDRESS_NOT_EXIST);
 		List<ReviewInfoDto> reviewDtos = reviewService.getAllByIdWithBookmark(getTrendingReviewIndex(request),
 			viewerId, request.getCursor());
-		return CursorPage.of(reviewDtos, request.getSize(), ReviewInfoDto::getNumber);
+		return CursorPage.of(reviewDtos, request.getSize(), ReviewInfoDto::getNumber, request.getReferenceTime());
 	}
 
 	public CursorPage<ReviewInfoDto, Integer> searchReviewsByArea(AreaSearchRequest request) {
 		if (!regionService.contains(request.getAddress()))
 			throw new BusinessException(ErrorCode.ADDRESS_NOT_EXIST);
 		List<ReviewInfoDto> reviewDtos = reviewService.getAllById(getTrendingReviewIndex(request), request.getCursor());
-		return CursorPage.of(reviewDtos, request.getSize(), ReviewInfoDto::getNumber);
+		return CursorPage.of(reviewDtos, request.getSize(), ReviewInfoDto::getNumber, request.getReferenceTime());
 	}
 
 	private List<Long> getTrendingReviewIndex(AreaSearchRequest request) {
-		return reviewTrendingService.getTrendingReviewTuple(request)
+		return reviewTrendingService.getTrendingReviewTuple(request,
+				reviewSearchPeriodStrategy.getTrendingSearchPeriod(request.getReferenceTime()))
 			.stream()
 			.map(ReviewTypedTuple::getReviewId)
 			.toList();

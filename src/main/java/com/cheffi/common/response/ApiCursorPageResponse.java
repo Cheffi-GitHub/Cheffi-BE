@@ -1,5 +1,6 @@
 package com.cheffi.common.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.cheffi.common.dto.CursorPage;
@@ -27,6 +28,8 @@ public class ApiCursorPageResponse<T, C> {
 	private final boolean empty;
 	@Schema(description = "페이지 사이즈", example = "16")
 	private final int size;
+	@Schema(description = "조회 기준 시각")
+	private final LocalDateTime referenceTime;
 	@Schema(description = "응답 코드", example = "200")
 	private final int code;
 	@Schema(description = "응답 메세지", example = "success")
@@ -40,6 +43,7 @@ public class ApiCursorPageResponse<T, C> {
 		this.hasNext = data.isHasNext();
 		this.empty = data.isEmpty();
 		this.size = data.getSize();
+		this.referenceTime = data.getReferenceTime();
 		this.code = code;
 		this.message = message;
 	}

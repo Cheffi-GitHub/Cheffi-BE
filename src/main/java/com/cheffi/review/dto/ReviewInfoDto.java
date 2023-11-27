@@ -37,12 +37,17 @@ public class ReviewInfoDto {
 	private Integer number;
 	@Schema(description = "리뷰의 현재 상태", example = "ACTIVE")
 	private ReviewStatus reviewStatus;
+	@Schema(description = "작성자 여부", example = "false")
+	private boolean writtenByUser;
+	@Schema(description = "구매 여부", example = "true")
+	private boolean purchased;
 	@Schema(description = "리뷰의 활성화 여부 'ACTIVE' 상태이면 true", example = "true")
 	private boolean active;
 
 	@QueryProjection
 	public ReviewInfoDto(Long id, String title, String text, ReviewPhotoInfoDto photo,
-		LocalDateTime timeToLock, Boolean bookmarked, Integer viewCount, ReviewStatus reviewStatus) {
+		LocalDateTime timeToLock, Integer viewCount, ReviewStatus reviewStatus, Boolean bookmarked,
+		Boolean writtenByUser, Boolean purchased) {
 		this.reviewStatus = reviewStatus;
 		this.id = id;
 		if (!ReviewStatus.ACTIVE.equals(reviewStatus))
@@ -55,6 +60,8 @@ public class ReviewInfoDto {
 		this.locked = timeLeftToLock <= 0;
 		this.bookmarked = bookmarked;
 		this.viewCount = viewCount;
+		this.writtenByUser = writtenByUser;
+		this.purchased = purchased;
 	}
 
 	public void updateNumber(Integer number) {

@@ -1,5 +1,6 @@
 package com.cheffi.review.repository;
 
+import static com.cheffi.avatar.domain.QPurchasedItem.*;
 import static com.cheffi.review.domain.QBookmark.*;
 import static com.cheffi.review.domain.QReview.*;
 import static com.cheffi.review.domain.QReviewPhoto.*;
@@ -40,9 +41,11 @@ public class ReviewJpaRepository {
 				review.text,
 				new QReviewPhotoInfoDto(reviewPhoto.id, reviewPhoto.givenOrder, reviewPhoto.url),
 				review.timeToLock,
-				Expressions.FALSE,
 				review.viewCnt,
-				review.status
+				review.status,
+				Expressions.FALSE,
+				Expressions.FALSE,
+				Expressions.FALSE
 			))
 			.from(review)
 			.leftJoin(review.photos, reviewPhoto)
@@ -63,9 +66,11 @@ public class ReviewJpaRepository {
 				review.text,
 				new QReviewPhotoInfoDto(reviewPhoto.id, reviewPhoto.givenOrder, reviewPhoto.url),
 				review.timeToLock,
-				bookmark.isNotNull(),
 				review.viewCnt,
-				review.status
+				review.status,
+				bookmark.isNotNull(),
+				review.writer.id.eq(viewerId),
+				purchasedItem.isNotNull()
 			))
 			.from(review)
 			.leftJoin(review.photos, reviewPhoto)
@@ -73,6 +78,9 @@ public class ReviewJpaRepository {
 			.leftJoin(bookmark)
 			.on(bookmark.review.id.eq(review.id),
 				bookmarkWriterEq(viewerId))
+			.leftJoin(purchasedItem)
+			.on(purchasedItem.review.eq(review),
+				purchasedItem.avatar.id.eq(viewerId))
 			.where(reviewIdIn(ids));
 
 		return query.fetch();
