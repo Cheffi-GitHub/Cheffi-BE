@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cheffi.avatar.dto.common.TagDto;
+import com.cheffi.common.code.ErrorCode;
+import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.tag.constant.TagType;
 import com.cheffi.tag.domain.Tag;
 import com.cheffi.tag.repository.TagRepository;
@@ -32,6 +34,14 @@ public class TagService {
 		return src.stream()
 			.filter(t -> !from.contains(t))
 			.toList();
+	}
+
+	public Tag getById(Long id) {
+		return tagRepository.findAll()
+			.stream()
+			.filter(t -> t.getId().equals(id))
+			.findAny()
+			.orElseThrow(() -> new BusinessException(ErrorCode.BAD_AVATAR_TAG_REQUEST));
 	}
 
 	public List<Tag> getAvatarTagByAvatarId(Long avatarId) {

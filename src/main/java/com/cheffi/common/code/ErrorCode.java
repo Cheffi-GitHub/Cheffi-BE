@@ -64,6 +64,7 @@ public enum ErrorCode {
 
 	// 태그
 	BAD_AVATAR_TAG_REQUEST(HttpStatus.BAD_REQUEST, "T-001", "아바타 관련 태그 요청이 잘못 됐습니다."),
+	TAG_NOT_EXIST(HttpStatus.BAD_REQUEST, "T-002", "식별자에 해당하는 태그가 없습니다."),
 
 	// 쉐피코인
 	NOT_ENOUGH_CHEFFI_COIN(HttpStatus.BAD_REQUEST, "C-001", "쉐피코인이 부족합니다."),
