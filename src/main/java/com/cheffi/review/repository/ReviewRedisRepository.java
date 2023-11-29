@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
-import com.cheffi.review.dto.ReviewTypedTuple;
+import com.cheffi.common.dto.RedisZSetRequest;
+import com.cheffi.review.dto.ReviewTuple;
 
 @Repository
 public class ReviewRedisRepository {
@@ -24,11 +25,11 @@ public class ReviewRedisRepository {
 		this.operations = opsForZSet.getOperations();
 	}
 
-	public List<ReviewTypedTuple> getTypedTupleList(String key, Integer size, Long offset) {
-		var tuples = opsForZSet.reverseRangeWithScores(key, offset, offset + size);
+	public List<ReviewTuple> getTypedTupleList(String key, RedisZSetRequest req) {
+		var tuples = opsForZSet.reverseRangeWithScores(key, req.getStart(), req.getEnd());
 		if (tuples == null)
 			throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
-		return tuples.stream().map(ReviewTypedTuple::of).sorted().toList();
+		return tuples.stream().map(ReviewTuple::of).sorted().toList();
 	}
 
 	public void addZSet(String key, Set<ZSetOperations.TypedTuple<Object>> info, Duration duration) {

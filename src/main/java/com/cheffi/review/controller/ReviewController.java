@@ -20,6 +20,7 @@ import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.oauth.model.UserPrincipal;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.request.AreaSearchRequest;
+import com.cheffi.review.dto.request.AreaTagSearchRequest;
 import com.cheffi.review.dto.request.RegisterReviewRequest;
 import com.cheffi.review.dto.response.GetReviewResponse;
 import com.cheffi.review.service.ReviewCudService;
@@ -65,6 +66,19 @@ public class ReviewController {
 			return ApiCursorPageResponse.success(
 				reviewSearchService.searchReviewsByArea(request, principal.getAvatarId()));
 		return ApiCursorPageResponse.success(reviewSearchService.searchReviewsByArea(request));
+	}
+
+	@Tag(name = "Review")
+	@Operation(summary = "쉐피들의 인정 맛집 조회 API",
+		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
+	@GetMapping("/areas/tags")
+	public ApiCursorPageResponse<ReviewInfoDto, Integer> searchReviewsByTagAndArea(
+		@ParameterObject @Valid AreaTagSearchRequest request,
+		@AuthenticationPrincipal UserPrincipal principal) {
+		if (securityContextService.hasUserAuthority(principal))
+			return ApiCursorPageResponse.success(reviewSearchService.searchReviewsByAreaAndTag(request,
+				principal.getAvatarId()));
+		return ApiCursorPageResponse.success(reviewSearchService.searchReviewsByAreaAndTag(request));
 	}
 
 	@Tag(name = "Review")

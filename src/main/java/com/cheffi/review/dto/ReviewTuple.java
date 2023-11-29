@@ -7,7 +7,7 @@ import org.springframework.data.redis.core.ZSetOperations;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 
-public class ReviewTypedTuple implements ZSetOperations.TypedTuple<Object> {
+public class ReviewTuple implements ZSetOperations.TypedTuple<Object> {
 
 	private final Long reviewId;
 	private final Double score;
@@ -33,18 +33,18 @@ public class ReviewTypedTuple implements ZSetOperations.TypedTuple<Object> {
 		return reviewId;
 	}
 
-	private ReviewTypedTuple(Long reviewId, Double score) {
+	private ReviewTuple(Long reviewId, Double score) {
 		this.reviewId = reviewId;
 		this.score = score;
 	}
 
-	public static ReviewTypedTuple of(Long reviewId, Double score) {
-		return new ReviewTypedTuple(reviewId, score);
+	public static ReviewTuple of(Long reviewId, Double score) {
+		return new ReviewTuple(reviewId, score);
 	}
 
-	public static ReviewTypedTuple of(ZSetOperations.TypedTuple<Object> tuple) {
+	public static ReviewTuple of(ZSetOperations.TypedTuple<Object> tuple) {
 		if (tuple.getValue() instanceof Integer integer)
-			return new ReviewTypedTuple(integer.longValue(), tuple.getScore());
+			return new ReviewTuple(integer.longValue(), tuple.getScore());
 		throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
 	}
 
@@ -52,7 +52,7 @@ public class ReviewTypedTuple implements ZSetOperations.TypedTuple<Object> {
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (!(o instanceof ReviewTypedTuple that))
+		if (!(o instanceof ReviewTuple that))
 			return false;
 		return reviewId.equals(that.reviewId) && score.equals(that.score);
 	}

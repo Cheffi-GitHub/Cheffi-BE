@@ -10,6 +10,7 @@ import com.cheffi.common.dto.RedisZSetRequest;
 import com.cheffi.review.dto.ReviewSearchCondition;
 import com.cheffi.util.constant.SearchConstant;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -18,7 +19,8 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 
 @Getter
-public class AreaSearchRequest implements RedisZSetRequest {
+public class AreaTagSearchRequest implements RedisZSetRequest {
+
 	@Valid
 	private final Address address;
 	@Parameter(description = "검색을 시작할 커서(포함) 최초 조회시는 0을 넣어주세요")
@@ -29,13 +31,18 @@ public class AreaSearchRequest implements RedisZSetRequest {
 	@NotNull
 	@Range(min = 1, max = 16)
 	private final Integer size;
+
+	@Parameter(description = "검색할 태그의 인덱스, 음식 태그만 입력 가능합니다.", example = "15")
+	@JsonProperty("tag_id")
+	private final Long tagId;
 	@JsonIgnore
 	private final LocalDateTime referenceTime;
 
-	public AreaSearchRequest(String province, String city, Long cursor, Integer size) {
+	public AreaTagSearchRequest(String province, String city, Long cursor, Integer size, Long tag_id) {
 		this.address = Address.cityAddress(province, city);
 		this.cursor = cursor;
 		this.size = size;
+		this.tagId = tag_id;
 		this.referenceTime = LocalDateTime.now();
 	}
 
@@ -45,7 +52,7 @@ public class AreaSearchRequest implements RedisZSetRequest {
 	}
 
 	public ReviewSearchCondition toSearchCondition() {
-		return ReviewSearchCondition.of(this.address, this.referenceTime, SearchConstant.TRENDING_UPDATE_CYCLE,
-			ChronoUnit.HOURS, null);
+		return ReviewSearchCondition.of(this.address, this.referenceTime, SearchConstant.TAG_UPDATE_CYCLE,
+			ChronoUnit.DAYS, this.tagId);
 	}
 }

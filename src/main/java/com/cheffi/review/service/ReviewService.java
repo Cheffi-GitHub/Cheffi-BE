@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
-import com.cheffi.common.constant.Address;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.dto.ReviewInfoDto;
+import com.cheffi.review.dto.ReviewSearchCondition;
 import com.cheffi.review.repository.ReviewJpaRepository;
 import com.cheffi.review.repository.ReviewRepository;
 
@@ -29,16 +29,12 @@ public class ReviewService {
 			.orElseThrow(() -> new BusinessException(ErrorCode.REVIEW_NOT_EXIST));
 	}
 
-	public List<ReviewInfoDto> getAllByIdWithBookmark(List<Long> ids, Long viewerId, Long offset) {
+	public List<ReviewInfoDto> getInfoById(List<Long> ids, Long offset, Long viewerId) {
 		if (ids.isEmpty())
 			return List.of();
+		if (viewerId == null)
+			return updateNumber(ids, reviewJpaRepository.findAllById(ids), offset);
 		return updateNumber(ids, reviewJpaRepository.findAllByIdWithBookmark(ids, viewerId), offset);
-	}
-
-	public List<ReviewInfoDto> getAllById(List<Long> ids, Long offset) {
-		if(ids.isEmpty())
-			return List.of();
-		return updateNumber(ids, reviewJpaRepository.findAllById(ids), offset);
 	}
 
 	private List<ReviewInfoDto> updateNumber(List<Long> ids, List<ReviewInfoDto> result, Long offset) {
@@ -57,8 +53,8 @@ public class ReviewService {
 			.orElseThrow(() -> new BusinessException(ErrorCode.REVIEW_NOT_EXIST));
 	}
 
-	public List<Review> getByAddress(Address address) {
-		return reviewRepository.findByCity(address.getProvince(), address.getCity());
+	public List<Review> getByCondition(ReviewSearchCondition condition) {
+		return reviewJpaRepository.findByCondition(condition);
 	}
 
 }

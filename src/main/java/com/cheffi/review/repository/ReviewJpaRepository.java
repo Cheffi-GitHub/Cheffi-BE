@@ -2,16 +2,21 @@ package com.cheffi.review.repository;
 
 import static com.cheffi.avatar.domain.QPurchasedItem.*;
 import static com.cheffi.review.domain.QBookmark.*;
+import static com.cheffi.review.domain.QRestaurant.*;
 import static com.cheffi.review.domain.QReview.*;
 import static com.cheffi.review.domain.QReviewPhoto.*;
+import static com.cheffi.review.domain.QReviewTag.*;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.cheffi.common.constant.Address;
+import com.cheffi.review.domain.Review;
 import com.cheffi.review.dto.QReviewInfoDto;
 import com.cheffi.review.dto.QReviewPhotoInfoDto;
 import com.cheffi.review.dto.ReviewInfoDto;
+import com.cheffi.review.dto.ReviewSearchCondition;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -99,4 +104,24 @@ public class ReviewJpaRepository {
 		return reviewPhoto.givenOrder.eq(givenOrder);
 	}
 
+	public List<Review> findByCondition(ReviewSearchCondition condition) {
+		Address address = condition.getAddress();
+
+		JPAQuery<Review> query = queryFactory
+			.select(review)
+			.from(restaurant)
+			.where(
+				restaurant.detailedAddress.province.eq(address.getProvince()),
+				restaurant.detailedAddress.city.eq(address.getCity()))
+			.leftJoin(review)
+			.on(restaurant.eq(review.restaurant));
+
+		Long tagId = condition.getTagId();
+		if (tagId != null)
+			query = query.rightJoin(reviewTag)
+				.on(reviewTag.review.eq(review),
+					reviewTag.tag.id.eq(tagId));
+
+		return query.fetch();
+	}
 }
