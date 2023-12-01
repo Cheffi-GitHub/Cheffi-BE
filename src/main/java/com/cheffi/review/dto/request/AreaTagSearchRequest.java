@@ -10,7 +10,6 @@ import com.cheffi.common.dto.RedisZSetRequest;
 import com.cheffi.review.dto.ReviewSearchCondition;
 import com.cheffi.util.constant.SearchConstant;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -23,17 +22,19 @@ public class AreaTagSearchRequest implements RedisZSetRequest {
 
 	@Valid
 	private final Address address;
+
 	@Parameter(description = "검색을 시작할 커서(포함) 최초 조회시는 0을 넣어주세요")
 	@NotNull
 	@PositiveOrZero
 	private final Long cursor;
+
 	@Parameter(description = "검색 사이즈")
 	@NotNull
 	@Range(min = 1, max = 16)
 	private final Integer size;
 
 	@Parameter(description = "검색할 태그의 인덱스, 음식 태그만 입력 가능합니다.", example = "15")
-	@JsonProperty("tag_id")
+	@NotNull
 	private final Long tagId;
 	@JsonIgnore
 	private final LocalDateTime referenceTime;
