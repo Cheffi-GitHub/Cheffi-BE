@@ -41,7 +41,7 @@ public class TagService {
 			.stream()
 			.filter(t -> t.getId().equals(id))
 			.findAny()
-			.orElseThrow(() -> new BusinessException(ErrorCode.BAD_AVATAR_TAG_REQUEST));
+			.orElseThrow(() -> new BusinessException(ErrorCode.TAG_NOT_EXIST));
 	}
 
 	public List<Tag> getAvatarTagByAvatarId(Long avatarId) {
@@ -50,6 +50,11 @@ public class TagService {
 
 	public List<Tag> getReviewTagByReviewId(Long reviewId) {
 		return tagRepository.findByReviewId(reviewId);
+	}
+
+	public void verifyTag(Long id, TagType type) {
+		if (!type.equals(getById(id).getTagType()))
+			throw new BusinessException(ErrorCode.TAG_NOT_MATCH);
 	}
 
 }
