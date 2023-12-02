@@ -39,7 +39,8 @@ public class ReviewSearchService {
 
 	@Transactional
 	public GetReviewResponse getReviewInfoOfNotAuthenticated(Long reviewId) {
-		Review review = reviewService.getByIdWithEntities(reviewId);
+		Review review = getReviewFromDB(reviewId);
+
 		Avatar writer = review.getWriter();
 		if (review.isLocked())
 			throw new AuthenticationException(ErrorCode.ANONYMOUS_USER_CANNOT_ACCESS_LOCKED_REVIEW);
@@ -49,9 +50,16 @@ public class ReviewSearchService {
 		return GetReviewResponse.ofNotAuthenticated(review, ReviewWriterInfoDto.of(writer));
 	}
 
+	private Review getReviewFromDB(Long reviewId) {
+		Review review = reviewService.getByIdWithEntities(reviewId);
+		if (!review.isActive())
+			throw new BusinessException(ErrorCode.REVIEW_IS_INACTIVE);
+		return review;
+	}
+
 	@Transactional
 	public GetReviewResponse getReviewInfoOfAuthenticated(Long reviewId, Long viewerId) {
-		Review review = reviewService.getByIdWithEntities(reviewId);
+		Review review = getReviewFromDB(reviewId);
 		Avatar writer = review.getWriter();
 
 		if (!writer.hasSameIdWith(viewerId)) {
