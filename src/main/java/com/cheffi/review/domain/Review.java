@@ -125,6 +125,10 @@ public class Review extends BaseTimeEntity {
 		return LocalDateTime.now().isAfter(timeToLock);
 	}
 
+	public boolean isActive() {
+		return ReviewStatus.ACTIVE.equals(this.status);
+	}
+
 	public Long getTimeLeftToLock() {
 		return Duration.between(LocalDateTime.now(), getTimeToLock()).toMillis();
 	}
