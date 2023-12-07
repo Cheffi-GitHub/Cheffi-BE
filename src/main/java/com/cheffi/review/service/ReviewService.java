@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.review.domain.Review;
+import com.cheffi.review.dto.MenuSearchRequest;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewSearchCondition;
 import com.cheffi.review.repository.ReviewJpaRepository;
@@ -32,9 +33,7 @@ public class ReviewService {
 	public List<ReviewInfoDto> getInfoById(List<Long> ids, Long offset, Long viewerId) {
 		if (ids.isEmpty())
 			return List.of();
-		if (viewerId == null)
-			return updateNumber(ids, reviewJpaRepository.findAllById(ids), offset);
-		return updateNumber(ids, reviewJpaRepository.findAllByIdWithBookmark(ids, viewerId), offset);
+		return updateNumber(ids, reviewJpaRepository.findAllById(ids, viewerId), offset);
 	}
 
 	private List<ReviewInfoDto> updateNumber(List<Long> ids, List<ReviewInfoDto> result, Long offset) {
@@ -55,6 +54,10 @@ public class ReviewService {
 
 	public List<Review> getByCondition(ReviewSearchCondition condition) {
 		return reviewJpaRepository.findByCondition(condition);
+	}
+
+	public List<ReviewInfoDto> getByMenu(MenuSearchRequest request, Long viewerId) {
+		return reviewJpaRepository.findByMenu(request, viewerId);
 	}
 
 }

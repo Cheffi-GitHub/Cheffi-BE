@@ -12,6 +12,8 @@ import com.cheffi.common.dto.CursorPage;
 import com.cheffi.common.dto.RedisZSetRequest;
 import com.cheffi.region.service.RegionService;
 import com.cheffi.review.domain.Review;
+import com.cheffi.review.dto.MenuSearchRequest;
+import com.cheffi.review.dto.ReviewCursor;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewSearchCondition;
 import com.cheffi.review.dto.ReviewTuples;
@@ -50,13 +52,6 @@ public class ReviewSearchService {
 		return GetReviewResponse.ofNotAuthenticated(review, ReviewWriterInfoDto.of(writer));
 	}
 
-	private Review getReviewFromDB(Long reviewId) {
-		Review review = reviewService.getByIdWithEntities(reviewId);
-		if (!review.isActive())
-			throw new BusinessException(ErrorCode.REVIEW_IS_INACTIVE);
-		return review;
-	}
-
 	@Transactional
 	public GetReviewResponse getReviewInfoOfAuthenticated(Long reviewId, Long viewerId) {
 		Review review = getReviewFromDB(reviewId);
@@ -73,8 +68,11 @@ public class ReviewSearchService {
 			ReviewWriterInfoDto.of(writer, writer.getId().equals(viewerId)));
 	}
 
-	public CursorPage<ReviewInfoDto, Integer> searchReviewsByArea(AreaSearchRequest request) {
-		return searchReviewsByArea(request, null);
+	private Review getReviewFromDB(Long reviewId) {
+		Review review = reviewService.getByIdWithEntities(reviewId);
+		if (!review.isActive())
+			throw new BusinessException(ErrorCode.REVIEW_IS_INACTIVE);
+		return review;
 	}
 
 	public CursorPage<ReviewInfoDto, Integer> searchReviewsByArea(AreaSearchRequest request, Long viewerId) {
@@ -86,10 +84,6 @@ public class ReviewSearchService {
 			request.getReferenceTime());
 	}
 
-	public CursorPage<ReviewInfoDto, Integer> searchReviewsByAreaAndTag(AreaTagSearchRequest request) {
-		return searchReviewsByAreaAndTag(request, null);
-	}
-
 	public CursorPage<ReviewInfoDto, Integer> searchReviewsByAreaAndTag(AreaTagSearchRequest request, Long viewerId) {
 		tagService.verifyTag(request.getTagId(), TagType.FOOD);
 		ReviewTuples reviewTuples = getTrendingReviewTuples(request, request.toSearchCondition());
@@ -99,6 +93,14 @@ public class ReviewSearchService {
 			request.getSize(),
 			ReviewInfoDto::getNumber,
 			request.getReferenceTime());
+	}
+
+	public CursorPage<ReviewInfoDto, ReviewCursor> searchByMenu(MenuSearchRequest request, Long viewerId) {
+		return CursorPage.of(
+			reviewService.getByMenu(request, viewerId),
+			request.getSize(),
+			ReviewCursor::of
+		);
 	}
 
 	private ReviewTuples getTrendingReviewTuples(RedisZSetRequest request, ReviewSearchCondition condition) {
