@@ -32,9 +32,7 @@ public class ReviewService {
 	public List<ReviewInfoDto> getInfoById(List<Long> ids, Long offset, Long viewerId) {
 		if (ids.isEmpty())
 			return List.of();
-		if (viewerId == null)
-			return updateNumber(ids, reviewJpaRepository.findAllById(ids), offset);
-		return updateNumber(ids, reviewJpaRepository.findAllByIdWithBookmark(ids, viewerId), offset);
+		return updateNumber(ids, reviewJpaRepository.findAllById(ids, viewerId), offset);
 	}
 
 	private List<ReviewInfoDto> updateNumber(List<Long> ids, List<ReviewInfoDto> result, Long offset) {
