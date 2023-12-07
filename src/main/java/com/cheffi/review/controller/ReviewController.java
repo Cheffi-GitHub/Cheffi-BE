@@ -65,7 +65,7 @@ public class ReviewController {
 		if (securityContextService.hasUserAuthority(principal))
 			return ApiCursorPageResponse.success(
 				reviewSearchService.searchReviewsByArea(request, principal.getAvatarId()));
-		return ApiCursorPageResponse.success(reviewSearchService.searchReviewsByArea(request));
+		return ApiCursorPageResponse.success(reviewSearchService.searchReviewsByArea(request, null));
 	}
 
 	@Tag(name = "Review")
@@ -78,7 +78,7 @@ public class ReviewController {
 		if (securityContextService.hasUserAuthority(principal))
 			return ApiCursorPageResponse.success(reviewSearchService.searchReviewsByAreaAndTag(request,
 				principal.getAvatarId()));
-		return ApiCursorPageResponse.success(reviewSearchService.searchReviewsByAreaAndTag(request));
+		return ApiCursorPageResponse.success(reviewSearchService.searchReviewsByAreaAndTag(request, null));
 	}
 
 	@Tag(name = "Review")

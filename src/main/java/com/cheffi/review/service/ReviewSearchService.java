@@ -50,13 +50,6 @@ public class ReviewSearchService {
 		return GetReviewResponse.ofNotAuthenticated(review, ReviewWriterInfoDto.of(writer));
 	}
 
-	private Review getReviewFromDB(Long reviewId) {
-		Review review = reviewService.getByIdWithEntities(reviewId);
-		if (!review.isActive())
-			throw new BusinessException(ErrorCode.REVIEW_IS_INACTIVE);
-		return review;
-	}
-
 	@Transactional
 	public GetReviewResponse getReviewInfoOfAuthenticated(Long reviewId, Long viewerId) {
 		Review review = getReviewFromDB(reviewId);
@@ -73,9 +66,13 @@ public class ReviewSearchService {
 			ReviewWriterInfoDto.of(writer, writer.getId().equals(viewerId)));
 	}
 
-	public CursorPage<ReviewInfoDto, Integer> searchReviewsByArea(AreaSearchRequest request) {
-		return searchReviewsByArea(request, null);
+	private Review getReviewFromDB(Long reviewId) {
+		Review review = reviewService.getByIdWithEntities(reviewId);
+		if (!review.isActive())
+			throw new BusinessException(ErrorCode.REVIEW_IS_INACTIVE);
+		return review;
 	}
+
 
 	public CursorPage<ReviewInfoDto, Integer> searchReviewsByArea(AreaSearchRequest request, Long viewerId) {
 		ReviewTuples reviewTuples = getTrendingReviewTuples(request, request.toSearchCondition());
@@ -84,10 +81,6 @@ public class ReviewSearchService {
 			request.getSize(),
 			ReviewInfoDto::getNumber,
 			request.getReferenceTime());
-	}
-
-	public CursorPage<ReviewInfoDto, Integer> searchReviewsByAreaAndTag(AreaTagSearchRequest request) {
-		return searchReviewsByAreaAndTag(request, null);
 	}
 
 	public CursorPage<ReviewInfoDto, Integer> searchReviewsByAreaAndTag(AreaTagSearchRequest request, Long viewerId) {
