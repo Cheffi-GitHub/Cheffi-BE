@@ -12,6 +12,8 @@ import com.cheffi.common.dto.CursorPage;
 import com.cheffi.common.dto.RedisZSetRequest;
 import com.cheffi.region.service.RegionService;
 import com.cheffi.review.domain.Review;
+import com.cheffi.review.dto.MenuSearchRequest;
+import com.cheffi.review.dto.ReviewCursor;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewSearchCondition;
 import com.cheffi.review.dto.ReviewTuples;
@@ -73,7 +75,6 @@ public class ReviewSearchService {
 		return review;
 	}
 
-
 	public CursorPage<ReviewInfoDto, Integer> searchReviewsByArea(AreaSearchRequest request, Long viewerId) {
 		ReviewTuples reviewTuples = getTrendingReviewTuples(request, request.toSearchCondition());
 		return CursorPage.of(
@@ -92,6 +93,14 @@ public class ReviewSearchService {
 			request.getSize(),
 			ReviewInfoDto::getNumber,
 			request.getReferenceTime());
+	}
+
+	public CursorPage<ReviewInfoDto, ReviewCursor> searchByMenu(MenuSearchRequest request, Long viewerId) {
+		return CursorPage.of(
+			reviewService.getByMenu(request, viewerId),
+			request.getSize(),
+			ReviewCursor::of
+		);
 	}
 
 	private ReviewTuples getTrendingReviewTuples(RedisZSetRequest request, ReviewSearchCondition condition) {

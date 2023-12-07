@@ -2,6 +2,7 @@ package com.cheffi.review.repository;
 
 import static com.cheffi.avatar.domain.QPurchasedItem.*;
 import static com.cheffi.review.domain.QBookmark.*;
+import static com.cheffi.review.domain.QMenu.*;
 import static com.cheffi.review.domain.QRestaurant.*;
 import static com.cheffi.review.domain.QReview.*;
 import static com.cheffi.review.domain.QReviewPhoto.*;
@@ -12,9 +13,12 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.cheffi.common.constant.Address;
+import com.cheffi.review.constant.ReviewStatus;
 import com.cheffi.review.domain.Review;
+import com.cheffi.review.dto.MenuSearchRequest;
 import com.cheffi.review.dto.QReviewInfoDto;
 import com.cheffi.review.dto.QReviewPhotoInfoDto;
+import com.cheffi.review.dto.ReviewCursor;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewSearchCondition;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -68,6 +72,28 @@ public class ReviewJpaRepository {
 					reviewTag.tag.id.eq(tagId));
 
 		return query.fetch();
+	}
+
+	public List<ReviewInfoDto> findByMenu(MenuSearchRequest request, Long viewerId) {
+		ReviewCursor cursor = request.getCursor();
+
+		JPAQuery<?> common = queryFactory
+			.from(review)
+			.distinct()
+			.innerJoin(review.menus, menu)
+			.on(menu.name.startsWith(request.getMenu()))
+			.leftJoin(review.photos, reviewPhoto)
+			.on(photoOrderEq(0))
+			.where(review.status.eq(ReviewStatus.ACTIVE)
+				.and(review.viewCnt.lt(cursor.getCount())
+					.or(review.viewCnt.eq(cursor.getCount()).and(review.id.loe(cursor.getId())))))
+			.orderBy(review.viewCnt.desc(), review.id.desc())
+			.limit(request.getSize() + 1L);
+
+		if (viewerId == null) {
+			return selectSimple(common).fetch();
+		}
+		return selectWithViewer(common, viewerId).fetch();
 	}
 
 	private static JPAQuery<ReviewInfoDto> selectSimple(JPAQuery<?> query) {
