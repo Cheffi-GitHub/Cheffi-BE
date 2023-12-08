@@ -121,4 +121,19 @@ public class Avatar extends BaseTimeEntity {
 		return getId().equals(idToCompare);
 	}
 
+	public void addFollower() {
+		this.followerCnt++;
+	}
+
+	public void addFollowing() {
+		this.followingCnt++;
+	}
+
+	public void removeFollower() {
+		this.followerCnt--;
+	}
+
+	public void removeFollowing() {
+		this.followingCnt--;
+	}
 }

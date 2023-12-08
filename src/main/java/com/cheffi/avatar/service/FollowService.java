@@ -37,6 +37,8 @@ public class FollowService {
 		}
 
 		Follow createdFollow = followRepository.save(Follow.createFollowRelationship(follower, followee));
+		follower.addFollowing();
+		followee.addFollower();
 
 		return AddFollowResponse.from(createdFollow);
 	}
@@ -48,6 +50,8 @@ public class FollowService {
 		Avatar followee = avatarService.getById(followeeId);
 
 		followRepository.delete(getByFollowerAndFollowee(follower, followee));
+		follower.removeFollowing();
+		followee.removeFollower();
 
 		return new UnfollowResponse(followerId, followeeId);
 	}
