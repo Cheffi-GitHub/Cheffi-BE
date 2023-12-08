@@ -78,7 +78,7 @@ public class AvatarService {
 	}
 
 	public AvatarInfoResponse getAvatarInfo(Long avatarId) {
-		return AvatarInfoResponse.mock();
+		return AvatarInfoResponse.of(getByIdWithTagsAndPhoto(avatarId));
 	}
 
 	public Avatar getById(Long avatarId) {

@@ -46,14 +46,4 @@ public record SelfAvatarInfo(
 			.build();
 	}
 
-	public static SelfAvatarInfo mock() {
-		return SelfAvatarInfo.builder()
-			.avatarId(2L)
-			.nickname("닉네임")
-			.introduction("안녕하세요. 소개글 입니다.")
-			.cheffiCoinCnt(500)
-			.pointCnt(100)
-			.photoUrl("https://undongin.com/data/editor/0107/1609980770_6067.jpg")
-			.build();
-	}
 }
