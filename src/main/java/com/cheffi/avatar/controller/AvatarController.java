@@ -3,6 +3,7 @@ package com.cheffi.avatar.controller;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,8 +27,11 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 
+@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/avatars")
@@ -83,14 +87,14 @@ public class AvatarController {
 	@Tag(name = "Avatar")
 	@Operation(summary = "닉네임 중복 확인 API")
 	@GetMapping(value = "/nickname/inuse")
-	public ApiResponse<Boolean> checkNicknameIsInUse(String nickname) {
+	public ApiResponse<Boolean> checkNicknameIsInUse(@NotBlank String nickname) {
 		return ApiResponse.success(avatarService.isNicknameInUse(nickname));
 	}
 
 	@Tag(name = "Avatar")
-	@Operation(summary = "타인의 아바타 조회 MOCK API")
+	@Operation(summary = "타인의 아바타 조회 API")
 	@GetMapping("/{id}")
-	public ApiResponse<AvatarInfoResponse> getAvatarInfo(@PathVariable(name = "id") Long avatarId) {
+	public ApiResponse<AvatarInfoResponse> getAvatarInfo(@PathVariable(name = "id") @Positive Long avatarId) {
 		return ApiResponse.success(avatarService.getAvatarInfo(avatarId));
 	}
 

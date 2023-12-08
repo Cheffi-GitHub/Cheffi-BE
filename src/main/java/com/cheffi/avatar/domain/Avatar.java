@@ -46,6 +46,9 @@ public class Avatar extends BaseTimeEntity {
 	private Address address;
 	private int cheffiCoinCnt;
 	private int pointCnt;
+	private int followerCnt;
+	private int followingCnt;
+	private int postCnt;
 
 	@NotNull
 	@OneToOne(fetch = FetchType.LAZY)
@@ -64,6 +67,9 @@ public class Avatar extends BaseTimeEntity {
 		this.user = user;
 		this.cheffiCoinCnt = 0;
 		this.pointCnt = 0;
+		this.followerCnt = 0;
+		this.followingCnt = 0;
+		this.postCnt = 0;
 	}
 
 	public void changeAddress(Address address) {
