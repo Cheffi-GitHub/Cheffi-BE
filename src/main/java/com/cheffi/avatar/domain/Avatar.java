@@ -136,4 +136,8 @@ public class Avatar extends BaseTimeEntity {
 	public void removeFollowing() {
 		this.followingCnt--;
 	}
+
+	public void addPostCount() {
+		this.postCnt++;
+	}
 }

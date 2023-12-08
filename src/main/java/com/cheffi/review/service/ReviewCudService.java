@@ -37,6 +37,7 @@ public class ReviewCudService {
 			request.isRegistered());
 		Review review = Review.of(new ReviewCreateRequest(request.getTitle(), request.getText(), LOCK_AFTER_HOURS),
 			restaurant, author);
+		author.addPostCount();
 
 		menuService.addMenus(review, request.getMenus());
 		reviewTagService.changeTags(review, request.getTag());
