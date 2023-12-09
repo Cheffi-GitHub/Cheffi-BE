@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +22,10 @@ import com.cheffi.oauth.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.prefix}/avatars/follow")
@@ -38,8 +41,7 @@ public class FollowController {
 	@PostMapping
 	public ApiResponse<AddFollowResponse> addFollow(
 		@AuthenticationPrincipal UserPrincipal principal,
-		Long avatarId) {
-
+		@Positive Long avatarId) {
 		return ApiResponse.success(followService.addFollow(principal.getAvatarId(), avatarId));
 	}
 
@@ -51,13 +53,13 @@ public class FollowController {
 	@DeleteMapping
 	public ApiResponse<UnfollowResponse> unfollow(
 		@AuthenticationPrincipal UserPrincipal principal,
-		Long avatarId) {
+		@Positive Long avatarId) {
 
 		return ApiResponse.success(followService.unfollow(principal.getAvatarId(), avatarId));
 	}
 
 	@Tag(name = "Follow")
-	@Operation(summary = "자신의 팔로우 목록 조회 API",
+	@Operation(summary = "자신의 팔로우 목록 조회 API - MOCK API",
 		description = "팔로우 조회 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
@@ -67,7 +69,7 @@ public class FollowController {
 	}
 
 	@Tag(name = "Follow")
-	@Operation(summary = "팔로우 추천 목록 조회 API",
+	@Operation(summary = "팔로우 추천 목록 조회 API - MOCK API",
 		description = "팔로우 추천 조회 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
