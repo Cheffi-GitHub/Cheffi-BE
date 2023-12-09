@@ -11,6 +11,7 @@ import com.cheffi.avatar.dto.response.AddFollowResponse;
 import com.cheffi.avatar.dto.response.GetFollowResponse;
 import com.cheffi.avatar.dto.response.RecommendFollowResponse;
 import com.cheffi.avatar.dto.response.UnfollowResponse;
+import com.cheffi.avatar.repository.FollowJpaRepository;
 import com.cheffi.avatar.repository.FollowRepository;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
@@ -23,8 +24,8 @@ import lombok.RequiredArgsConstructor;
 public class FollowService {
 
 	private final FollowRepository followRepository;
+	private final FollowJpaRepository followJpaRepository;
 	private final AvatarService avatarService;
-
 
 	@Transactional
 	public AddFollowResponse addFollow(Long followerId, Long followeeId) {
@@ -56,15 +57,13 @@ public class FollowService {
 		return new UnfollowResponse(followerId, followeeId);
 	}
 
-
 	public List<GetFollowResponse> getFollowee(Long userId) {
 		return GetFollowResponse.mock();
 	}
 
-	public List<RecommendFollowResponse> recommendFollowee(Long userId) {
-		return RecommendFollowResponse.mock();
+	public List<RecommendFollowResponse> recommendFollowee(Long tagId, Long avatarId) {
+		return followJpaRepository.recommendByTag(tagId, avatarId);
 	}
-
 
 	public Follow getByFollowerAndFollowee(Avatar follower, Avatar followee) {
 		return followRepository.findBySubjectAndTarget(follower, followee)
