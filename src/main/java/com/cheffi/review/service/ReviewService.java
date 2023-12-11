@@ -60,4 +60,7 @@ public class ReviewService {
 		return reviewJpaRepository.findByMenu(request, viewerId);
 	}
 
+	public Review save (Review review) {
+		return reviewRepository.save(review);
+	}
 }

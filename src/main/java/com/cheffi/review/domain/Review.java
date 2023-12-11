@@ -12,6 +12,7 @@ import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.review.constant.RatingType;
 import com.cheffi.review.constant.ReviewStatus;
+import com.cheffi.review.dto.request.UpdateReviewRequest;
 import com.cheffi.tag.domain.Tag;
 
 import jakarta.persistence.CascadeType;
@@ -108,6 +109,9 @@ public class Review extends BaseTimeEntity {
 	public void clearMenus() {
 		this.menus.clear();
 	}
+	public void clearPhotos() {
+		this.photos.clear();
+	}
 
 	public void addTags(List<Tag> tagsToAdd) {
 		List<Tag> tagList = reviewTags.stream().map(ReviewTag::getTag).toList();
@@ -119,6 +123,11 @@ public class Review extends BaseTimeEntity {
 
 	public void removeTags(List<Tag> tagsToRemove) {
 		reviewTags.removeIf(rt -> tagsToRemove.contains(rt.getTag()));
+	}
+
+	public void updateFromRequest(UpdateReviewRequest request) {
+		this.title = request.getTitle();
+		this.text = request.getText();
 	}
 
 	public boolean isLocked() {
