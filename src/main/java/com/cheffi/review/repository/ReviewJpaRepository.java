@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.cheffi.common.constant.Address;
 import com.cheffi.review.constant.ReviewStatus;
 import com.cheffi.review.domain.Review;
+import com.cheffi.review.dto.AddressSearchRequest;
 import com.cheffi.review.dto.MenuSearchRequest;
 import com.cheffi.review.dto.QReviewInfoDto;
 import com.cheffi.review.dto.QReviewPhotoInfoDto;
@@ -89,6 +90,28 @@ public class ReviewJpaRepository {
 					.or(review.viewCnt.eq(cursor.getCount()).and(review.id.loe(cursor.getId())))))
 			.orderBy(review.viewCnt.desc(), review.id.desc())
 			.limit(request.getSize() + 1L);
+
+		if (viewerId == null) {
+			return selectSimple(common).fetch();
+		}
+		return selectWithViewer(common, viewerId).fetch();
+	}
+
+	public List<ReviewInfoDto> findByAddress(AddressSearchRequest request, Long viewerId) {
+		ReviewCursor cursor = request.getCursor();
+
+		JPAQuery<?> common = queryFactory
+			.from(review)
+			.leftJoin(review.restaurant, restaurant)
+			.leftJoin(review.photos, reviewPhoto)
+			.on(photoOrderEq(0))
+			.where(review.status.eq(ReviewStatus.ACTIVE)
+					.and(review.viewCnt.lt(cursor.getCount())
+						.or(review.viewCnt.eq(cursor.getCount()).and(review.id.loe(cursor.getId()))))
+				, restaurantAddressEq(request.getAddress())
+			)
+			.orderBy(review.viewCnt.desc(), review.id.desc())
+			.limit(request.getSize() + 1);
 
 		if (viewerId == null) {
 			return selectSimple(common).fetch();

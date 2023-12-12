@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.review.domain.Review;
+import com.cheffi.review.dto.AddressSearchRequest;
 import com.cheffi.review.dto.MenuSearchRequest;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewSearchCondition;
@@ -58,6 +59,10 @@ public class ReviewService {
 
 	public List<ReviewInfoDto> getByMenu(MenuSearchRequest request, Long viewerId) {
 		return reviewJpaRepository.findByMenu(request, viewerId);
+	}
+
+	public List<ReviewInfoDto> getByAddress(AddressSearchRequest request, Long viewerId) {
+		return reviewJpaRepository.findByAddress(request, viewerId);
 	}
 
 }
