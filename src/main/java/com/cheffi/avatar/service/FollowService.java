@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.Follow;
+import com.cheffi.avatar.dto.GetFollowRequest;
 import com.cheffi.avatar.dto.response.AddFollowResponse;
 import com.cheffi.avatar.dto.response.GetFollowResponse;
 import com.cheffi.avatar.dto.response.RecommendFollowResponse;
@@ -15,6 +16,7 @@ import com.cheffi.avatar.repository.FollowJpaRepository;
 import com.cheffi.avatar.repository.FollowRepository;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
+import com.cheffi.common.dto.CursorPage;
 
 import lombok.RequiredArgsConstructor;
 
@@ -57,8 +59,14 @@ public class FollowService {
 		return new UnfollowResponse(followerId, followeeId);
 	}
 
-	public List<GetFollowResponse> getFollowee(Long userId) {
-		return GetFollowResponse.mock();
+	public CursorPage<GetFollowResponse, Long> getFollowing(GetFollowRequest request, Long followerId, Long viewerId) {
+		return CursorPage.of(followJpaRepository.findFollowing(request, followerId, viewerId),
+			request.getSize(), GetFollowResponse::cursor);
+	}
+
+	public CursorPage<GetFollowResponse, Long> getFollower(GetFollowRequest request, Long followingId, Long viewerId) {
+		return CursorPage.of(followJpaRepository.findFollower(request, followingId, viewerId),
+			request.getSize(), GetFollowResponse::cursor);
 	}
 
 	public List<RecommendFollowResponse> recommendFollowee(Long tagId, Long avatarId) {
