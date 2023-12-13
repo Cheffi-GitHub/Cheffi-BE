@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/avatars/follow")
+@RequestMapping("${api.prefix}/follows")
 public class FollowController {
 
 	private final FollowService followService;
