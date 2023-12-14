@@ -151,4 +151,26 @@ public class Review extends BaseTimeEntity {
 		this.viewCnt += 1;
 	}
 
+	private void updateRatingCnt(RatingType type, int value) {
+		if (RatingType.GOOD.equals(type))
+			this.goodRatingCnt += value;
+		else if (RatingType.AVERAGE.equals(type))
+			this.averageRatingCnt += value;
+		else
+			this.badRatingCnt += value;
+	}
+
+	void addRatingCount(RatingType type) {
+		updateRatingCnt(type, 1);
+	}
+
+	void removeRatingCount(RatingType type) {
+		updateRatingCnt(type, -1);
+	}
+
+	void changeRatingCount(RatingType before, RatingType after) {
+		removeRatingCount(before);
+		addRatingCount(after);
+	}
+
 }
