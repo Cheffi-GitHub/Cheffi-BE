@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "Bookmark")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/bookmarks")
+@RequestMapping("${api.prefix}/bookmarks")
 public class BookmarkController {
 
 	private final BookmarkService bookmarkService;
