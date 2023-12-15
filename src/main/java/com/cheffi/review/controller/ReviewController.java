@@ -19,6 +19,7 @@ import com.cheffi.common.response.ApiCursorPageResponse;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.oauth.model.UserPrincipal;
+import com.cheffi.review.dto.AddressSearchRequest;
 import com.cheffi.review.dto.MenuSearchRequest;
 import com.cheffi.review.dto.ReviewCursor;
 import com.cheffi.review.dto.ReviewInfoDto;
@@ -96,6 +97,19 @@ public class ReviewController {
 			return ApiCursorPageResponse.success(reviewSearchService.searchByMenu(request,
 				principal.getAvatarId()));
 		return ApiCursorPageResponse.success(reviewSearchService.searchByMenu(request, null));
+	}
+
+	@Tag(name = "Review")
+	@Operation(summary = "지역 검색 API",
+		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
+	@GetMapping("/address")
+	public ApiCursorPageResponse<ReviewInfoDto, ReviewCursor> searchReviewsByAddress(
+		@ParameterObject @Valid AddressSearchRequest request,
+		@AuthenticationPrincipal UserPrincipal principal) {
+		if (securityContextService.hasUserAuthority(principal))
+			return ApiCursorPageResponse.success(reviewSearchService.searchByAddress(request,
+				principal.getAvatarId()));
+		return ApiCursorPageResponse.success(reviewSearchService.searchByAddress(request, null));
 	}
 
 	@Tag(name = "Review")

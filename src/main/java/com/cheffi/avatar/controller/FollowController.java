@@ -12,24 +12,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cheffi.avatar.dto.GetFollowRequest;
 import com.cheffi.avatar.dto.response.AddFollowResponse;
 import com.cheffi.avatar.dto.response.GetFollowResponse;
 import com.cheffi.avatar.dto.response.RecommendFollowResponse;
 import com.cheffi.avatar.dto.response.UnfollowResponse;
 import com.cheffi.avatar.service.FollowService;
+import com.cheffi.common.response.ApiCursorPageResponse;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.oauth.model.UserPrincipal;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/avatars/follow")
+@RequestMapping("${api.prefix}/follows")
 public class FollowController {
 
 	private final FollowService followService;
@@ -60,13 +63,17 @@ public class FollowController {
 	}
 
 	@Tag(name = "Follow")
-	@Operation(summary = "자신의 팔로우 목록 조회 API - MOCK API",
-		description = "팔로우 조회 - 인증 필요",
+	@Operation(summary = "자신이 팔로우하는 유저 목록 조회 API",
+		description = "자신의 팔로잉 리스트 조회 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
-	@GetMapping
-	public ApiResponse<List<GetFollowResponse>> getMyFollowee() {
-		return ApiResponse.success(followService.getFollowee(1L));
+	@GetMapping("following")
+	public ApiCursorPageResponse<GetFollowResponse, Long> getMyFollowing(
+		@AuthenticationPrincipal UserPrincipal principal,
+		@Valid GetFollowRequest request
+	) {
+		return ApiCursorPageResponse.success(
+			followService.getFollowing(request, principal.getAvatarId(), principal.getAvatarId()));
 	}
 
 	@Tag(name = "Follow")
