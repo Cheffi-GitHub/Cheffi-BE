@@ -8,11 +8,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.service.AvatarService;
+import com.cheffi.common.code.ErrorCode;
+import com.cheffi.common.config.exception.business.BusinessException;
+import com.cheffi.common.constant.S3RootPath;
 import com.cheffi.review.domain.Restaurant;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.domain.ReviewCreateRequest;
 import com.cheffi.review.dto.request.RegisterReviewRequest;
-import com.cheffi.review.repository.ReviewRepository;
+import com.cheffi.review.dto.request.UpdateReviewRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,12 +26,12 @@ public class ReviewCudService {
 
 	private static final int LOCK_AFTER_HOURS = 24;
 
-	private final ReviewRepository reviewRepository;
 	private final AvatarService avatarService;
 	private final RestaurantInfoService restaurantInfoService;
 	private final ReviewTagService reviewTagService;
 	private final MenuService menuService;
 	private final ReviewPhotoService reviewPhotoService;
+	private final ReviewService reviewService;
 
 	@Transactional
 	public Long registerReview(Long authorId, RegisterReviewRequest request, List<MultipartFile> images) {
@@ -44,7 +47,24 @@ public class ReviewCudService {
 
 		reviewPhotoService.addPhotos(review, images);
 
-		return reviewRepository.save(review).getId();
+		return reviewService.save(review).getId();
+	}
+
+	@Transactional
+	public void updateReview(Long authorId, UpdateReviewRequest request, List<MultipartFile> images) {
+		Avatar author = avatarService.getById(authorId);
+		Review review = reviewService.getById(request.getReviewId());
+		validateReviewAuthor(author, review);
+
+		review.updateFromRequest(request);
+		menuService.changeMenus(review, request.getMenus());
+		reviewTagService.changeTags(review, request.getTag());
+		reviewPhotoService.changePhotos(review, images, S3RootPath.REVIEW_PHOTO);
+	}
+
+	private static void validateReviewAuthor(Avatar author, Review review) {
+		if (review.getWriter().getId() != author.getId())
+			throw new BusinessException(ErrorCode.NOT_REVIEW_WRITER);
 	}
 
 }

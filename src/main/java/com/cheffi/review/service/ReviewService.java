@@ -61,6 +61,9 @@ public class ReviewService {
 		return reviewJpaRepository.findByMenu(request, viewerId);
 	}
 
+	public Review save (Review review) {
+		return reviewRepository.save(review);
+	}
 	public List<ReviewInfoDto> getByAddress(AddressSearchRequest request, Long viewerId) {
 		return reviewJpaRepository.findByAddress(request, viewerId);
 	}

@@ -59,6 +59,7 @@ public enum ErrorCode {
 	ADDRESS_NOT_EXIST(HttpStatus.BAD_REQUEST, "R-009", "존재하지 않는 주소입니다."),
 	REVIEW_NOT_EXIST_IN_AREA(HttpStatus.BAD_REQUEST, "R-010", "해당 지역에 등록된 리뷰가 없습니다."),
 	REVIEW_IS_INACTIVE(HttpStatus.BAD_REQUEST, "R-011", "해당 리뷰는 활성화상태가 아닙니다."),
+	NOT_REVIEW_WRITER(HttpStatus.BAD_REQUEST, "R-012", "리뷰 작성자가 아닙니다."),
 
 	// 파일
 	NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "F-001", "전송된 파일의 형식이 이미지가 아닙니다."),
