@@ -33,10 +33,10 @@ public class GetReviewResponse {
 	@Schema(description = "리뷰의 적힌 본문 내용", example = "초밥 태초세트 추천해요")
 	private String text;
 	@Schema(description = "북마크 여부", example = "false")
-	private boolean bookmarked;
-	@Schema(description = "본인 평가 여부", example = "false")
-	private boolean ratedByUser;
-	@Schema(description = "본인 평가 타입", example = "GOOD")
+	private Boolean bookmarked;
+	@Schema(description = "본인 평가 여부 - 이전에 한 번이라도 평가한 적이 있는지 여부입니다.", example = "false")
+	private Boolean ratedByUser;
+	@Schema(description = "본인 평가 타입 - 평가를 하지 않거나 취소했을 경우 값은 NONE 입니다.", example = "GOOD")
 	private RatingType ratingType;
 	@Schema(description = "생성일자")
 	private LocalDateTime createdDate;

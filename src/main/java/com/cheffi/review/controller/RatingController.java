@@ -27,7 +27,7 @@ public class RatingController {
 
 	@Tag(name = "Rating")
 	@Operation(summary = "리뷰 평가 API - 인증 필요",
-		description = "리뷰에 대한 평가를 하는 API")
+		description = "리뷰에 대한 평가를 하는 API - 취소를 원한다면 'type = NONE' 지정해주면 취소됩니다.")
 	@PreAuthorize("hasRole('USER')")
 	@PutMapping
 	public ApiResponse<Void> putRating(@RequestBody @Valid PutRatingRequest request,
