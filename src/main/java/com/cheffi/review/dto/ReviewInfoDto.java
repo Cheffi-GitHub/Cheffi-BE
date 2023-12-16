@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import com.cheffi.review.constant.ReviewStatus;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ReviewInfoDto {
 
@@ -28,9 +30,7 @@ public class ReviewInfoDto {
 	@Schema(description = "잠금까지 남은 시간 (ms 단위)", example = "86399751")
 	private Long timeLeftToLock;
 	@Schema(description = "잠금 여부", example = "true")
-	private boolean locked;
-	@Schema(description = "북마크 여부", example = "true")
-	private Boolean bookmarked;
+	private Boolean locked;
 	@Schema(description = "누적 조회수", example = "100")
 	private Integer viewCount;
 	@Schema(description = "랭킹(커서)", example = "10")
@@ -38,16 +38,18 @@ public class ReviewInfoDto {
 	@Schema(description = "리뷰의 현재 상태", example = "ACTIVE")
 	private ReviewStatus reviewStatus;
 	@Schema(description = "작성자 여부", example = "false")
-	private boolean writtenByUser;
+	private Boolean writtenByUser;
+	@Schema(description = "북마크 여부", example = "true")
+	private Boolean bookmarked;
 	@Schema(description = "구매 여부", example = "true")
-	private boolean purchased;
+	private Boolean purchased;
 	@Schema(description = "리뷰의 활성화 여부 'ACTIVE' 상태이면 true", example = "true")
-	private boolean active;
+	private Boolean active;
 
 	@QueryProjection
 	public ReviewInfoDto(Long id, String title, String text, ReviewPhotoInfoDto photo,
-		LocalDateTime timeToLock, Integer viewCount, ReviewStatus reviewStatus, Boolean bookmarked,
-		Boolean writtenByUser, Boolean purchased) {
+		LocalDateTime timeToLock, Integer viewCount, ReviewStatus reviewStatus, Boolean writtenByUser,
+		Boolean bookmarked, Boolean purchased) {
 		this.reviewStatus = reviewStatus;
 		this.id = id;
 		if (!ReviewStatus.ACTIVE.equals(reviewStatus))

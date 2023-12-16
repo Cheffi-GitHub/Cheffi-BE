@@ -20,6 +20,7 @@ import com.cheffi.review.dto.ReviewSearchCondition;
 import com.cheffi.review.dto.ReviewTuples;
 import com.cheffi.review.dto.request.AreaSearchRequest;
 import com.cheffi.review.dto.request.AreaTagSearchRequest;
+import com.cheffi.review.dto.request.GetMyPageReviewRequest;
 import com.cheffi.review.dto.response.GetReviewResponse;
 import com.cheffi.review.dto.response.ReviewWriterInfoDto;
 import com.cheffi.tag.constant.TagType;
@@ -126,4 +127,9 @@ public class ReviewSearchService {
 		return reviewTrendingService.calculateTrendingReviews(condition, request);
 	}
 
+	public CursorPage<ReviewInfoDto, Long> getByWriter(GetMyPageReviewRequest request, Long writerId, Long viewerId) {
+		return CursorPage.of(reviewService.getByWriter(request, writerId, viewerId),
+			request.getSize(),
+			ReviewInfoDto::getId);
+	}
 }
