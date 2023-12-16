@@ -13,6 +13,7 @@ import com.cheffi.review.dto.AddressSearchRequest;
 import com.cheffi.review.dto.MenuSearchRequest;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewSearchCondition;
+import com.cheffi.review.dto.request.GetMyPageReviewRequest;
 import com.cheffi.review.repository.ReviewJpaRepository;
 import com.cheffi.review.repository.ReviewRepository;
 
@@ -68,4 +69,7 @@ public class ReviewService {
 		return reviewJpaRepository.findByAddress(request, viewerId);
 	}
 
+	public List<ReviewInfoDto> getByWriter(GetMyPageReviewRequest request, Long writerId, Long viewerId) {
+		return reviewJpaRepository.findByWriter(request, writerId, viewerId);
+	}
 }

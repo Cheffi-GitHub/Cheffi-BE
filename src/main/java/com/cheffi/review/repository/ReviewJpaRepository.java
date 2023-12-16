@@ -1,11 +1,8 @@
 package com.cheffi.review.repository;
 
-import static com.cheffi.avatar.domain.QPurchasedItem.*;
-import static com.cheffi.review.domain.QBookmark.*;
 import static com.cheffi.review.domain.QMenu.*;
 import static com.cheffi.review.domain.QRestaurant.*;
 import static com.cheffi.review.domain.QReview.*;
-import static com.cheffi.review.domain.QReviewPhoto.*;
 import static com.cheffi.review.domain.QReviewTag.*;
 
 import java.util.List;
@@ -17,11 +14,11 @@ import com.cheffi.review.constant.ReviewStatus;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.dto.AddressSearchRequest;
 import com.cheffi.review.dto.MenuSearchRequest;
-import com.cheffi.review.dto.QReviewInfoDto;
-import com.cheffi.review.dto.QReviewPhotoInfoDto;
 import com.cheffi.review.dto.ReviewCursor;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewSearchCondition;
+import com.cheffi.review.dto.request.GetMyPageReviewRequest;
+import com.cheffi.review.repository.querydsl.ReviewQueryProcessor;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -46,14 +43,10 @@ public class ReviewJpaRepository {
 
 		JPAQuery<?> common = queryFactory
 			.from(review)
-			.leftJoin(review.photos, reviewPhoto)
-			.on(photoOrderEq(0))
 			.where(reviewIdIn(ids));
 
-		if (viewerId == null)
-			return selectSimple(common).fetch();
-
-		return selectWithViewer(common, viewerId).fetch();
+		return ReviewQueryProcessor.defaultBuilder(viewerId).build()
+			.process(common).fetch();
 	}
 
 	public List<Review> findByCondition(ReviewSearchCondition condition) {
@@ -83,18 +76,14 @@ public class ReviewJpaRepository {
 			.distinct()
 			.innerJoin(review.menus, menu)
 			.on(menu.name.startsWith(request.getMenu()))
-			.leftJoin(review.photos, reviewPhoto)
-			.on(photoOrderEq(0))
 			.where(review.status.eq(ReviewStatus.ACTIVE)
 				.and(review.viewCnt.lt(cursor.getCount())
 					.or(review.viewCnt.eq(cursor.getCount()).and(review.id.loe(cursor.getId())))))
 			.orderBy(review.viewCnt.desc(), review.id.desc())
 			.limit(request.getSize() + 1L);
 
-		if (viewerId == null) {
-			return selectSimple(common).fetch();
-		}
-		return selectWithViewer(common, viewerId).fetch();
+		return ReviewQueryProcessor.defaultBuilder(viewerId).build()
+			.process(common).fetch();
 	}
 
 	public List<ReviewInfoDto> findByAddress(AddressSearchRequest request, Long viewerId) {
@@ -103,56 +92,34 @@ public class ReviewJpaRepository {
 		JPAQuery<?> common = queryFactory
 			.from(review)
 			.leftJoin(review.restaurant, restaurant)
-			.leftJoin(review.photos, reviewPhoto)
-			.on(photoOrderEq(0))
 			.where(review.status.eq(ReviewStatus.ACTIVE)
 					.and(review.viewCnt.lt(cursor.getCount())
 						.or(review.viewCnt.eq(cursor.getCount()).and(review.id.loe(cursor.getId()))))
 				, restaurantAddressEq(request.getAddress())
 			)
 			.orderBy(review.viewCnt.desc(), review.id.desc())
-			.limit(request.getSize() + 1);
+			.limit(request.getSize() + 1L);
 
-		if (viewerId == null) {
-			return selectSimple(common).fetch();
-		}
-		return selectWithViewer(common, viewerId).fetch();
+		return ReviewQueryProcessor.defaultBuilder(viewerId).build()
+			.process(common).fetch();
 	}
 
-	private static JPAQuery<ReviewInfoDto> selectSimple(JPAQuery<?> query) {
-		return query.select(new QReviewInfoDto(
-			review.id,
-			review.title,
-			review.text,
-			new QReviewPhotoInfoDto(reviewPhoto.id, reviewPhoto.givenOrder, reviewPhoto.url),
-			review.timeToLock,
-			review.viewCnt,
-			review.status,
-			Expressions.FALSE,
-			Expressions.FALSE,
-			Expressions.FALSE
-		));
-	}
+	public List<ReviewInfoDto> findByWriter(GetMyPageReviewRequest request, Long writerId, Long viewerId) {
+		JPAQuery<?> query = queryFactory
+			.from(review)
+			.where(review.writer.id.eq(writerId)
+				.and(review.id.loe(request.getCursor(Long.MAX_VALUE))))
+			.orderBy(review.id.desc())
+			.limit(request.getSize() + 1L);
 
-	private static JPAQuery<ReviewInfoDto> selectWithViewer(JPAQuery<?> query, Long viewerId) {
-		return query.select(new QReviewInfoDto(
-				review.id,
-				review.title,
-				review.text,
-				new QReviewPhotoInfoDto(reviewPhoto.id, reviewPhoto.givenOrder, reviewPhoto.url),
-				review.timeToLock,
-				review.viewCnt,
-				review.status,
-				bookmark.isNotNull(),
-				review.writer.id.eq(viewerId),
-				purchasedItem.isNotNull()
-			))
-			.leftJoin(bookmark)
-			.on(bookmark.review.id.eq(review.id),
-				bookmarkWriterEq(viewerId))
-			.leftJoin(purchasedItem)
-			.on(purchasedItem.review.eq(review),
-				purchasedItem.avatar.id.eq(viewerId));
+		boolean authenticated = viewerId != null;
+		boolean isWriter = writerId.equals(viewerId);
+
+		return ReviewQueryProcessor.builder(false, viewerId, isWriter ? Expressions.TRUE : Expressions.FALSE)
+			.includePurchase(authenticated && !isWriter, Expressions.FALSE)
+			.includeBookmark(false, Expressions.nullExpression())
+			.build()
+			.process(query).fetch();
 	}
 
 	private static BooleanExpression restaurantAddressEq(Address address) {
@@ -160,15 +127,8 @@ public class ReviewJpaRepository {
 			.and(restaurant.detailedAddress.city.eq(address.getCity()));
 	}
 
-	private static BooleanExpression bookmarkWriterEq(Long viewerId) {
-		return bookmark.avatar.id.eq(viewerId);
-	}
-
 	private static BooleanExpression reviewIdIn(List<Long> reviewIds) {
 		return review.id.in(reviewIds);
 	}
 
-	private static BooleanExpression photoOrderEq(Integer givenOrder) {
-		return reviewPhoto.givenOrder.eq(givenOrder);
-	}
 }
