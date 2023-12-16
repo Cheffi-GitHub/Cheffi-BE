@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.ProfilePhoto;
+import com.cheffi.avatar.dto.MyPageInfo;
 import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
 import com.cheffi.avatar.dto.response.AvatarInfoResponse;
 import com.cheffi.avatar.repository.AvatarRepository;
@@ -79,6 +80,10 @@ public class AvatarService {
 
 	public AvatarInfoResponse getAvatarInfo(Long avatarId) {
 		return AvatarInfoResponse.of(getByIdWithTagsAndPhoto(avatarId));
+	}
+
+	public MyPageInfo getMyPageInfo(Long avatarId) {
+		return MyPageInfo.of(getByIdWithTagsAndPhoto(avatarId));
 	}
 
 	public Avatar getById(Long avatarId) {
