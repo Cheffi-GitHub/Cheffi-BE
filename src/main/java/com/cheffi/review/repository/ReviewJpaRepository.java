@@ -1,5 +1,6 @@
 package com.cheffi.review.repository;
 
+import static com.cheffi.avatar.domain.QPurchasedItem.*;
 import static com.cheffi.review.domain.QBookmark.*;
 import static com.cheffi.review.domain.QMenu.*;
 import static com.cheffi.review.domain.QRestaurant.*;
@@ -139,6 +140,26 @@ public class ReviewJpaRepository {
 			.includePurchase(authenticated, Expressions.FALSE)
 			.includeBookmark(false, isOwner ? Expressions.TRUE : Expressions.nullExpression())
 			.cursor(bookmark.id)
+			.build()
+			.process(query).fetch();
+	}
+
+	public List<ReviewInfoDto> findByPurchaser(GetMyPageReviewRequest request, Long purchaserId, Long viewerId) {
+		JPAQuery<?> query = queryFactory
+			.from(purchasedItem)
+			.leftJoin(purchasedItem.review, review)
+			.where(purchasedItem.avatar.id.eq(purchaserId)
+				.and(purchasedItem.id.loe(request.getCursor(Long.MAX_VALUE))))
+			.orderBy(purchasedItem.id.desc())
+			.limit(request.getSize() + 1L);
+
+		boolean authenticated = viewerId != null;
+		boolean isNotPurchaser = !purchaserId.equals(viewerId);
+
+		return ReviewQueryProcessor.builder(authenticated && isNotPurchaser, viewerId, Expressions.FALSE)
+			.includePurchase(authenticated && isNotPurchaser, authenticated ? Expressions.TRUE : Expressions.FALSE)
+			.includeBookmark(false, Expressions.nullExpression())
+			.cursor(purchasedItem.id)
 			.build()
 			.process(query).fetch();
 	}

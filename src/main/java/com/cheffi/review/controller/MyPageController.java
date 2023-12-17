@@ -42,7 +42,7 @@ public class MyPageController {
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
 	@GetMapping
-	public ApiResponse<MyPageInfo> getMyPageInfo(
+	public ApiResponse<MyPageInfo> myPageInfo(
 		@AuthenticationPrincipal UserPrincipal principal) {
 		return ApiResponse.success(avatarService.getMyPageInfo(principal.getAvatarId()));
 	}
@@ -52,14 +52,14 @@ public class MyPageController {
 		description = "마이 페이지 작성 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/reviews")
-	public ApiCursorPageResponse<ReviewInfoDto, Long> getReviewsByWriter(
+	public ApiCursorPageResponse<ReviewInfoDto, Long> myPageReviewsByWriter(
 		@Positive @PathVariable("id") Long writerId,
 		@ParameterObject @Valid GetMyPageReviewRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
 		if (securityContextService.hasUserAuthority(principal))
 			return ApiCursorPageResponse.success(
-				reviewSearchService.getByWriter(request, writerId, principal.getAvatarId()));
-		return ApiCursorPageResponse.success(reviewSearchService.getByWriter(request, writerId, null));
+				reviewSearchService.searchByWriter(request, writerId, principal.getAvatarId()));
+		return ApiCursorPageResponse.success(reviewSearchService.searchByWriter(request, writerId, null));
 	}
 
 	@Tag(name = "My Page")
@@ -67,14 +67,29 @@ public class MyPageController {
 		description = "마이 페이지 북마크 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/bookmarks")
-	public ApiCursorPageResponse<ReviewInfoDto, Long> getByBookmarks(
+	public ApiCursorPageResponse<ReviewInfoDto, Long> myPageReviewsByBookmarks(
 		@Positive @PathVariable("id") Long ownerId,
 		@ParameterObject @Valid GetMyPageReviewRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
 		if (securityContextService.hasUserAuthority(principal))
 			return ApiCursorPageResponse.success(
-				reviewSearchService.getByBookmarks(request, ownerId, principal.getAvatarId()));
-		return ApiCursorPageResponse.success(reviewSearchService.getByBookmarks(request, ownerId, null));
+				reviewSearchService.searchByBookmarks(request, ownerId, principal.getAvatarId()));
+		return ApiCursorPageResponse.success(reviewSearchService.searchByBookmarks(request, ownerId, null));
+	}
+
+	@Tag(name = "My Page")
+	@Operation(summary = "마이 페이지 구매 게시물 조회 API",
+		description = "마이 페이지 구매 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
+		security = {@SecurityRequirement(name = "session-token")})
+	@GetMapping("/{id}/purchase")
+	public ApiCursorPageResponse<ReviewInfoDto, Long> myPageReviewsByPurchaser(
+		@Positive @PathVariable("id") Long purchaserId,
+		@ParameterObject @Valid GetMyPageReviewRequest request,
+		@AuthenticationPrincipal UserPrincipal principal) {
+		if (securityContextService.hasUserAuthority(principal))
+			return ApiCursorPageResponse.success(
+				reviewSearchService.searchByPurchaser(request, purchaserId, principal.getAvatarId()));
+		return ApiCursorPageResponse.success(reviewSearchService.searchByPurchaser(request, purchaserId, null));
 	}
 
 }

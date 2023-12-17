@@ -127,14 +127,21 @@ public class ReviewSearchService {
 		return reviewTrendingService.calculateTrendingReviews(condition, request);
 	}
 
-	public CursorPage<ReviewInfoDto, Long> getByWriter(GetMyPageReviewRequest request, Long writerId, Long viewerId) {
+	public CursorPage<ReviewInfoDto, Long> searchByWriter(GetMyPageReviewRequest request, Long writerId, Long viewerId) {
 		return CursorPage.of(reviewService.getByWriter(request, writerId, viewerId),
 			request.getSize(),
 			ReviewInfoDto::getId);
 	}
 
-	public CursorPage<ReviewInfoDto, Long> getByBookmarks(GetMyPageReviewRequest request, Long ownerId, Long viewerId) {
+	public CursorPage<ReviewInfoDto, Long> searchByBookmarks(GetMyPageReviewRequest request, Long ownerId, Long viewerId) {
 		return CursorPage.of(reviewService.getByBookmarks(request, ownerId, viewerId),
+			request.getSize(),
+			ReviewInfoDto::getCursor);
+	}
+
+	public CursorPage<ReviewInfoDto, Long> searchByPurchaser(GetMyPageReviewRequest request, Long purchaserId,
+		Long viewerId) {
+		return CursorPage.of(reviewService.getByPurchaser(request, purchaserId, viewerId),
 			request.getSize(),
 			ReviewInfoDto::getCursor);
 	}
