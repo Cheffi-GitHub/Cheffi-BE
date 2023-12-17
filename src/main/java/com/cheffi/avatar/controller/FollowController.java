@@ -79,6 +79,20 @@ public class FollowController {
 	}
 
 	@Tag(name = "Follow")
+	@Operation(summary = "해당 유저를 팔로우하는 유저 목록 조회 API",
+		description = "팔로워 조회",
+		security = {@SecurityRequirement(name = "session-token")})
+	@GetMapping("/{id}/follower")
+	public ApiCursorPageResponse<GetFollowResponse, Long> followerList(
+		@Positive @PathVariable("id") Long followingId,
+		@AuthenticationPrincipal UserPrincipal principal,
+		@ParameterObject @Valid GetFollowRequest request
+	) {
+		return ApiCursorPageResponse.success(
+			followService.getFollower(request, followingId, principal.getAvatarId()));
+	}
+
+	@Tag(name = "Follow")
 	@Operation(summary = "태그별 팔로우 추천 목록 조회 API",
 		description = "태그별 팔로우 추천 조회 12개의 데이터만 제공합니다. "
 			+ "메인 페이지용 API 입니다. - 인증 필요",
@@ -90,4 +104,7 @@ public class FollowController {
 		@RequestParam("tag") @Positive Long tagId) {
 		return ApiResponse.success(followService.recommendFollowee(tagId, principal.getAvatarId()));
 	}
+
 }
+
+
