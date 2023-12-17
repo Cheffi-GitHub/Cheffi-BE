@@ -62,14 +62,19 @@ public class ReviewService {
 		return reviewJpaRepository.findByMenu(request, viewerId);
 	}
 
-	public Review save (Review review) {
+	public Review save(Review review) {
 		return reviewRepository.save(review);
 	}
+
 	public List<ReviewInfoDto> getByAddress(AddressSearchRequest request, Long viewerId) {
 		return reviewJpaRepository.findByAddress(request, viewerId);
 	}
 
 	public List<ReviewInfoDto> getByWriter(GetMyPageReviewRequest request, Long writerId, Long viewerId) {
 		return reviewJpaRepository.findByWriter(request, writerId, viewerId);
+	}
+
+	public List<ReviewInfoDto> getByBookmarks(GetMyPageReviewRequest request, Long ownerId, Long viewerId) {
+		return reviewJpaRepository.findByBookmarks(request, ownerId, viewerId);
 	}
 }

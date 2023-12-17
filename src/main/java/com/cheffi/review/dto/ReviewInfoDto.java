@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import com.cheffi.review.constant.ReviewStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -45,11 +46,13 @@ public class ReviewInfoDto {
 	private Boolean purchased;
 	@Schema(description = "리뷰의 활성화 여부 'ACTIVE' 상태이면 true", example = "true")
 	private Boolean active;
+	@JsonIgnore
+	private Long cursor;
 
 	@QueryProjection
 	public ReviewInfoDto(Long id, String title, String text, ReviewPhotoInfoDto photo,
 		LocalDateTime timeToLock, Integer viewCount, ReviewStatus reviewStatus, Boolean writtenByUser,
-		Boolean bookmarked, Boolean purchased) {
+		Boolean bookmarked, Boolean purchased, Long cursor) {
 		this.reviewStatus = reviewStatus;
 		this.id = id;
 		if (!ReviewStatus.ACTIVE.equals(reviewStatus))
@@ -64,6 +67,7 @@ public class ReviewInfoDto {
 		this.viewCount = viewCount;
 		this.writtenByUser = writtenByUser;
 		this.purchased = purchased;
+		this.cursor = cursor;
 	}
 
 	public void updateNumber(Integer number) {

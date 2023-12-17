@@ -1,5 +1,6 @@
 package com.cheffi.review.repository;
 
+import static com.cheffi.review.domain.QBookmark.*;
 import static com.cheffi.review.domain.QMenu.*;
 import static com.cheffi.review.domain.QRestaurant.*;
 import static com.cheffi.review.domain.QReview.*;
@@ -10,7 +11,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.cheffi.common.constant.Address;
-import com.cheffi.review.constant.ReviewStatus;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.dto.AddressSearchRequest;
 import com.cheffi.review.dto.MenuSearchRequest;
@@ -45,7 +45,9 @@ public class ReviewJpaRepository {
 			.from(review)
 			.where(reviewIdIn(ids));
 
-		return ReviewQueryProcessor.defaultBuilder(viewerId).build()
+		return ReviewQueryProcessor.defaultBuilder(viewerId)
+			.withInactive()
+			.build()
 			.process(common).fetch();
 	}
 
@@ -76,9 +78,9 @@ public class ReviewJpaRepository {
 			.distinct()
 			.innerJoin(review.menus, menu)
 			.on(menu.name.startsWith(request.getMenu()))
-			.where(review.status.eq(ReviewStatus.ACTIVE)
-				.and(review.viewCnt.lt(cursor.getCount())
-					.or(review.viewCnt.eq(cursor.getCount()).and(review.id.loe(cursor.getId())))))
+			.where(review.viewCnt.lt(cursor.getCount())
+				.or(review.viewCnt.eq(cursor.getCount()).and(review.id.loe(cursor.getId())))
+			)
 			.orderBy(review.viewCnt.desc(), review.id.desc())
 			.limit(request.getSize() + 1L);
 
@@ -92,9 +94,8 @@ public class ReviewJpaRepository {
 		JPAQuery<?> common = queryFactory
 			.from(review)
 			.leftJoin(review.restaurant, restaurant)
-			.where(review.status.eq(ReviewStatus.ACTIVE)
-					.and(review.viewCnt.lt(cursor.getCount())
-						.or(review.viewCnt.eq(cursor.getCount()).and(review.id.loe(cursor.getId()))))
+			.where(review.viewCnt.lt(cursor.getCount())
+					.or(review.viewCnt.eq(cursor.getCount()).and(review.id.loe(cursor.getId())))
 				, restaurantAddressEq(request.getAddress())
 			)
 			.orderBy(review.viewCnt.desc(), review.id.desc())
@@ -118,6 +119,26 @@ public class ReviewJpaRepository {
 		return ReviewQueryProcessor.builder(false, viewerId, isWriter ? Expressions.TRUE : Expressions.FALSE)
 			.includePurchase(authenticated && !isWriter, Expressions.FALSE)
 			.includeBookmark(false, Expressions.nullExpression())
+			.build()
+			.process(query).fetch();
+	}
+
+	public List<ReviewInfoDto> findByBookmarks(GetMyPageReviewRequest request, Long ownerId, Long viewerId) {
+		JPAQuery<?> query = queryFactory
+			.from(bookmark)
+			.leftJoin(bookmark.review, review)
+			.where(bookmark.avatar.id.eq(ownerId)
+				.and(bookmark.id.loe(request.getCursor(Long.MAX_VALUE))))
+			.orderBy(bookmark.id.desc())
+			.limit(request.getSize() + 1L);
+
+		boolean authenticated = viewerId != null;
+		boolean isOwner = ownerId.equals(viewerId);
+
+		return ReviewQueryProcessor.builder(authenticated, viewerId, null)
+			.includePurchase(authenticated, Expressions.FALSE)
+			.includeBookmark(false, isOwner ? Expressions.TRUE : Expressions.nullExpression())
+			.cursor(bookmark.id)
 			.build()
 			.process(query).fetch();
 	}
