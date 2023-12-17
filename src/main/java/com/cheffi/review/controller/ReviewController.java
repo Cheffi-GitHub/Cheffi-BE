@@ -6,6 +6,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ import com.cheffi.review.dto.ReviewCursor;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.request.AreaSearchRequest;
 import com.cheffi.review.dto.request.AreaTagSearchRequest;
+import com.cheffi.review.dto.request.DeleteReviewRequest;
 import com.cheffi.review.dto.request.RegisterReviewRequest;
 import com.cheffi.review.dto.request.UpdateReviewRequest;
 import com.cheffi.review.dto.response.GetReviewResponse;
@@ -147,6 +149,20 @@ public class ReviewController {
 		@RequestPart("images") @Size(min = 3, max = 10) List<MultipartFile> images
 	) {
 		reviewCudService.updateReview(userPrincipal.getAvatarId(), request, images);
+		return ApiResponse.success(null);
+	}
+
+	@Tag(name = "Review")
+	@Operation(summary = "리뷰 삭제 API - 인증 필요",
+		description = "리뷰를 삭제하는 API 입니다.",
+		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("hasRole('USER') and !hasAuthority('NO_PROFILE')")
+	@DeleteMapping
+	public ApiResponse<Void> deleteReview(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@Valid DeleteReviewRequest request
+	) {
+		reviewCudService.deleteReview(userPrincipal.getAvatarId(), request);
 		return ApiResponse.success(null);
 	}
 
