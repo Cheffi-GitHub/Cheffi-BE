@@ -156,7 +156,7 @@ public class Review extends BaseTimeEntity {
 			this.goodRatingCnt += value;
 		else if (RatingType.AVERAGE.equals(type))
 			this.averageRatingCnt += value;
-		else
+		else if (RatingType.BAD.equals(type))
 			this.badRatingCnt += value;
 	}
 

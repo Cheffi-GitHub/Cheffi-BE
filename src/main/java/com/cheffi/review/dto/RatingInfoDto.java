@@ -26,7 +26,7 @@ public class RatingInfoDto {
 	}
 
 	public static RatingInfoDto notRated() {
-		return new RatingInfoDto(null, false);
+		return new RatingInfoDto(RatingType.NONE, false);
 	}
 
 }
