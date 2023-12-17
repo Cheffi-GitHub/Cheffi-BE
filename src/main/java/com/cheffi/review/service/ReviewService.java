@@ -77,4 +77,8 @@ public class ReviewService {
 	public List<ReviewInfoDto> getByBookmarks(GetMyPageReviewRequest request, Long ownerId, Long viewerId) {
 		return reviewJpaRepository.findByBookmarks(request, ownerId, viewerId);
 	}
+
+	public List<ReviewInfoDto> getByPurchaser(GetMyPageReviewRequest request, Long purchaserId, Long viewerId) {
+		return reviewJpaRepository.findByPurchaser(request, purchaserId, viewerId);
+	}
 }

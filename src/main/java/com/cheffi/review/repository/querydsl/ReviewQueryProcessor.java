@@ -1,10 +1,9 @@
 package com.cheffi.review.repository.querydsl;
 
-import static com.cheffi.avatar.domain.QPurchasedItem.*;
-import static com.cheffi.review.domain.QBookmark.*;
 import static com.cheffi.review.domain.QReview.*;
 import static com.cheffi.review.domain.QReviewPhoto.*;
 
+import com.cheffi.avatar.domain.QPurchasedItem;
 import com.cheffi.review.constant.ReviewStatus;
 import com.cheffi.review.dto.QReviewInfoDto;
 import com.cheffi.review.dto.QReviewPhotoInfoDto;
@@ -16,7 +15,9 @@ import com.querydsl.jpa.impl.JPAQuery;
 
 public class ReviewQueryProcessor {
 
-	// 없음
+	private static final QPurchasedItem viewerPurchase = new QPurchasedItem("viewerPurchase");
+	private static final QPurchasedItem viewerBookmark = new QPurchasedItem("viewerBookmark");
+
 	private final Long viewerId;
 	private final boolean requestBookmark;
 	private final boolean requestPurchase;
@@ -48,14 +49,14 @@ public class ReviewQueryProcessor {
 			result.where(review.status.eq(ReviewStatus.ACTIVE));
 
 		if (requestBookmark)
-			result.leftJoin(bookmark)
-				.on(bookmark.review.id.eq(review.id),
+			result.leftJoin(viewerBookmark)
+				.on(viewerBookmark.review.id.eq(review.id),
 					bookmarkWriterEq(viewerId));
 
 		if (requestPurchase)
-			result.leftJoin(purchasedItem)
-				.on(purchasedItem.review.eq(review),
-					purchasedItem.avatar.id.eq(viewerId));
+			result.leftJoin(viewerPurchase)
+				.on(viewerPurchase.review.eq(review),
+					viewerPurchase.avatar.id.eq(viewerId));
 
 		return result;
 	}
@@ -70,14 +71,14 @@ public class ReviewQueryProcessor {
 			review.viewCnt,
 			review.status,
 			writerExp,
-			requestBookmark ? bookmark.isNotNull() : bookmarkExp,
-			requestPurchase ? purchasedItem.isNotNull() : purchaseExp,
+			requestBookmark ? viewerBookmark.isNotNull() : bookmarkExp,
+			requestPurchase ? viewerPurchase.isNotNull() : purchaseExp,
 			cursorExp
 		));
 	}
 
 	private BooleanExpression bookmarkWriterEq(Long viewerId) {
-		return bookmark.avatar.id.eq(viewerId);
+		return viewerBookmark.avatar.id.eq(viewerId);
 	}
 
 	private BooleanExpression photoOrderEq(Integer givenOrder) {
