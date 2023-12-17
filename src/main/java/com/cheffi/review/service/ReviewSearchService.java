@@ -132,4 +132,10 @@ public class ReviewSearchService {
 			request.getSize(),
 			ReviewInfoDto::getId);
 	}
+
+	public CursorPage<ReviewInfoDto, Long> getByBookmarks(GetMyPageReviewRequest request, Long ownerId, Long viewerId) {
+		return CursorPage.of(reviewService.getByBookmarks(request, ownerId, viewerId),
+			request.getSize(),
+			ReviewInfoDto::getCursor);
+	}
 }

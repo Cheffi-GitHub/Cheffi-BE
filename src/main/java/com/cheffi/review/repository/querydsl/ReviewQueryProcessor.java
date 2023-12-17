@@ -5,6 +5,7 @@ import static com.cheffi.review.domain.QBookmark.*;
 import static com.cheffi.review.domain.QReview.*;
 import static com.cheffi.review.domain.QReviewPhoto.*;
 
+import com.cheffi.review.constant.ReviewStatus;
 import com.cheffi.review.dto.QReviewInfoDto;
 import com.cheffi.review.dto.QReviewPhotoInfoDto;
 import com.cheffi.review.dto.ReviewInfoDto;
@@ -19,35 +20,32 @@ public class ReviewQueryProcessor {
 	private final Long viewerId;
 	private final boolean requestBookmark;
 	private final boolean requestPurchase;
+	private final boolean onlyActive;
 	private final Expression<Boolean> writerExp;
 	private final Expression<Boolean> bookmarkExp;
 	private final Expression<Boolean> purchaseExp;
+	private final Expression<Long> cursorExp;
 
 	private ReviewQueryProcessor(Long viewerId, boolean requestBookmark, boolean requestPurchase,
-		Expression<Boolean> bookmarkExp, Expression<Boolean> purchaseExp,
-		Expression<Boolean> writerExp) {
+		boolean onlyActive, Expression<Boolean> bookmarkExp, Expression<Boolean> purchaseExp,
+		Expression<Boolean> writerExp, Expression<Long> cursorExp) {
 		this.viewerId = viewerId;
 		this.requestBookmark = requestBookmark;
 		this.requestPurchase = requestPurchase;
+		this.onlyActive = onlyActive;
 		this.writerExp = writerExp;
 		this.bookmarkExp = bookmarkExp;
 		this.purchaseExp = purchaseExp;
+		this.cursorExp = cursorExp;
 	}
 
 	public JPAQuery<ReviewInfoDto> process(JPAQuery<?> query) {
-		var result = query.select(new QReviewInfoDto(
-				review.id,
-				review.title,
-				review.text,
-				new QReviewPhotoInfoDto(reviewPhoto.id, reviewPhoto.givenOrder, reviewPhoto.url),
-				review.timeToLock,
-				review.viewCnt,
-				review.status,
-				writerExp,
-				requestBookmark ? bookmark.isNotNull() : bookmarkExp,
-				requestPurchase ? purchasedItem.isNotNull() : purchaseExp
-			)).leftJoin(review.photos, reviewPhoto)
+		var result = getSelectQuery(query, cursorExp)
+			.leftJoin(review.photos, reviewPhoto)
 			.on(photoOrderEq(0));
+
+		if (onlyActive)
+			result.where(review.status.eq(ReviewStatus.ACTIVE));
 
 		if (requestBookmark)
 			result.leftJoin(bookmark)
@@ -60,6 +58,22 @@ public class ReviewQueryProcessor {
 					purchasedItem.avatar.id.eq(viewerId));
 
 		return result;
+	}
+
+	private JPAQuery<ReviewInfoDto> getSelectQuery(JPAQuery<?> query, Expression<Long> cursorExp) {
+		return query.select(new QReviewInfoDto(
+			review.id,
+			review.title,
+			review.text,
+			new QReviewPhotoInfoDto(reviewPhoto.id, reviewPhoto.givenOrder, reviewPhoto.url),
+			review.timeToLock,
+			review.viewCnt,
+			review.status,
+			writerExp,
+			requestBookmark ? bookmark.isNotNull() : bookmarkExp,
+			requestPurchase ? purchasedItem.isNotNull() : purchaseExp,
+			cursorExp
+		));
 	}
 
 	private BooleanExpression bookmarkWriterEq(Long viewerId) {
@@ -87,16 +101,23 @@ public class ReviewQueryProcessor {
 		// 선택 매개 변수
 		private boolean requestBookmark = false;
 		private boolean requestPurchase = false;
+		private boolean onlyActive = true;
 
 		private Expression<Boolean> writerExp = Expressions.FALSE;
 		private Expression<Boolean> bookmarkExp = Expressions.FALSE;
 		private Expression<Boolean> purchaseExp = Expressions.FALSE;
+		private Expression<Long> cursorExp = Expressions.nullExpression();
 
 		private Builder(boolean include, Long viewerId, Expression<Boolean> defaultExp) {
-			if (defaultExp != null)
-				this.writerExp = defaultExp;
-			if (viewerId == null || !include) {
+			if (viewerId == null) {
+				this.viewerId = null;
+				return;
+			}
+
+			if (!include) {
 				this.viewerId = viewerId;
+				if (defaultExp != null)
+					this.writerExp = defaultExp;
 				return;
 			}
 
@@ -120,12 +141,24 @@ public class ReviewQueryProcessor {
 			return this;
 		}
 
+		public Builder cursor(Expression<Long> expression) {
+			cursorExp = expression;
+			return this;
+		}
+
+		public Builder withInactive() {
+			onlyActive = false;
+			return this;
+		}
+
 		public ReviewQueryProcessor build() {
 			if (viewerId == null) {
-				return new ReviewQueryProcessor(null, false, false, bookmarkExp, purchaseExp, writerExp);
+				return new ReviewQueryProcessor(null, false, false, onlyActive, bookmarkExp, purchaseExp, writerExp,
+					cursorExp);
 			}
-			return new ReviewQueryProcessor(viewerId, requestBookmark, requestPurchase, bookmarkExp, purchaseExp,
-				writerExp);
+			return new ReviewQueryProcessor(viewerId, requestBookmark, requestPurchase, onlyActive, bookmarkExp,
+				purchaseExp,
+				writerExp, cursorExp);
 		}
 	}
 

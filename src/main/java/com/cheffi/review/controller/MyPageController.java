@@ -62,4 +62,19 @@ public class MyPageController {
 		return ApiCursorPageResponse.success(reviewSearchService.getByWriter(request, writerId, null));
 	}
 
+	@Tag(name = "My Page")
+	@Operation(summary = "마이 페이지 북마크 게시물 조회 API",
+		description = "마이 페이지 북마크 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
+		security = {@SecurityRequirement(name = "session-token")})
+	@GetMapping("/{id}/bookmarks")
+	public ApiCursorPageResponse<ReviewInfoDto, Long> getByBookmarks(
+		@Positive @PathVariable("id") Long ownerId,
+		@ParameterObject @Valid GetMyPageReviewRequest request,
+		@AuthenticationPrincipal UserPrincipal principal) {
+		if (securityContextService.hasUserAuthority(principal))
+			return ApiCursorPageResponse.success(
+				reviewSearchService.getByBookmarks(request, ownerId, principal.getAvatarId()));
+		return ApiCursorPageResponse.success(reviewSearchService.getByBookmarks(request, ownerId, null));
+	}
+
 }
