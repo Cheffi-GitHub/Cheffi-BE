@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
-import com.cheffi.avatar.dto.request.ChangeNicknameRequest;
 import com.cheffi.avatar.dto.request.ChangeProfilePhotoRequest;
+import com.cheffi.avatar.dto.request.PatchIntroRequest;
+import com.cheffi.avatar.dto.request.PatchNicknameRequest;
 import com.cheffi.avatar.dto.response.AvatarInfoResponse;
 import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.common.response.ApiResponse;
@@ -57,13 +58,27 @@ public class AvatarController {
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
 	@PatchMapping("/nickname")
-	public ApiResponse<String> changeNickname(
-		@Valid @RequestBody ChangeNicknameRequest changeNicknameRequest,
+	public ApiResponse<String> patchNickname(
+		@Valid @RequestBody PatchNicknameRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
 		String nickname = avatarService
-			.updateNickname(principal.getAvatarId(), changeNicknameRequest.nickname())
+			.updateNickname(principal.getAvatarId(), request.nickname())
 			.nickname();
 		return ApiResponse.success(nickname);
+	}
+
+	@Tag(name = "SignUp")
+	@Tag(name = "Avatar")
+	@Operation(summary = "자신의 자기소개 변경 API",
+		description = "자기소개 변경 - 인증 필요",
+		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("hasRole('USER')")
+	@PatchMapping("/intro")
+	public ApiResponse<Void> changeIntroduction(
+		@Valid @RequestBody PatchIntroRequest request,
+		@AuthenticationPrincipal UserPrincipal principal) {
+		avatarService.updateIntroduction(principal.getAvatarId(), request.introduction());
+		return ApiResponse.success(null);
 	}
 
 	@Tag(name = "SignUp")
