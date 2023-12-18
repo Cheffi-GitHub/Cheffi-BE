@@ -2,15 +2,21 @@ package com.cheffi.common.response;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ErrorResponse {
 
 	private String errorCode;
@@ -18,24 +24,21 @@ public class ErrorResponse {
 	private Map<String, ?> data;
 
 	public static ErrorResponse of(String errorCode, String errorMessage) {
-		return ErrorResponse.builder()
-			.errorCode(errorCode)
-			.errorMessage(errorMessage)
-			.build();
+		return ErrorResponse.builder().errorCode(errorCode).errorMessage(errorMessage).build();
 	}
 
 	public static ErrorResponse of(String errorCode, String errorMessage, Map<String, ?> fields) {
-		return ErrorResponse.builder()
-			.errorCode(errorCode)
-			.errorMessage(errorMessage)
-			.data(fields)
-			.build();
+		return ErrorResponse.builder().errorCode(errorCode).errorMessage(errorMessage).data(fields).build();
 	}
 
 	public static ErrorResponse of(String errorCode, BindingResult bindingResult) {
 		return ErrorResponse.builder()
 			.errorCode(errorCode)
 			.errorMessage(createErrorMessage(bindingResult))
+			.data(bindingResult.getFieldErrors()
+				.stream()
+				.collect(
+					Collectors.toMap(FieldError::getField, f -> Optional.ofNullable(f.getDefaultMessage()).orElse(""))))
 			.build();
 	}
 
