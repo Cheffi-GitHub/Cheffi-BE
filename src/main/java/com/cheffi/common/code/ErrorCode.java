@@ -62,6 +62,9 @@ public enum ErrorCode {
 	REVIEW_IS_INACTIVE(HttpStatus.BAD_REQUEST, "R-011", "해당 리뷰는 활성화상태가 아닙니다."),
 	NOT_REVIEW_WRITER(HttpStatus.BAD_REQUEST, "R-012", "리뷰 작성자가 아닙니다."),
 
+	// 신고, 차단
+	ALREADY_REPORTED(HttpStatus.BAD_REQUEST, "CS-01", "이미 같은 사유로 해당 사용자를 신고했습니다."),
+
 	// 파일
 	NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "F-001", "전송된 파일의 형식이 이미지가 아닙니다."),
 
