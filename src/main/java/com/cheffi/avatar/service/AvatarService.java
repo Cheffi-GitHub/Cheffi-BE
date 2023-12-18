@@ -38,6 +38,12 @@ public class AvatarService {
 		return SelfAvatarInfo.of(avatar);
 	}
 
+	@Transactional
+	public void updateIntroduction(Long avatarId, String introduction) {
+		Avatar avatar = getById(avatarId);
+		avatar.changeIntroduction(introduction);
+	}
+
 	public boolean isNicknameInUse(String nickname) {
 		return avatarRepository.existsByNickname(nickname);
 	}
