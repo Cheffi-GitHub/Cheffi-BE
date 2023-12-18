@@ -9,13 +9,15 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UpdateReviewRequest {
-	@Schema(description = "리뷰 식별자")
-	private Long reviewId;
+	@NotNull
+	@Schema(description = "수정할 리뷰 식별자", example = "1")
+	private Long id;
 	@NotBlank
 	@Schema(description = "리뷰 제목", example = "기존 제목 or 수정할 제목")
 	private String title;

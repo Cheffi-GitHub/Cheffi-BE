@@ -109,6 +109,7 @@ public class Review extends BaseTimeEntity {
 	public void clearMenus() {
 		this.menus.clear();
 	}
+
 	public void clearPhotos() {
 		this.photos.clear();
 	}
@@ -173,4 +174,7 @@ public class Review extends BaseTimeEntity {
 		addRatingCount(after);
 	}
 
+	public void delete() {
+		this.status = ReviewStatus.DELETED;
+	}
 }

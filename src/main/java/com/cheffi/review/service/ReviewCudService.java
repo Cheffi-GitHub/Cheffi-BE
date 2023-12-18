@@ -14,6 +14,7 @@ import com.cheffi.common.constant.S3RootPath;
 import com.cheffi.review.domain.Restaurant;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.domain.ReviewCreateRequest;
+import com.cheffi.review.dto.request.DeleteReviewRequest;
 import com.cheffi.review.dto.request.RegisterReviewRequest;
 import com.cheffi.review.dto.request.UpdateReviewRequest;
 
@@ -53,7 +54,7 @@ public class ReviewCudService {
 	@Transactional
 	public void updateReview(Long authorId, UpdateReviewRequest request, List<MultipartFile> images) {
 		Avatar author = avatarService.getById(authorId);
-		Review review = reviewService.getById(request.getReviewId());
+		Review review = reviewService.getById(request.getId());
 		validateReviewAuthor(author, review);
 
 		review.updateFromRequest(request);
@@ -62,8 +63,16 @@ public class ReviewCudService {
 		reviewPhotoService.changePhotos(review, images, S3RootPath.REVIEW_PHOTO);
 	}
 
+	@Transactional
+	public void deleteReview(Long authorId, DeleteReviewRequest request) {
+		Avatar author = avatarService.getById(authorId);
+		Review review = reviewService.getById(request.id());
+		validateReviewAuthor(author, review);
+		review.delete();
+	}
+
 	private static void validateReviewAuthor(Avatar author, Review review) {
-		if (review.getWriter().getId() != author.getId())
+		if (review.getWriter().getId().equals(author.getId()))
 			throw new BusinessException(ErrorCode.NOT_REVIEW_WRITER);
 	}
 
