@@ -45,6 +45,7 @@ public enum ErrorCode {
 	//팔로우
 	ALREADY_FOLLOWED(HttpStatus.BAD_REQUEST, "FW-001", "해당 아바타는 이미 팔로우 중입니다."),
 	NOT_FOLLOWED(HttpStatus.BAD_REQUEST, "FW-002", "해당 아바타는 팔로우 상태가 아닙니다."),
+	CANNOT_FOLLOW_SELF(HttpStatus.BAD_REQUEST, "FW-003", "해당 아바타는 팔로우 상태가 아닙니다."),
 
 	// 식당, 리뷰
 	RESTAURANT_NOT_EXIST(HttpStatus.BAD_REQUEST, "R-001", "식별자에 해당하는 식당이 없습니다."),
@@ -64,6 +65,8 @@ public enum ErrorCode {
 
 	// 신고, 차단
 	ALREADY_REPORTED(HttpStatus.BAD_REQUEST, "CS-01", "이미 같은 사유로 해당 사용자를 신고했습니다."),
+	ALREADY_BLOCKED(HttpStatus.BAD_REQUEST, "CS-02", "이미 해당 사용자를 차단했습니다."),
+	CANNOT_BLOCK_SELF(HttpStatus.BAD_REQUEST, "CS-03", "자신을 차단하는 작업은 허용되지 않습니다."),
 
 	// 파일
 	NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "F-001", "전송된 파일의 형식이 이미지가 아닙니다."),
