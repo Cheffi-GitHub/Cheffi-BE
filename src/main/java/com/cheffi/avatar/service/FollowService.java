@@ -35,7 +35,7 @@ public class FollowService {
 		Avatar follower = avatarService.getById(followerId);
 		Avatar followee = avatarService.getById(followeeId);
 
-		if (followRepository.existsBySubjectAndTarget(follower, followee)) {
+		if (followRepository.existsBySubjectAndTarget(followerId, followeeId)) {
 			throw new BusinessException(ErrorCode.ALREADY_FOLLOWED);
 		}
 
@@ -57,6 +57,14 @@ public class FollowService {
 		followee.removeFollower();
 
 		return new UnfollowResponse(followerId, followeeId);
+	}
+
+	@Transactional
+	public void destroyFriendship(Long firstId, Long secondId) {
+		if (followRepository.existsBySubjectAndTarget(firstId, secondId))
+			unfollow(firstId, secondId);
+		if (followRepository.existsBySubjectAndTarget(secondId, firstId))
+			unfollow(secondId, firstId);
 	}
 
 	public CursorPage<GetFollowResponse, Long> getFollowing(GetFollowRequest request, Long followerId, Long viewerId) {

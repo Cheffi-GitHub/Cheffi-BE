@@ -1,5 +1,6 @@
-package com.cheffi.avatar.domain;
+package com.cheffi.cs.domain;
 
+import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.domain.BaseTimeEntity;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Follow extends BaseTimeEntity {
+public class Block extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,21 +36,14 @@ public class Follow extends BaseTimeEntity {
 	@JoinColumn(name = "target_id")
 	private Avatar target;
 
-	private Follow(Avatar subject, Avatar target) {
+	private Block(Avatar subject, Avatar target) {
 		this.subject = subject;
 		this.target = target;
 	}
 
-	public static Follow createFollowRelationship(Avatar subject, Avatar target) {
-
-		isSelfFollowAttempt(subject, target);
-		return new Follow(subject, target);
+	public static Block of(Avatar subject, Avatar target) {
+		if (subject.equals(target))
+			throw new BusinessException(ErrorCode.CANNOT_BLOCK_SELF);
+		return new Block(subject, target);
 	}
-
-	private static void isSelfFollowAttempt(Avatar subject, Avatar target) {
-		if (subject.getId().equals(target.getId())) {
-			throw new BusinessException(ErrorCode.CANNOT_FOLLOW_SELF);
-		}
-	}
-
 }

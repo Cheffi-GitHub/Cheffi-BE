@@ -72,7 +72,7 @@ class FollowServiceTest {
 				when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
 				when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.of(followee));
 				when(followRepository
-					.existsBySubjectAndTarget(follower, followee))
+					.existsBySubjectAndTarget(FOLLOWER_ID, FOLLOWEE_ID))
 					.thenReturn(false);
 				staticFollow
 					.when(() -> Follow.createFollowRelationship(follower, followee))
@@ -97,9 +97,7 @@ class FollowServiceTest {
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
 			when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.empty());
 
-			assertThrows(EntityNotFoundException.class, () -> {
-				followService.addFollow(FOLLOWER_ID, FOLLOWEE_ID);
-			});
+			assertThrows(EntityNotFoundException.class, () -> followService.addFollow(FOLLOWER_ID, FOLLOWEE_ID));
 		}
 
 		@Test
@@ -108,12 +106,10 @@ class FollowServiceTest {
 
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
 			when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.of(followee));
-			when(followRepository.existsBySubjectAndTarget(follower, followee))
+			when(followRepository.existsBySubjectAndTarget(FOLLOWER_ID, FOLLOWEE_ID))
 				.thenReturn(true);
 
-			assertThrows(RuntimeException.class, () -> {
-				followService.addFollow(FOLLOWER_ID, FOLLOWEE_ID);
-			});
+			assertThrows(RuntimeException.class, () -> followService.addFollow(FOLLOWER_ID, FOLLOWEE_ID));
 		}
 
 	}
@@ -146,9 +142,7 @@ class FollowServiceTest {
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
 			when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.empty());
 
-			assertThrows(EntityNotFoundException.class, () -> {
-				followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID);
-			});
+			assertThrows(EntityNotFoundException.class, () -> followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID));
 		}
 
 		@Test
@@ -160,9 +154,7 @@ class FollowServiceTest {
 			when(followRepository.findBySubjectAndTarget(follower, followee))
 				.thenReturn(Optional.empty());
 
-			assertThrows(RuntimeException.class, () -> {
-				followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID);
-			});
+			assertThrows(RuntimeException.class, () -> followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID));
 		}
 
 	}
