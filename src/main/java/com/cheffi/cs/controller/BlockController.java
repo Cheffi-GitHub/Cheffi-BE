@@ -2,12 +2,14 @@ package com.cheffi.cs.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cheffi.common.response.ApiResponse;
+import com.cheffi.cs.dto.DeleteBlockRequest;
 import com.cheffi.cs.dto.PostBlockRequest;
 import com.cheffi.cs.service.BlockService;
 import com.cheffi.oauth.model.UserPrincipal;
@@ -35,6 +37,19 @@ public class BlockController {
 		@RequestBody @Valid PostBlockRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
 		blockService.block(principal.getAvatarId(), request);
+		return ApiResponse.success();
+	}
+
+	@Tag(name = "CS")
+	@Operation(summary = "차단 해제 API - 인증 필수",
+		description = "차단 해제 API - 인증 필수, 차단이 해제됩니다. 차단 이전의 팔로우 관계는 복구되지 않습니다.",
+		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("hasRole('USER')")
+	@DeleteMapping
+	public ApiResponse<Void> unblock(
+		@RequestBody @Valid DeleteBlockRequest request,
+		@AuthenticationPrincipal UserPrincipal principal) {
+		blockService.unblock(principal.getAvatarId(), request);
 		return ApiResponse.success();
 	}
 

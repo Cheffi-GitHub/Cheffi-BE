@@ -8,6 +8,7 @@ import com.cheffi.avatar.service.FollowService;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.cs.domain.Block;
+import com.cheffi.cs.dto.DeleteBlockRequest;
 import com.cheffi.cs.dto.PostBlockRequest;
 import com.cheffi.cs.repository.BlockRepository;
 
@@ -30,6 +31,15 @@ public class BlockService {
 		followService.destroyFriendship(subjectId, request.id());
 		return blockRepository.save(Block.of(avatarService.getById(subjectId), avatarService.getById(request.id())))
 			.getId();
+	}
+
+	@Transactional
+	public void unblock(Long subjectId, DeleteBlockRequest request) {
+		if (subjectId.equals(request.id()))
+			throw new BusinessException(ErrorCode.CANNOT_UNBLOCK_SELF);
+		Block block = blockRepository.findBySubjectAndTarget(subjectId, request.id())
+			.orElseThrow(() -> new BusinessException(ErrorCode.NOT_BLOCKED_AVATAR));
+		blockRepository.delete(block);
 	}
 
 }
