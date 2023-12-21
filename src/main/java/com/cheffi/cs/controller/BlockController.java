@@ -1,15 +1,20 @@
 package com.cheffi.cs.controller;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cheffi.common.response.ApiCursorPageResponse;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.cs.dto.DeleteBlockRequest;
+import com.cheffi.cs.dto.GetBlockRequest;
+import com.cheffi.cs.dto.GetBlockResponse;
 import com.cheffi.cs.dto.PostBlockRequest;
 import com.cheffi.cs.service.BlockService;
 import com.cheffi.oauth.model.UserPrincipal;
@@ -36,7 +41,7 @@ public class BlockController {
 	public ApiResponse<Void> addBlock(
 		@RequestBody @Valid PostBlockRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
-		blockService.block(principal.getAvatarId(), request);
+		blockService.block(request, principal.getAvatarId());
 		return ApiResponse.success();
 	}
 
@@ -49,8 +54,20 @@ public class BlockController {
 	public ApiResponse<Void> unblock(
 		@RequestBody @Valid DeleteBlockRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
-		blockService.unblock(principal.getAvatarId(), request);
+		blockService.unblock(request, principal.getAvatarId());
 		return ApiResponse.success();
+	}
+
+	@Tag(name = "CS")
+	@Operation(summary = "차단 목록 조회 API - 인증 필수",
+		description = "차단 목록 조회 API - 인증 필수, 커서 페이징",
+		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("hasRole('USER')")
+	@GetMapping
+	public ApiCursorPageResponse<GetBlockResponse, Long> blockList(
+		@ParameterObject @Valid GetBlockRequest request,
+		@AuthenticationPrincipal UserPrincipal principal) {
+		return ApiCursorPageResponse.success(blockService.getBlockList(request, principal.getAvatarId()));
 	}
 
 }
