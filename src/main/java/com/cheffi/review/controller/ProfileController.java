@@ -29,14 +29,14 @@ import lombok.RequiredArgsConstructor;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/my-page")
-public class MyPageController {
+@RequestMapping("${api.prefix}/profile")
+public class ProfileController {
 
 	private final SecurityContextService securityContextService;
 	private final ReviewSearchService reviewSearchService;
 	private final AvatarService avatarService;
 
-	@Tag(name = "My Page")
+	@Tag(name = "Profile")
 	@Operation(summary = "마이페이지 정보 조회 API",
 		description = "마이페이지 정보 조회 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -52,7 +52,7 @@ public class MyPageController {
 		description = "마이 페이지 작성 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/reviews")
-	public ApiCursorPageResponse<ReviewInfoDto, Long> myPageReviewsByWriter(
+	public ApiCursorPageResponse<ReviewInfoDto, Long> profileReviewsByWriter(
 		@Positive @PathVariable("id") Long writerId,
 		@ParameterObject @Valid GetMyPageReviewRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
@@ -62,12 +62,12 @@ public class MyPageController {
 		return ApiCursorPageResponse.success(reviewSearchService.searchByWriter(request, writerId, null));
 	}
 
-	@Tag(name = "My Page")
+	@Tag(name = "Profile")
 	@Operation(summary = "마이 페이지 북마크 게시물 조회 API",
 		description = "마이 페이지 북마크 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/bookmarks")
-	public ApiCursorPageResponse<ReviewInfoDto, Long> myPageReviewsByBookmarks(
+	public ApiCursorPageResponse<ReviewInfoDto, Long> profileReviewsByBookmarks(
 		@Positive @PathVariable("id") Long ownerId,
 		@ParameterObject @Valid GetMyPageReviewRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
@@ -77,12 +77,12 @@ public class MyPageController {
 		return ApiCursorPageResponse.success(reviewSearchService.searchByBookmarks(request, ownerId, null));
 	}
 
-	@Tag(name = "My Page")
+	@Tag(name = "Profile")
 	@Operation(summary = "마이 페이지 구매 게시물 조회 API",
 		description = "마이 페이지 구매 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/purchase")
-	public ApiCursorPageResponse<ReviewInfoDto, Long> myPageReviewsByPurchaser(
+	public ApiCursorPageResponse<ReviewInfoDto, Long> profileReviewsByPurchaser(
 		@Positive @PathVariable("id") Long purchaserId,
 		@ParameterObject @Valid GetMyPageReviewRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
