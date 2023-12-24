@@ -48,4 +48,7 @@ public class NotificationService {
 		return notificationList.stream().map(Notification::getId).toList();
 	}
 
+	public Boolean existUncheckedNotification(Long avatarId) {
+		return notificationRepository.existsUncheckedByAvatar(avatarId);
+	}
 }
