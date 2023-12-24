@@ -34,7 +34,7 @@ public class NotificationController {
 
 	@Tag(name = "CS")
 	@Operation(summary = "알림 목록 조회 API - 인증 필수",
-		description = "알림 목록 조회 API - 인증 필수, 커서 페이징",
+		description = "알림 목록 조회 API - 인증 필수, 커서 페이징, 해당 API 로 조회된 알림은 자동으로 확인처리됩니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
 	@GetMapping
@@ -54,6 +54,17 @@ public class NotificationController {
 		@RequestBody @Valid DeleteNotificationRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
 		return ApiResponse.success(notificationService.deleteNotifications(request, principal.getAvatarId()));
+	}
+
+	@Tag(name = "CS")
+	@Operation(summary = "알림 체크 API - 인증 필수",
+		description = "알림 체크 API - 인증 필수, 확인하지 않은 알림이 있는지 체크하는 API입니다.",
+		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("hasRole('USER')")
+	@GetMapping("/unchecked")
+	public ApiResponse<Boolean> checkIfUncheckedExist(
+		@AuthenticationPrincipal UserPrincipal principal) {
+		return ApiResponse.success(notificationService.existUncheckedNotification(principal.getAvatarId()));
 	}
 
 }
