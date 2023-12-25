@@ -51,4 +51,8 @@ public class BlockService {
 		return CursorPage.of(blockJpaRepository.findBlockList(request, subjectId), request.getSize(),
 			GetBlockResponse::cursor);
 	}
+
+	public boolean checkBlocked(Long subjectId, Long targetId) {
+		return blockRepository.existsBySubjectAndTarget(subjectId, targetId);
+	}
 }

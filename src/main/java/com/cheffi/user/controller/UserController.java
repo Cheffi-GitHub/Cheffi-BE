@@ -14,7 +14,7 @@ import com.cheffi.common.response.ApiResponse;
 import com.cheffi.oauth.model.UserPrincipal;
 import com.cheffi.user.dto.adapter.UserInfo;
 import com.cheffi.user.dto.request.ChangeTermsAgreementRequest;
-import com.cheffi.user.service.ProfileService;
+import com.cheffi.user.service.SignUpProfileService;
 import com.cheffi.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
-	private final ProfileService profileService;
+	private final SignUpProfileService signUpProfileService;
 
 	@Tag(name = "User")
 	@Operation(summary = "유저 정보 조회 API",
@@ -64,7 +64,7 @@ public class UserController {
 	public ApiResponse<List<String>> completeProfileRegistration(
 		@AuthenticationPrincipal UserPrincipal principal) {
 		return ApiResponse.success(
-			profileService.completeProfile(principal.getUserId(), principal.getAvatarId()).authorities());
+			signUpProfileService.completeProfile(principal.getUserId(), principal.getAvatarId()).authorities());
 	}
 
 }

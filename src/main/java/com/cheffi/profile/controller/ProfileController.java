@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.common.response.ApiCursorPageResponse;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.oauth.model.UserPrincipal;
 import com.cheffi.profile.dto.MyPageInfo;
+import com.cheffi.profile.dto.ProfileInfo;
+import com.cheffi.profile.service.ProfileService;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.request.GetMyPageReviewRequest;
 import com.cheffi.review.service.ReviewSearchService;
@@ -34,7 +35,7 @@ public class ProfileController {
 
 	private final SecurityContextService securityContextService;
 	private final ReviewSearchService reviewSearchService;
-	private final AvatarService avatarService;
+	private final ProfileService profileService;
 
 	@Tag(name = "Profile")
 	@Operation(summary = "마이페이지 정보 조회 API",
@@ -44,12 +45,25 @@ public class ProfileController {
 	@GetMapping
 	public ApiResponse<MyPageInfo> myPageInfo(
 		@AuthenticationPrincipal UserPrincipal principal) {
-		return ApiResponse.success(avatarService.getMyPageInfo(principal.getAvatarId()));
+		return ApiResponse.success(profileService.getMyPageInfo(principal.getAvatarId()));
 	}
 
-	@Tag(name = "My Page")
-	@Operation(summary = "마이 페이지 작성 게시물 조회 API",
-		description = "마이 페이지 작성 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
+	@Tag(name = "Profile")
+	@Operation(summary = "타인 프로필 정보 조회 API",
+		description = "타인 프로필 정보 조회",
+		security = {@SecurityRequirement(name = "session-token")})
+	@GetMapping("/{id}")
+	public ApiResponse<ProfileInfo> profileInfo(
+		@Positive @PathVariable("id") Long ownerId,
+		@AuthenticationPrincipal UserPrincipal principal) {
+		if (securityContextService.hasUserAuthority(principal))
+			return ApiResponse.success(profileService.getProfile(ownerId, principal.getAvatarId()));
+		return ApiResponse.success(profileService.getProfile(ownerId, null));
+	}
+
+	@Tag(name = "Profile")
+	@Operation(summary = "프로필 작성 게시물 조회 API",
+		description = "프로필 작성 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/reviews")
 	public ApiCursorPageResponse<ReviewInfoDto, Long> profileReviewsByWriter(
@@ -63,8 +77,8 @@ public class ProfileController {
 	}
 
 	@Tag(name = "Profile")
-	@Operation(summary = "마이 페이지 북마크 게시물 조회 API",
-		description = "마이 페이지 북마크 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
+	@Operation(summary = "프로필 북마크 게시물 조회 API",
+		description = "프로필 북마크 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/bookmarks")
 	public ApiCursorPageResponse<ReviewInfoDto, Long> profileReviewsByBookmarks(
@@ -78,8 +92,8 @@ public class ProfileController {
 	}
 
 	@Tag(name = "Profile")
-	@Operation(summary = "마이 페이지 구매 게시물 조회 API",
-		description = "마이 페이지 구매 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
+	@Operation(summary = "프로필 구매 게시물 조회 API",
+		description = "프로필 구매 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/purchase")
 	public ApiCursorPageResponse<ReviewInfoDto, Long> profileReviewsByPurchaser(

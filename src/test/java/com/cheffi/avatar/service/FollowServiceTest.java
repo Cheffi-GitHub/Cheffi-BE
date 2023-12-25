@@ -19,6 +19,7 @@ import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.Follow;
 import com.cheffi.avatar.dto.response.AddFollowResponse;
 import com.cheffi.avatar.dto.response.UnfollowResponse;
+import com.cheffi.avatar.repository.AvatarJpaRepository;
 import com.cheffi.avatar.repository.AvatarRepository;
 import com.cheffi.avatar.repository.FollowJpaRepository;
 import com.cheffi.avatar.repository.FollowRepository;
@@ -35,6 +36,8 @@ class FollowServiceTest {
 	private ProfilePhotoService profilePhotoService;
 	@Mock
 	private FollowJpaRepository followJpaRepository;
+	@Mock
+	private AvatarJpaRepository avatarJpaRepository;
 
 	private AvatarService avatarService;
 
@@ -52,7 +55,7 @@ class FollowServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		avatarService = new AvatarService(avatarRepository, profilePhotoService);
+		avatarService = new AvatarService(avatarRepository, avatarJpaRepository, profilePhotoService);
 		followService = new FollowService(followRepository, followJpaRepository, avatarService);
 	}
 
