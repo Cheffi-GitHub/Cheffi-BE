@@ -1,4 +1,4 @@
-package com.cheffi.avatar.dto;
+package com.cheffi.profile.dto;
 
 import java.util.List;
 

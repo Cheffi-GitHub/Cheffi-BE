@@ -1,4 +1,4 @@
-package com.cheffi.review.controller;
+package com.cheffi.profile.controller;
 
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cheffi.avatar.dto.MyPageInfo;
 import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.common.response.ApiCursorPageResponse;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.oauth.model.UserPrincipal;
+import com.cheffi.profile.dto.MyPageInfo;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.request.GetMyPageReviewRequest;
 import com.cheffi.review.service.ReviewSearchService;
