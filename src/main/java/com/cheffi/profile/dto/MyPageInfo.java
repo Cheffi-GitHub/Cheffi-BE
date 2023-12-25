@@ -1,4 +1,4 @@
-package com.cheffi.avatar.dto;
+package com.cheffi.profile.dto;
 
 import java.util.List;
 
@@ -23,9 +23,9 @@ public record MyPageInfo(
 	@Schema(description = "프로필 사진 URL")
 	String photoUrl,
 	@Schema(description = "팔로워 수", example = "16")
-	int follower,
+	int followerCount,
 	@Schema(description = "팔로잉 수", example = "24")
-	int following,
+	int followingCount,
 	@Schema(description = "게시물 수", example = "24")
 	int post,
 	@Schema(description = "쉐피 코인")
@@ -42,8 +42,8 @@ public record MyPageInfo(
 			.introduction(avatar.getIntroduction())
 			.cheffiCoin(avatar.getCheffiCoinCnt())
 			.point(avatar.getPointCnt())
-			.follower(avatar.getFollowerCnt())
-			.following(avatar.getFollowingCnt())
+			.followerCount(avatar.getFollowerCnt())
+			.followingCount(avatar.getFollowingCnt())
 			.post(avatar.getPostCnt())
 			.photoUrl(avatar.getPhoto().getUrl())
 			.tags(avatar.getAvatarTags().stream()
