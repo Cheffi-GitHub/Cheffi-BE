@@ -8,12 +8,14 @@ import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.ProfilePhoto;
 import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
 import com.cheffi.avatar.dto.response.AvatarInfoResponse;
+import com.cheffi.avatar.repository.AvatarJpaRepository;
 import com.cheffi.avatar.repository.AvatarRepository;
 import com.cheffi.common.aspect.annotation.UpdatePrincipal;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.config.exception.business.EntityNotFoundException;
 import com.cheffi.profile.dto.MyPageInfo;
+import com.cheffi.profile.dto.ProfileInfo;
 import com.cheffi.user.domain.User;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class AvatarService {
 
 	private final AvatarRepository avatarRepository;
+	private final AvatarJpaRepository avatarJpaRepository;
 	private final ProfilePhotoService profilePhotoService;
 
 	@UpdatePrincipal
@@ -90,6 +93,10 @@ public class AvatarService {
 
 	public MyPageInfo getMyPageInfo(Long avatarId) {
 		return MyPageInfo.of(getByIdWithTagsAndPhoto(avatarId));
+	}
+
+	public ProfileInfo getProfile(Long ownerId, Long viewerId) {
+		return avatarJpaRepository.findProfile(ownerId, viewerId);
 	}
 
 	public Avatar getById(Long avatarId) {

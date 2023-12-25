@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class ProfileService {
+public class SignUpProfileService {
 
 	private final UserService userService;
 	private final AvatarService avatarService;

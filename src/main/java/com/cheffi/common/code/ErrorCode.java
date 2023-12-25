@@ -69,6 +69,7 @@ public enum ErrorCode {
 	CANNOT_BLOCK_SELF(HttpStatus.BAD_REQUEST, "CS-03", "자신을 차단하는 작업은 허용되지 않습니다."),
 	CANNOT_UNBLOCK_SELF(HttpStatus.BAD_REQUEST, "CS-04", "자신을 차단해제하는 작업은 허용되지 않습니다."),
 	NOT_BLOCKED_AVATAR(HttpStatus.BAD_REQUEST, "CS-05", "해당 유저를 차단하지 않았습니다."),
+	VIEWER_IS_BLOCKED(HttpStatus.BAD_REQUEST, "CS-06", "차단으로 프로필 접근이 불가능합니다."),
 
 	// 파일
 	NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "F-001", "전송된 파일의 형식이 이미지가 아닙니다."),
