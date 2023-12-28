@@ -25,7 +25,7 @@ public class AvatarTagController {
 
 	private final AvatarTagService avatarTagService;
 
-	@Tag(name = "SignUp")
+	@Tag(name = "01. 회원가입")
 	@Tag(name = "Avatar")
 	@Operation(summary = "아바타 태그 변경",
 		description = "자신의 태그 변경 - 인증 필요",

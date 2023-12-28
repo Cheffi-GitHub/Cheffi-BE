@@ -51,7 +51,7 @@ public class AvatarController {
 		return ApiResponse.success(avatarService.getSelfAvatarInfo(principal.getAvatarId()));
 	}
 
-	@Tag(name = "SignUp")
+	@Tag(name = "01. 회원가입")
 	@Tag(name = "Avatar")
 	@Operation(summary = "자신의 닉네임 변경 API",
 		description = "닉네임 변경 - 인증 필요",
@@ -67,7 +67,7 @@ public class AvatarController {
 		return ApiResponse.success(nickname);
 	}
 
-	@Tag(name = "SignUp")
+	@Tag(name = "01. 회원가입")
 	@Tag(name = "Avatar")
 	@Operation(summary = "자신의 자기소개 변경 API",
 		description = "자기소개 변경 - 인증 필요",
@@ -81,7 +81,7 @@ public class AvatarController {
 		return ApiResponse.success(null);
 	}
 
-	@Tag(name = "SignUp")
+	@Tag(name = "01. 회원가입")
 	@Tag(name = "Avatar")
 	@Operation(summary = "프로필 사진 변경 API",
 		description = "프로필 사진 변경 - 인증 필요, swagger 에서는 오류가 발생합니다. request 부분을 application/json"
@@ -98,7 +98,7 @@ public class AvatarController {
 			request.defaultPhoto()));
 	}
 
-	@Tag(name = "SignUp")
+	@Tag(name = "01. 회원가입")
 	@Tag(name = "Avatar")
 	@Operation(summary = "닉네임 중복 확인 API")
 	@GetMapping(value = "/nickname/inuse")
