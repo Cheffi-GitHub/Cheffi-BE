@@ -1,5 +1,6 @@
 package com.cheffi.avatar.controller;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,8 @@ public class CfcController {
 	@PreAuthorize("hasRole('USER')")
 	@GetMapping
 	public ApiCursorPageResponse<CheffiCoinHistoryDto, Long> getCheffiCoinHistory(
-		@AuthenticationPrincipal UserPrincipal principal, @Valid CheffiCoinHistoryRequest request) {
+		@ParameterObject @Valid CheffiCoinHistoryRequest request,
+		@AuthenticationPrincipal UserPrincipal principal) {
 		return ApiCursorPageResponse.success(cheffiCoinService.getCheffiCoinHistory(principal.getAvatarId(), request));
 	}
 
