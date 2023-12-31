@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class RestaurantController {
 	private final RestaurantInfoService restaurantInfoService;
 
-	@Tag(name = "Restaurant")
+	@Tag(name = "${swagger.tag.review-cud}")
 	@Operation(summary = "게시글 등록용 식당 검색 API",
 		description = "게시글 등록용 식당 검색 API 입니다. 최대 10개 까지의 검색 결과만 제공됩니다.")
 	@Parameter(name = "name", description = "검색할 식당의 이름(쿼리 파라미터)", required = true)

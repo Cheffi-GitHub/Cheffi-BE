@@ -50,6 +50,7 @@ public class ReviewController {
 	private final ReviewSearchService reviewSearchService;
 	private final SecurityContextService securityContextService;
 
+	@Tag(name = "${swagger.tag.review-detail}")
 	@Tag(name = "Review")
 	@Operation(summary = "리뷰 단건 조회 API",
 		description = "리뷰가 잠금된 경우 인증이 필요합니다. 인증이되었더라도 리뷰를 API로 구매해야 합니다.")
@@ -62,6 +63,7 @@ public class ReviewController {
 		return ApiResponse.success(reviewSearchService.getReviewInfoOfNotAuthenticated(reviewId));
 	}
 
+	@Tag(name = "${swagger.tag.main}")
 	@Tag(name = "Review")
 	@Operation(summary = "지역별 맛집 조회 API",
 		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
@@ -75,6 +77,7 @@ public class ReviewController {
 		return ApiCursorPageResponse.success(reviewSearchService.searchReviewsByArea(request, null));
 	}
 
+	@Tag(name = "${swagger.tag.main}")
 	@Tag(name = "Review")
 	@Operation(summary = "쉐피들의 인정 맛집 조회 API",
 		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
@@ -88,6 +91,7 @@ public class ReviewController {
 		return ApiCursorPageResponse.success(reviewSearchService.searchReviewsByAreaAndTag(request, null));
 	}
 
+	@Tag(name = "${swagger.tag.search}")
 	@Tag(name = "Review")
 	@Operation(summary = "음식 검색 API",
 		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
@@ -101,6 +105,7 @@ public class ReviewController {
 		return ApiCursorPageResponse.success(reviewSearchService.searchByMenu(request, null));
 	}
 
+	@Tag(name = "${swagger.tag.search}")
 	@Tag(name = "Review")
 	@Operation(summary = "지역 검색 API",
 		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
@@ -114,6 +119,7 @@ public class ReviewController {
 		return ApiCursorPageResponse.success(reviewSearchService.searchByAddress(request, null));
 	}
 
+	@Tag(name = "${swagger.tag.review-cud}")
 	@Tag(name = "Review")
 	@Operation(summary = "리뷰 등록 API - 인증 필요",
 		description = "인증 필요, "
@@ -132,6 +138,7 @@ public class ReviewController {
 		return ApiResponse.success(reviewCudService.registerReview(userPrincipal.getAvatarId(), request, images));
 	}
 
+	@Tag(name = "${swagger.tag.review-cud}")
 	@Tag(name = "Review")
 	@Operation(summary = "리뷰 수정 API - 인증 필요",
 		description = "인증 필요, "
@@ -152,6 +159,7 @@ public class ReviewController {
 		return ApiResponse.success(null);
 	}
 
+	@Tag(name = "${swagger.tag.review-cud}")
 	@Tag(name = "Review")
 	@Operation(summary = "리뷰 삭제 API - 인증 필요",
 		description = "리뷰를 삭제하는 API 입니다.",

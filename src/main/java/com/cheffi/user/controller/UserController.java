@@ -41,8 +41,8 @@ public class UserController {
 		return ApiResponse.success(userService.getUserInfo(principal.getUserId()));
 	}
 
-	@Tag(name = "01. 회원가입")
-	@Tag(name = "User")
+	@Tag(name = "${swagger.tag.sign-up}")
+	@Tag(name = "${swagger.tag.profile-update}")
 	@Operation(summary = "유저 약관 동의 변경 API",
 		description = "약관 동의 여부 변경 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -54,8 +54,8 @@ public class UserController {
 			request.adAgreed(), request.analysisAgreed()));
 	}
 
-	@Tag(name = "01. 회원가입")
-	@Tag(name = "User")
+	@Tag(name = "${swagger.tag.sign-up}")
+	@Tag(name = "${swagger.tag.profile-update}")
 	@Operation(summary = "유저 프로필 완료 등록 API",
 		description = "프로필 완료 등록 - 인증 필요 "
 			+ "닉네임 설정, 프로필 사진 등록, 태그 설정이 끝난 후에 반드시 1회 호출하여 완료 등록을 해야 합니다.",

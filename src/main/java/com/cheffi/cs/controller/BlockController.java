@@ -32,7 +32,7 @@ public class BlockController {
 
 	private final BlockService blockService;
 
-	@Tag(name = "CS")
+	@Tag(name = "${swagger.tag.block}")
 	@Operation(summary = "차단 등록 API - 인증 필수",
 		description = "차단 등록 API - 인증 필수, 차단시 대상과의 모든 팔로우 관계가 취소됩니다.",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -45,7 +45,7 @@ public class BlockController {
 		return ApiResponse.success();
 	}
 
-	@Tag(name = "CS")
+	@Tag(name = "${swagger.tag.block}")
 	@Operation(summary = "차단 해제 API - 인증 필수",
 		description = "차단 해제 API - 인증 필수, 차단이 해제됩니다. 차단 이전의 팔로우 관계는 복구되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -58,7 +58,7 @@ public class BlockController {
 		return ApiResponse.success();
 	}
 
-	@Tag(name = "CS")
+	@Tag(name = "${swagger.tag.block}")
 	@Operation(summary = "차단 목록 조회 API - 인증 필수",
 		description = "차단 목록 조회 API - 인증 필수, 커서 페이징",
 		security = {@SecurityRequirement(name = "session-token")})

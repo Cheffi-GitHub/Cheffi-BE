@@ -25,7 +25,8 @@ public class ReportController {
 
 	private final ReportService reportService;
 
-	@Tag(name = "CS")
+	@Tag(name = "${swagger.tag.review-detail}")
+	@Tag(name = "${swagger.tag.report}")
 	@Operation(summary = "신고 API - 인증 필수",
 		description = "신고 API - 같은 사용자를 같은 이유로 중복 신고할 수 없습니다.",
 		security = {@SecurityRequirement(name = "session-token")})

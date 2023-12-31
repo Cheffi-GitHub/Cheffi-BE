@@ -26,7 +26,7 @@ public class CfcController {
 
 	private final CheffiCoinService cheffiCoinService;
 
-	@Tag(name = "CFC")
+	@Tag(name = "${swagger.tag.cfc}")
 	@Operation(summary = "CFC 내역 조회 API",
 		description = "CFC 내역 조회 - 인증 필요 (커서 페이징)",
 		security = {@SecurityRequirement(name = "session-token")})

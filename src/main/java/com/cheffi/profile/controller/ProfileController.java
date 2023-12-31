@@ -37,7 +37,7 @@ public class ProfileController {
 	private final ReviewSearchService reviewSearchService;
 	private final ProfileService profileService;
 
-	@Tag(name = "Profile")
+	@Tag(name = "${swagger.tag.profile-info}")
 	@Operation(summary = "마이페이지 정보 조회 API",
 		description = "마이페이지 정보 조회 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -48,7 +48,7 @@ public class ProfileController {
 		return ApiResponse.success(profileService.getMyPageInfo(principal.getAvatarId()));
 	}
 
-	@Tag(name = "Profile")
+	@Tag(name = "${swagger.tag.profile-info}")
 	@Operation(summary = "타인 프로필 정보 조회 API",
 		description = "타인 프로필 정보 조회",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -61,7 +61,7 @@ public class ProfileController {
 		return ApiResponse.success(profileService.getProfile(ownerId, null));
 	}
 
-	@Tag(name = "Profile")
+	@Tag(name = "${swagger.tag.profile-info}")
 	@Operation(summary = "프로필 작성 게시물 조회 API",
 		description = "프로필 작성 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -76,7 +76,7 @@ public class ProfileController {
 		return ApiCursorPageResponse.success(reviewSearchService.searchByWriter(request, writerId, null));
 	}
 
-	@Tag(name = "Profile")
+	@Tag(name = "${swagger.tag.profile-info}")
 	@Operation(summary = "프로필 북마크 게시물 조회 API",
 		description = "프로필 북마크 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -91,7 +91,7 @@ public class ProfileController {
 		return ApiCursorPageResponse.success(reviewSearchService.searchByBookmarks(request, ownerId, null));
 	}
 
-	@Tag(name = "Profile")
+	@Tag(name = "${swagger.tag.profile-info}")
 	@Operation(summary = "프로필 구매 게시물 조회 API",
 		description = "프로필 구매 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
