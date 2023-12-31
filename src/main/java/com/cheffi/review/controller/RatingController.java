@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "Rating")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/reviews/rate")
@@ -25,7 +24,7 @@ public class RatingController {
 
 	private final RatingService ratingService;
 
-	@Tag(name = "Rating")
+	@Tag(name = "${swagger.tag.review-detail}")
 	@Operation(summary = "리뷰 평가 API - 인증 필요",
 		description = "리뷰에 대한 평가를 하는 API - 취소를 원한다면 'type = NONE' 지정해주면 취소됩니다.")
 	@PreAuthorize("hasRole('USER')")

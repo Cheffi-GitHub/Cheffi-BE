@@ -39,7 +39,7 @@ public class FollowController {
 
 	private final FollowService followService;
 
-	@Tag(name = "Follow")
+	@Tag(name = "${swagger.tag.follow}")
 	@Operation(summary = "아바타 팔로우 등록 API",
 		description = "팔로우 추가 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -51,7 +51,7 @@ public class FollowController {
 		return ApiResponse.success(followService.addFollow(principal.getAvatarId(), avatarId));
 	}
 
-	@Tag(name = "Follow")
+	@Tag(name = "${swagger.tag.follow}")
 	@Operation(summary = "아바타 팔로우 취소 API",
 		description = "팔로우 취소 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -64,7 +64,7 @@ public class FollowController {
 		return ApiResponse.success(followService.unfollow(principal.getAvatarId(), avatarId));
 	}
 
-	@Tag(name = "Follow")
+	@Tag(name = "${swagger.tag.follow}")
 	@Operation(summary = "해당 유저가 팔로우하는 유저 목록 조회 API",
 		description = "팔로잉 조회",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -78,7 +78,7 @@ public class FollowController {
 			followService.getFollowing(request, followerId, principal.getAvatarId()));
 	}
 
-	@Tag(name = "Follow")
+	@Tag(name = "${swagger.tag.follow}")
 	@Operation(summary = "해당 유저를 팔로우하는 유저 목록 조회 API",
 		description = "팔로워 조회",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -92,7 +92,7 @@ public class FollowController {
 			followService.getFollower(request, followingId, principal.getAvatarId()));
 	}
 
-	@Tag(name = "Follow")
+	@Tag(name = "${swagger.tag.main}")
 	@Operation(summary = "태그별 팔로우 추천 목록 조회 API",
 		description = "태그별 팔로우 추천 조회 12개의 데이터만 제공합니다. "
 			+ "메인 페이지용 API 입니다. - 인증 필요",

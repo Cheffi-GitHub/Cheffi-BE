@@ -1,5 +1,6 @@
 package com.cheffi.avatar.controller;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +26,15 @@ public class CfcController {
 
 	private final CheffiCoinService cheffiCoinService;
 
-	@Tag(name = "CFC")
+	@Tag(name = "${swagger.tag.cfc}")
 	@Operation(summary = "CFC 내역 조회 API",
 		description = "CFC 내역 조회 - 인증 필요 (커서 페이징)",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
 	@GetMapping
 	public ApiCursorPageResponse<CheffiCoinHistoryDto, Long> getCheffiCoinHistory(
-		@AuthenticationPrincipal UserPrincipal principal, @Valid CheffiCoinHistoryRequest request) {
+		@ParameterObject @Valid CheffiCoinHistoryRequest request,
+		@AuthenticationPrincipal UserPrincipal principal) {
 		return ApiCursorPageResponse.success(cheffiCoinService.getCheffiCoinHistory(principal.getAvatarId(), request));
 	}
 

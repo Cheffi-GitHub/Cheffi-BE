@@ -20,7 +20,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "Bookmark")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/bookmarks")
@@ -28,7 +27,7 @@ public class BookmarkController {
 
 	private final BookmarkService bookmarkService;
 
-	@Tag(name = "Bookmark")
+	@Tag(name = "${swagger.tag.bookmark}")
 	@Operation(summary = "북마크 추가 API - 인증 필수",
 		description = "인증 필수, 북마크 추가",
 		security = {@SecurityRequirement(name = "session-token")})
@@ -41,7 +40,7 @@ public class BookmarkController {
 		return ApiResponse.success();
 	}
 
-	@Tag(name = "Bookmark")
+	@Tag(name = "${swagger.tag.bookmark}")
 	@Operation(summary = "북마크 취소 API - 인증 필수",
 		description = "인증 필수, 북마크 취소",
 		security = {@SecurityRequirement(name = "session-token")})

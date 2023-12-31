@@ -1,9 +1,9 @@
 spring:
   profiles:
     group:
-      "dev": "dev, oauth, s3, actuator, dev-db, regions"
-      "local": "local, oauth, s3, actuator, regions"
-      "default": "local, oauth, s3, actuator, regions"
+      "dev": "dev, oauth, s3, actuator, dev-db, regions, swagger"
+      "local": "local, oauth, s3, actuator, regions, swagger"
+      "default": "local, oauth, s3, actuator, regions, swagger"
   config:
     import: classpath:data/application-regions.yml
 
@@ -30,6 +30,8 @@ logging:
 springdoc:
   # define target package of swagger scanning
   packages-to-scan: com.cheffi
+  swagger-ui:
+    tags-sorter: alpha
 
 api:
   prefix: /api/v1
