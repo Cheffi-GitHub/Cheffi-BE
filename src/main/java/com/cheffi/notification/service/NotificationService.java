@@ -25,15 +25,13 @@ public class NotificationService {
 
 	@Transactional
 	public CursorPage<NotificationDto, Long> getNotifications(GetNotificationRequest request, Long avatarId) {
-		List<Notification> notifications = notificationJpaRepository.findByAvatar(request, avatarId);
-		List<NotificationDto> result = notifications.stream().map(NotificationDto::of).toList();
+		List<NotificationDto> result = notificationJpaRepository.findByAvatar(request, avatarId)
+			.stream()
+			.map(NotificationDto::of)
+			.toList();
+		notificationJpaRepository.updateCheckedAllByAvatar(avatarId);
 
-		notifications.stream()
-			.filter(Notification::isUnchecked)
-			.forEach(Notification::check);
-
-		return CursorPage.of(result, request.getSize(),
-			NotificationDto::id);
+		return CursorPage.of(result, request.getSize(), NotificationDto::id);
 	}
 
 	@Transactional
