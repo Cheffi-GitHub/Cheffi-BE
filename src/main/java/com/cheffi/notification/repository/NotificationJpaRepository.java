@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cheffi.notification.domain.Notification;
 import com.cheffi.notification.dto.GetNotificationRequest;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -35,4 +36,10 @@ public class NotificationJpaRepository {
 		return query.fetch();
 	}
 
+	public Long updateCheckedAllByAvatar(Long avatarId) {
+		return queryFactory.update(notification)
+			.set(notification.checked, Expressions.TRUE)
+			.where(notification.avatar.id.eq(avatarId))
+			.execute();
+	}
 }
