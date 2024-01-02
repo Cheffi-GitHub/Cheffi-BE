@@ -67,13 +67,13 @@ public class FollowService {
 			unfollow(secondId, firstId);
 	}
 
-	public CursorPage<GetFollowResponse, Long> getFollowing(GetFollowRequest request, Long followerId, Long viewerId) {
-		return CursorPage.of(followJpaRepository.findFollowing(request, followerId, viewerId),
+	public CursorPage<GetFollowResponse, Long> getFollowingByCursor(GetFollowRequest request, Long followerId, Long viewerId) {
+		return CursorPage.of(followJpaRepository.findFollowingByCursor(request, followerId, viewerId),
 			request.getSize(), GetFollowResponse::cursor);
 	}
 
-	public CursorPage<GetFollowResponse, Long> getFollower(GetFollowRequest request, Long followingId, Long viewerId) {
-		return CursorPage.of(followJpaRepository.findFollower(request, followingId, viewerId),
+	public CursorPage<GetFollowResponse, Long> getFollowerByCursor(GetFollowRequest request, Long followingId, Long viewerId) {
+		return CursorPage.of(followJpaRepository.findFollowerByCursor(request, followingId, viewerId),
 			request.getSize(), GetFollowResponse::cursor);
 	}
 
@@ -84,5 +84,8 @@ public class FollowService {
 	public Follow getByFollowerAndFollowee(Avatar follower, Avatar followee) {
 		return followRepository.findBySubjectAndTarget(follower, followee)
 			.orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOLLOWED));
+	}
+	public List<Avatar> getAllFollower(Long followingId) {
+		return followRepository.findFollowerByTarget(followingId);
 	}
 }

@@ -75,7 +75,7 @@ public class FollowController {
 		@ParameterObject @Valid GetFollowRequest request
 	) {
 		return ApiCursorPageResponse.success(
-			followService.getFollowing(request, followerId, principal.getAvatarId()));
+			followService.getFollowingByCursor(request, followerId, principal.getAvatarId()));
 	}
 
 	@Tag(name = "${swagger.tag.follow}")
@@ -89,7 +89,7 @@ public class FollowController {
 		@ParameterObject @Valid GetFollowRequest request
 	) {
 		return ApiCursorPageResponse.success(
-			followService.getFollower(request, followingId, principal.getAvatarId()));
+			followService.getFollowerByCursor(request, followingId, principal.getAvatarId()));
 	}
 
 	@Tag(name = "${swagger.tag.main}")

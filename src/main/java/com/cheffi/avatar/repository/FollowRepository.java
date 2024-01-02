@@ -1,5 +1,6 @@
 package com.cheffi.avatar.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,5 +21,12 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 		and f.target.id = :target
 		""")
 	boolean existsBySubjectAndTarget(@Param("subject") Long subject, @Param("target") Long target);
+
+	@Query("""
+		select a from Follow f
+		join f.subject a
+		where f.target.id = :target
+		""")
+	List<Avatar> findFollowerByTarget(@Param("target") Long target);
 
 }

@@ -28,7 +28,7 @@ public class NotificationJpaRepository {
 	public List<Notification> findByAvatar(GetNotificationRequest request, Long avatarId) {
 		JPAQuery<Notification> query = queryFactory
 			.selectFrom(notification)
-			.where(notification.avatar.id.eq(avatarId),
+			.where(notification.target.id.eq(avatarId),
 				notification.id.loe(request.getCursor(Long.MAX_VALUE)))
 			.orderBy(notification.id.desc())
 			.limit(request.getSize() + 1L);
@@ -39,7 +39,7 @@ public class NotificationJpaRepository {
 	public Long updateCheckedAllByAvatar(Long avatarId) {
 		return queryFactory.update(notification)
 			.set(notification.checked, Expressions.TRUE)
-			.where(notification.avatar.id.eq(avatarId))
+			.where(notification.target.id.eq(avatarId))
 			.execute();
 	}
 }

@@ -14,23 +14,23 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 	@Query("""
 		select n
 		from Notification n
-		where n.avatar.id = :avatar
+		where n.target.id = :target
 		""")
-	List<Notification> findAllByAvatar(@Param("avatar") Long avatarId);
+	List<Notification> findAllByAvatar(@Param("target") Long avatarId);
 
 	@Query("""
 		select n
 		from Notification n
-		where n.avatar.id = :avatar
+		where n.target.id = :target
 		and n.id in :ids
 		""")
-	List<Notification> findByAvatarAndId(@Param("avatar") Long avatarId, @Param("ids") List<Long> ids);
+	List<Notification> findByAvatarAndId(@Param("target") Long avatarId, @Param("ids") List<Long> ids);
 
 	@Query("""
 		select (count(n) > 0)
 		from Notification n
 		where n.checked = false
-		and n.avatar.id = :avatar
+		and n.target.id = :target
 		""")
-	boolean existsUncheckedByAvatar(@Param("avatar") @NonNull Long avatar);
+	boolean existsUncheckedByAvatar(@Param("target") @NonNull Long avatar);
 }
