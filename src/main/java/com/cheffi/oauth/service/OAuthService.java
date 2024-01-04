@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,7 +64,7 @@ public class OAuthService {
 			cheffiCoinService.earnCheffiCoinForLogin(avatar.getId());
 		}
 
-		Set<GrantedAuthority> authorities = getAuthoritiesFromUser(user);
+		Set<SimpleGrantedAuthority> authorities = getAuthoritiesFromUser(user);
 		AuthenticationToken authenticationToken =
 			AuthenticationToken.of(user, avatar, loginRequest.token(), authorities);
 
@@ -78,7 +77,7 @@ public class OAuthService {
 			.toUserCreateRequest(List.of(roleService.getUserRole(), roleService.getNoProfileRole())));
 	}
 
-	private Set<GrantedAuthority> getAuthoritiesFromUser(User user) {
+	private Set<SimpleGrantedAuthority> getAuthoritiesFromUser(User user) {
 		return user.getUserRoles()
 			.stream()
 			.map(ur ->

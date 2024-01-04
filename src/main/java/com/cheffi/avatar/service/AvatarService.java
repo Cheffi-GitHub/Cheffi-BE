@@ -1,5 +1,7 @@
 package com.cheffi.avatar.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -117,6 +119,10 @@ public class AvatarService {
 	public Avatar getByIdWithTagsAndPhoto(Long avatarId) {
 		return avatarRepository.findByIdWithTagsAndPhoto(avatarId)
 			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AVATAR_NOT_EXISTS));
+	}
+
+	public List<Avatar> getAllActive() {
+		return avatarRepository.findAllActive();
 	}
 
 }

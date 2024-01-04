@@ -12,6 +12,7 @@ import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.constant.S3RootPath;
+import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.event.event.ReviewCreateEvent;
 import com.cheffi.review.domain.Restaurant;
 import com.cheffi.review.domain.Review;
@@ -35,6 +36,7 @@ public class ReviewCudService {
 	private final MenuService menuService;
 	private final ReviewPhotoService reviewPhotoService;
 	private final ReviewService reviewService;
+	private final SecurityContextService securityContextService;
 	private final ApplicationEventPublisher eventPublisher;
 
 	@Transactional
@@ -52,7 +54,8 @@ public class ReviewCudService {
 		reviewPhotoService.addPhotos(review, images);
 
 		Review savedReview = reviewService.save(review);
-		eventPublisher.publishEvent(new ReviewCreateEvent(writer));
+		eventPublisher.publishEvent(
+			new ReviewCreateEvent(writer, savedReview, securityContextService.getAuthorities()));
 		return savedReview.getId();
 	}
 

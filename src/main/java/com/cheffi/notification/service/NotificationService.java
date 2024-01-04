@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.avatar.service.FollowService;
 import com.cheffi.common.dto.CursorPage;
 import com.cheffi.notification.domain.Notification;
@@ -26,6 +27,7 @@ public class NotificationService {
 	private final NotificationJdbcRepository notificationJdbcRepository;
 	private final NotificationRepository notificationRepository;
 	private final FollowService followService;
+	private final AvatarService avatarService;
 
 	@Transactional
 	public CursorPage<NotificationDto, Long> getNotifications(GetNotificationRequest request, Long avatarId) {
@@ -59,5 +61,12 @@ public class NotificationService {
 		List<Notification> notifications = followService.getAllFollower(writerId).stream()
 			.map(avatar -> Notification.ofReview(avatar, nickname)).toList();
 		return notificationJdbcRepository.saveAll(notifications, "Review create event");
+	}
+
+	@Transactional
+	public void notifyOfficialReview(String title) {
+		List<Notification> notifications = avatarService.getAllActive().stream()
+			.map(avatar -> Notification.ofOfficial(avatar, title)).toList();
+		notificationJdbcRepository.saveAll(notifications, "Official review create event");
 	}
 }
