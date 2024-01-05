@@ -39,20 +39,17 @@ public class Notification extends BaseEntity {
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "avatar_id")
-	private Avatar avatar;
+	private Avatar target;
 
-	private Notification(String content, NotificationCategory category, Avatar avatar) {
-		this.content = content;
+	private Notification(NotificationCategory category, Avatar target, Object... arg) {
+		this.content = category.getContent(arg);
 		this.category = category;
-		this.avatar = avatar;
+		this.target = target;
 		this.checked = false;
 	}
 
-	public boolean isUnchecked() {
-		return !this.checked;
+	public static Notification ofReview(Avatar target, String nickname) {
+		return new Notification(NotificationCategory.REVIEW, target, nickname);
 	}
 
-	public void check() {
-		this.checked = true;
-	}
 }

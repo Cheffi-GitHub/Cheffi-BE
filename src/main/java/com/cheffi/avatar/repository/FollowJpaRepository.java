@@ -68,7 +68,7 @@ public class FollowJpaRepository {
 		return query.fetch();
 	}
 
-	public List<GetFollowResponse> findFollowing(GetFollowRequest request, Long followerId, Long viewerId) {
+	public List<GetFollowResponse> findFollowingByCursor(GetFollowRequest request, Long followerId, Long viewerId) {
 
 		JPAQuery<?> common = queryFactory
 			.from(follow)
@@ -88,7 +88,7 @@ public class FollowJpaRepository {
 			viewerId).fetch();
 	}
 
-	public List<GetFollowResponse> findFollower(GetFollowRequest request, Long followingId, Long viewerId) {
+	public List<GetFollowResponse> findFollowerByCursor(GetFollowRequest request, Long followingId, Long viewerId) {
 
 		JPAQuery<?> common = queryFactory
 			.from(follow)
