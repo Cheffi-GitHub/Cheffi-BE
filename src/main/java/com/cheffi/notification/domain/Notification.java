@@ -52,4 +52,8 @@ public class Notification extends BaseEntity {
 		return new Notification(NotificationCategory.REVIEW, target, nickname);
 	}
 
+	public static Notification ofOfficial(Avatar target, String title) {
+		return new Notification(NotificationCategory.OFFICIAL, target, title);
+	}
+
 }

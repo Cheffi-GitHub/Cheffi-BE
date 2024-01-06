@@ -14,6 +14,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.cheffi.common.auth.Authorities;
 import com.cheffi.oauth.model.UserPrincipal;
 import com.cheffi.user.constant.RoleType;
 
@@ -77,5 +78,9 @@ public class SecurityContextService {
 	public boolean hasUserAuthority(UserPrincipal principal) {
 		return principal != null && principal.getAuthorities()
 			.contains(new SimpleGrantedAuthority(RoleType.USER.getAuthority()));
+	}
+
+	public Authorities getAuthorities() {
+		return new Authorities(getUserPrincipal().getAuthorities());
 	}
 }
