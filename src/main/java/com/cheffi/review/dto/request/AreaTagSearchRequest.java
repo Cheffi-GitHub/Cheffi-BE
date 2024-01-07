@@ -33,7 +33,7 @@ public class AreaTagSearchRequest implements RedisZSetRequest {
 	@Range(min = 1, max = 16)
 	private final Integer size;
 
-	@Parameter(name = "tag_id", description = "검색할 태그의 인덱스, 음식 태그만 입력 가능합니다.", example = "1")
+	@Parameter(name = "tag_id", description = "검색할 태그의 인덱스, 음식 태그만 입력 가능합니다.", example = "15")
 	@NotNull
 	private final Long tagId;
 	@JsonIgnore
