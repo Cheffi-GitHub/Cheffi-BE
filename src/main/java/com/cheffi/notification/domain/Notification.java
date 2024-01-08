@@ -56,4 +56,9 @@ public class Notification extends BaseEntity {
 		return new Notification(NotificationCategory.OFFICIAL, target, title);
 	}
 
+	public static Notification ofFollow(Avatar target, String nickname) {
+		return new Notification(NotificationCategory.FOLLOW, target, nickname);
+	}
+
+
 }

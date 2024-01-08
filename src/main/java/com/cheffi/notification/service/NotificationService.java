@@ -69,4 +69,9 @@ public class NotificationService {
 			.map(avatar -> Notification.ofOfficial(avatar, title)).toList();
 		notificationJdbcRepository.saveAll(notifications, "Official review create event");
 	}
+
+	@Transactional
+	public void notifyFollow(Long targetId, String subjectNickname) {
+		notificationRepository.save(Notification.ofFollow(avatarService.getById(targetId), subjectNickname));
+	}
 }
