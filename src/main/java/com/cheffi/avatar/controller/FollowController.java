@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cheffi.avatar.dto.GetFollowRequest;
+import com.cheffi.avatar.dto.request.DeleteFollowRequest;
+import com.cheffi.avatar.dto.request.PostFollowRequest;
 import com.cheffi.avatar.dto.response.AddFollowResponse;
 import com.cheffi.avatar.dto.response.GetFollowResponse;
 import com.cheffi.avatar.dto.response.RecommendFollowResponse;
@@ -47,8 +50,8 @@ public class FollowController {
 	@PostMapping
 	public ApiResponse<AddFollowResponse> addFollow(
 		@AuthenticationPrincipal UserPrincipal principal,
-		@Positive Long avatarId) {
-		return ApiResponse.success(followService.addFollow(principal.getAvatarId(), avatarId));
+		@Valid @RequestBody PostFollowRequest request) {
+		return ApiResponse.success(followService.addFollow(principal.getAvatarId(), request.id()));
 	}
 
 	@Tag(name = "${swagger.tag.follow}")
@@ -59,9 +62,8 @@ public class FollowController {
 	@DeleteMapping
 	public ApiResponse<UnfollowResponse> unfollow(
 		@AuthenticationPrincipal UserPrincipal principal,
-		@Positive Long avatarId) {
-
-		return ApiResponse.success(followService.unfollow(principal.getAvatarId(), avatarId));
+		@Valid @RequestBody DeleteFollowRequest request) {
+		return ApiResponse.success(followService.unfollow(principal.getAvatarId(), request.id()));
 	}
 
 	@Tag(name = "${swagger.tag.follow}")
