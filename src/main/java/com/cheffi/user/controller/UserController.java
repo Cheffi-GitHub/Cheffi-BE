@@ -51,7 +51,7 @@ public class UserController {
 		@AuthenticationPrincipal UserPrincipal principal,
 		@Valid @RequestBody ChangeTermsAgreementRequest request) {
 		return ApiResponse.success(userService.changeTermsAgreement(principal.getUserId(),
-			request.adAgreed(), request.analysisAgreed()));
+			request.adAgreed(), false));
 	}
 
 	@Tag(name = "${swagger.tag.sign-up}")
