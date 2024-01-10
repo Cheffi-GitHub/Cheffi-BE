@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.Follow;
@@ -38,6 +39,8 @@ class FollowServiceTest {
 	private FollowJpaRepository followJpaRepository;
 	@Mock
 	private AvatarJpaRepository avatarJpaRepository;
+	@Mock
+	private ApplicationEventPublisher eventPublisher;
 
 	private AvatarService avatarService;
 
@@ -56,7 +59,7 @@ class FollowServiceTest {
 	@BeforeEach
 	void setUp() {
 		avatarService = new AvatarService(avatarRepository, avatarJpaRepository, profilePhotoService);
-		followService = new FollowService(followRepository, followJpaRepository, avatarService);
+		followService = new FollowService(followRepository, followJpaRepository, avatarService, eventPublisher);
 	}
 
 	@Nested
