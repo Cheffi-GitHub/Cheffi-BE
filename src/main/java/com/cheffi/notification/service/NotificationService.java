@@ -15,6 +15,8 @@ import com.cheffi.notification.dto.NotificationDto;
 import com.cheffi.notification.repository.NotificationJdbcRepository;
 import com.cheffi.notification.repository.NotificationJpaRepository;
 import com.cheffi.notification.repository.NotificationRepository;
+import com.cheffi.review.service.BookmarkService;
+import com.cheffi.util.model.ExactPeriod;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +30,7 @@ public class NotificationService {
 	private final NotificationRepository notificationRepository;
 	private final FollowService followService;
 	private final AvatarService avatarService;
+	private final BookmarkService bookmarkService;
 
 	@Transactional
 	public CursorPage<NotificationDto, Long> getNotifications(GetNotificationRequest request, Long avatarId) {
@@ -73,5 +76,12 @@ public class NotificationService {
 	@Transactional
 	public void notifyFollow(Long targetId, String subjectNickname) {
 		notificationRepository.save(Notification.ofFollow(avatarService.getById(targetId), subjectNickname));
+	}
+
+	@Transactional
+	public void notifyReviewLocking(ExactPeriod ep) {
+		List<Notification> notifications = bookmarkService.getByReviewLockBetween(ep).stream()
+			.map(b -> Notification.ofBookmark(b.getAvatar(), b.getReview().getTitle())).toList();
+		notificationJdbcRepository.saveAll(notifications, "Bookmarked review event");
 	}
 }
