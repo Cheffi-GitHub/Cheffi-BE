@@ -15,14 +15,14 @@ import lombok.Getter;
 @Getter
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UpdateReviewRequest {
-	@NotNull
 	@Schema(description = "수정할 리뷰 식별자", example = "1")
+	@NotNull
 	private Long id;
-	@NotBlank
 	@Schema(description = "리뷰 제목", example = "기존 제목 or 수정할 제목")
-	private String title;
 	@NotBlank
+	private String title;
 	@Schema(description = "리뷰 내용", example = "기존 내용 or 수정할 내용")
+	@NotBlank
 	private String text;
 	@Schema(description = "메뉴")
 	private List<MenuDto> menus;

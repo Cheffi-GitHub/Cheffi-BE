@@ -7,11 +7,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record PostReportRequest(
-	@NotNull @Positive
 	@Schema(description = "신고 대상의 ID")
-	Long id,
+	@Positive
 	@NotNull
+	Long id,
 	@Schema(description = "신고 사유")
+	@NotNull
 	ReportReason reason
 ) {
 }

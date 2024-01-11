@@ -5,8 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record PostBlockRequest(
-	@NotNull @Positive
 	@Schema(description = "차단 대상의 ID", example = "10")
+	@Positive
+	@NotNull
 	Long id
 ) {
 }
