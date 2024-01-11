@@ -1,5 +1,7 @@
 package com.cheffi.review.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,6 +10,7 @@ import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.review.domain.Bookmark;
 import com.cheffi.review.repository.BookmarkRepository;
+import com.cheffi.util.model.ExactPeriod;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,4 +45,7 @@ public class BookmarkService {
 			.orElseThrow(() -> new BusinessException(ErrorCode.NOT_BOOKMARKED));
 	}
 
+	public List<Bookmark> getByReviewLockBetween(ExactPeriod ep) {
+		return bookmarkRepository.findByReviewLockBetween(ep.getStart(), ep.getEnd());
+	}
 }
