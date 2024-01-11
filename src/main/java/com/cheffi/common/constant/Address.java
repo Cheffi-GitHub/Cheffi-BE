@@ -25,16 +25,16 @@ import lombok.NoArgsConstructor;
 public class Address {
 
 	// 시, 도
-	@NotBlank
 	@Parameter(name = "province", description = "검색 기준 시/도 주소(1차)", example = "서울특별시")
 	@Schema(description = "식당의 시/도 주소(1차)", example = "서울특별시")
+	@NotBlank
 	@NotNull
 	private String province;
 
 	// 구, 시, 군
-	@NotBlank
 	@Parameter(name = "city", description = "검색 기준 시/군/구 주소(2차)", example = "양천구")
 	@Schema(description = "식당의 시/군/구 주소(2차)", example = "양천구")
+	@NotBlank
 	@NotNull
 	private String city;
 

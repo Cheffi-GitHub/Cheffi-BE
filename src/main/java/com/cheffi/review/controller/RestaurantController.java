@@ -45,7 +45,7 @@ public class RestaurantController {
 		return ApiResponse.success(restaurantInfoService.searchRestaurantByName(name, PageRequest.of(0, 10)));
 	}
 
-	@Tag(name = "Restaurant")
+	@Tag(name = "${swagger.tag.review-cud}")
 	@Operation(summary = "식당 등록 신청 API",
 	description = "사용자에 의한 식당 등록 API입니다. "
 		+ "임시적으로 식당이 등록되며 관리자에 의해 최종 등록됩니다.")

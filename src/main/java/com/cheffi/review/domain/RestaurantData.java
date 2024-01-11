@@ -19,6 +19,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -48,6 +49,8 @@ public class RestaurantData implements RestaurantInfo {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private RestaurantStatus status;
+	@Valid
+	@NotNull
 	@Embedded
 	private DetailedAddress detailedAddress;
 	@Nullable
