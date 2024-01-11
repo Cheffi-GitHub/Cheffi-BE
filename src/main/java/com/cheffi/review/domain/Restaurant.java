@@ -15,6 +15,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -47,6 +48,8 @@ public class Restaurant extends BaseTimeEntity implements RestaurantInfo {
 
 	private int reviewCnt;
 
+	@Valid
+	@NotNull
 	@Embedded
 	private DetailedAddress detailedAddress;
 
