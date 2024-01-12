@@ -16,3 +16,4 @@ swagger:
     region: '14. 지역구 조회'
     report: '15. 신고'
     block: '16. 차단'
+    qna: '17. 자주 묻는 질문'
