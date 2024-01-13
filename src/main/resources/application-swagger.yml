@@ -17,3 +17,4 @@ swagger:
     report: '15. 신고'
     block: '16. 차단'
     qna: '17. 자주 묻는 질문'
+    notice: '18. 공지사항'
