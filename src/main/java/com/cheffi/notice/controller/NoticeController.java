@@ -26,7 +26,7 @@ public class NoticeController {
 
 	@Tag(name = "${swagger.tag.notice}")
 	@Operation(summary = "공지 사항 조회 API",
-		description = "알림 목록 조회 API - 인증 필수, 커서 페이징, 해당 API 로 조회된 알림은 자동으로 확인처리됩니다.")
+		description = "공지 사항 조회 API")
 	@PageableAsQueryParam
 	@GetMapping
 	public ApiPageResponse<NoticeDto> notifications(

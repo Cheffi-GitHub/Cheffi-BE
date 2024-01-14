@@ -38,7 +38,7 @@ public class ProfileController {
 	private final ProfileService profileService;
 
 	@Tag(name = "${swagger.tag.profile-info}")
-	@Operation(summary = "마이페이지 정보 조회 API",
+	@Operation(summary = "마이페이지 정보 조회 API - 인증 필요",
 		description = "마이페이지 정보 조회 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
@@ -49,8 +49,8 @@ public class ProfileController {
 	}
 
 	@Tag(name = "${swagger.tag.profile-info}")
-	@Operation(summary = "타인 프로필 정보 조회 API",
-		description = "타인 프로필 정보 조회",
+	@Operation(summary = "타인 프로필 정보 조회 API - 인증 선택",
+		description = "타인 프로필 정보 조회, 차단당했다면 조회가 불가능합니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}")
 	public ApiResponse<ProfileInfo> profileInfo(
@@ -62,7 +62,7 @@ public class ProfileController {
 	}
 
 	@Tag(name = "${swagger.tag.profile-info}")
-	@Operation(summary = "프로필 작성 게시물 조회 API",
+	@Operation(summary = "프로필 작성 게시물 조회 AP - 인증 선택",
 		description = "프로필 작성 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/reviews")
@@ -77,7 +77,7 @@ public class ProfileController {
 	}
 
 	@Tag(name = "${swagger.tag.profile-info}")
-	@Operation(summary = "프로필 북마크 게시물 조회 API",
+	@Operation(summary = "프로필 북마크 게시물 조회 API - 인증 선택",
 		description = "프로필 북마크 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/bookmarks")
@@ -92,7 +92,7 @@ public class ProfileController {
 	}
 
 	@Tag(name = "${swagger.tag.profile-info}")
-	@Operation(summary = "프로필 구매 게시물 조회 API",
+	@Operation(summary = "프로필 구매 게시물 조회 API - 인증 선택",
 		description = "프로필 구매 게시물 조회 - 북마크 여부는 표시되지 않습니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/purchase")

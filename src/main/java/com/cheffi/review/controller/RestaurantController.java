@@ -46,7 +46,7 @@ public class RestaurantController {
 	}
 
 	@Tag(name = "${swagger.tag.review-cud}")
-	@Operation(summary = "식당 등록 신청 API",
+	@Operation(summary = "식당 등록 신청 API - 인증 필수",
 	description = "사용자에 의한 식당 등록 API입니다. "
 		+ "임시적으로 식당이 등록되며 관리자에 의해 최종 등록됩니다.")
 	@PreAuthorize("hasRole('USER') and !hasAuthority('NO_PROFILE')")

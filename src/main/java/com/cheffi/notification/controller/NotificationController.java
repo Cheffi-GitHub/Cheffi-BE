@@ -33,7 +33,7 @@ public class NotificationController {
 	private final NotificationService notificationService;
 
 	@Tag(name = "${swagger.tag.notification}")
-	@Operation(summary = "알림 목록 조회 API - 인증 필수",
+	@Operation(summary = "알림 목록 조회 API - 인증 필요",
 		description = "알림 목록 조회 API - 인증 필수, 커서 페이징, 해당 API 로 조회된 알림은 자동으로 확인처리됩니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
@@ -45,7 +45,7 @@ public class NotificationController {
 	}
 
 	@Tag(name = "${swagger.tag.notification}")
-	@Operation(summary = "알림 삭제 API - 인증 필수",
+	@Operation(summary = "알림 삭제 API - 인증 필요",
 		description = "알림 삭제 API - 인증 필수, 전체 삭제와 선택 삭제가 가능합니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
@@ -57,7 +57,7 @@ public class NotificationController {
 	}
 
 	@Tag(name = "${swagger.tag.main}")
-	@Operation(summary = "알림 체크 API - 인증 필수",
+	@Operation(summary = "알림 체크 API - 인증 필요",
 		description = "알림 체크 API - 인증 필수, 확인하지 않은 알림이 있는지 체크하는 API입니다.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")

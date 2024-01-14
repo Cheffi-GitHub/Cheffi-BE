@@ -43,7 +43,7 @@ public class FollowController {
 	private final FollowService followService;
 
 	@Tag(name = "${swagger.tag.follow}")
-	@Operation(summary = "아바타 팔로우 등록 API",
+	@Operation(summary = "아바타 팔로우 등록 API - 인증 필요",
 		description = "팔로우 추가 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
@@ -55,7 +55,7 @@ public class FollowController {
 	}
 
 	@Tag(name = "${swagger.tag.follow}")
-	@Operation(summary = "아바타 팔로우 취소 API",
+	@Operation(summary = "아바타 팔로우 취소 API - 인증 필요",
 		description = "팔로우 취소 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
@@ -67,7 +67,7 @@ public class FollowController {
 	}
 
 	@Tag(name = "${swagger.tag.follow}")
-	@Operation(summary = "해당 유저가 팔로우하는 유저 목록 조회 API",
+	@Operation(summary = "해당 유저가 팔로우하는 유저 목록 조회 API - 인증 선택",
 		description = "팔로잉 조회",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/following")
@@ -81,7 +81,7 @@ public class FollowController {
 	}
 
 	@Tag(name = "${swagger.tag.follow}")
-	@Operation(summary = "해당 유저를 팔로우하는 유저 목록 조회 API",
+	@Operation(summary = "해당 유저를 팔로우하는 유저 목록 조회 API - 인증 선택",
 		description = "팔로워 조회",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping("/{id}/follower")
@@ -95,7 +95,7 @@ public class FollowController {
 	}
 
 	@Tag(name = "${swagger.tag.main}")
-	@Operation(summary = "태그별 팔로우 추천 목록 조회 API",
+	@Operation(summary = "태그별 팔로우 추천 목록 조회 API - 인증 필요",
 		description = "태그별 팔로우 추천 조회 12개의 데이터만 제공합니다. "
 			+ "메인 페이지용 API 입니다. - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
