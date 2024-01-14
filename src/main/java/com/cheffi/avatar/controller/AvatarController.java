@@ -41,7 +41,7 @@ public class AvatarController {
 	private final AvatarService avatarService;
 
 	@Tag(name = "Avatar")
-	@Operation(summary = "자신의 아바타 조회 API",
+	@Operation(summary = "자신의 아바타 조회 API - 인증 필요",
 		description = "자신의 아바타 조회 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
@@ -53,7 +53,7 @@ public class AvatarController {
 
 	@Tag(name = "${swagger.tag.sign-up}")
 	@Tag(name = "${swagger.tag.profile-update}")
-	@Operation(summary = "자신의 닉네임 변경 API",
+	@Operation(summary = "자신의 닉네임 변경 API - 인증 필요",
 		description = "닉네임 변경 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
@@ -69,7 +69,7 @@ public class AvatarController {
 
 	@Tag(name = "${swagger.tag.sign-up}")
 	@Tag(name = "${swagger.tag.profile-update}")
-	@Operation(summary = "자신의 자기소개 변경 API",
+	@Operation(summary = "자신의 자기소개 변경 API - 인증 필요",
 		description = "자기소개 변경 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
@@ -83,7 +83,7 @@ public class AvatarController {
 
 	@Tag(name = "${swagger.tag.sign-up}")
 	@Tag(name = "${swagger.tag.profile-update}")
-	@Operation(summary = "프로필 사진 변경 API",
+	@Operation(summary = "프로필 사진 변경 API - 인증 필요",
 		description = "프로필 사진 변경 - 인증 필요, swagger 에서는 오류가 발생합니다. request 부분을 application/json"
 			+ "으로 설정해서 요청을 보내주세요.",
 		security = {@SecurityRequirement(name = "session-token")})

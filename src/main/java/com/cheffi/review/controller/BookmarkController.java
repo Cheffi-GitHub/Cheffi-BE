@@ -28,7 +28,7 @@ public class BookmarkController {
 	private final BookmarkService bookmarkService;
 
 	@Tag(name = "${swagger.tag.bookmark}")
-	@Operation(summary = "북마크 추가 API - 인증 필수",
+	@Operation(summary = "북마크 추가 API - 인증 필요",
 		description = "인증 필수, 북마크 추가",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
@@ -41,7 +41,7 @@ public class BookmarkController {
 	}
 
 	@Tag(name = "${swagger.tag.bookmark}")
-	@Operation(summary = "북마크 취소 API - 인증 필수",
+	@Operation(summary = "북마크 취소 API - 인증 필요",
 		description = "인증 필수, 북마크 취소",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")

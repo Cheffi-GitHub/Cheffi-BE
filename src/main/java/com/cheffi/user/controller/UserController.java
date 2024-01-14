@@ -32,7 +32,7 @@ public class UserController {
 	private final SignUpProfileService signUpProfileService;
 
 	@Tag(name = "User")
-	@Operation(summary = "유저 정보 조회 API",
+	@Operation(summary = "유저 정보 조회 API - 인증 필요",
 		description = "자신의 계정 조회 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@GetMapping
@@ -43,7 +43,7 @@ public class UserController {
 
 	@Tag(name = "${swagger.tag.sign-up}")
 	@Tag(name = "${swagger.tag.profile-update}")
-	@Operation(summary = "유저 약관 동의 변경 API",
+	@Operation(summary = "유저 약관 동의 변경 API - 인증 필요",
 		description = "약관 동의 여부 변경 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PatchMapping("/terms")
@@ -56,7 +56,7 @@ public class UserController {
 
 	@Tag(name = "${swagger.tag.sign-up}")
 	@Tag(name = "${swagger.tag.profile-update}")
-	@Operation(summary = "유저 프로필 완료 등록 API",
+	@Operation(summary = "유저 프로필 완료 등록 API - 인증 필요",
 		description = "프로필 완료 등록 - 인증 필요 "
 			+ "닉네임 설정, 프로필 사진 등록, 태그 설정이 끝난 후에 반드시 1회 호출하여 완료 등록을 해야 합니다.",
 		security = {@SecurityRequirement(name = "session-token")})

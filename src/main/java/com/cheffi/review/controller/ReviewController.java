@@ -52,8 +52,8 @@ public class ReviewController {
 
 	@Tag(name = "${swagger.tag.review-detail}")
 	@Tag(name = "Review")
-	@Operation(summary = "리뷰 단건 조회 API",
-		description = "리뷰가 잠금된 경우 인증이 필요합니다. 인증이되었더라도 리뷰를 API로 구매해야 합니다.")
+	@Operation(summary = "리뷰 단건 조회 API - 인증 선택",
+		description = "리뷰가 잠금된 경우 인증이 반드시 필요하며 인증이되었더라도 리뷰를 API로 구매해야 합니다.")
 	@GetMapping
 	public ApiResponse<GetReviewResponse> getReviewInfoAuthenticated(@AuthenticationPrincipal UserPrincipal principal,
 		@RequestParam("id") Long reviewId) {
@@ -65,7 +65,7 @@ public class ReviewController {
 
 	@Tag(name = "${swagger.tag.main}")
 	@Tag(name = "Review")
-	@Operation(summary = "지역별 맛집 조회 API",
+	@Operation(summary = "지역별 맛집 조회 API - 인증 선택",
 		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
 	@GetMapping("/areas")
 	public ApiCursorPageResponse<ReviewInfoDto, Integer> searchReviewsByArea(
@@ -79,7 +79,7 @@ public class ReviewController {
 
 	@Tag(name = "${swagger.tag.main}")
 	@Tag(name = "Review")
-	@Operation(summary = "쉐피들의 인정 맛집 조회 API",
+	@Operation(summary = "쉐피들의 인정 맛집 조회 API - 인증 선택",
 		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
 	@GetMapping("/areas/tags")
 	public ApiCursorPageResponse<ReviewInfoDto, Integer> searchReviewsByTagAndArea(
@@ -93,7 +93,7 @@ public class ReviewController {
 
 	@Tag(name = "${swagger.tag.search}")
 	@Tag(name = "Review")
-	@Operation(summary = "음식 검색 API",
+	@Operation(summary = "음식 검색 API - 인증 선택",
 		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
 	@GetMapping("/menus")
 	public ApiCursorPageResponse<ReviewInfoDto, ReviewCursor> searchReviewsByMenu(
@@ -107,7 +107,7 @@ public class ReviewController {
 
 	@Tag(name = "${swagger.tag.search}")
 	@Tag(name = "Review")
-	@Operation(summary = "지역 검색 API",
+	@Operation(summary = "지역 검색 API - 인증 선택",
 		description = "1. 미 인증시 bookmarked 필드는 모두 false 입니다.")
 	@GetMapping("/address")
 	public ApiCursorPageResponse<ReviewInfoDto, ReviewCursor> searchReviewsByAddress(
