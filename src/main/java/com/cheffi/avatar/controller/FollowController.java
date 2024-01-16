@@ -25,6 +25,7 @@ import com.cheffi.avatar.dto.response.UnfollowResponse;
 import com.cheffi.avatar.service.FollowService;
 import com.cheffi.common.response.ApiCursorPageResponse;
 import com.cheffi.common.response.ApiResponse;
+import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.oauth.model.UserPrincipal;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,6 +42,7 @@ import lombok.RequiredArgsConstructor;
 public class FollowController {
 
 	private final FollowService followService;
+	private final SecurityContextService securityContextService;
 
 	@Tag(name = "${swagger.tag.follow}")
 	@Operation(summary = "아바타 팔로우 등록 API - 인증 필요",
@@ -76,8 +78,11 @@ public class FollowController {
 		@AuthenticationPrincipal UserPrincipal principal,
 		@ParameterObject @Valid GetFollowRequest request
 	) {
-		return ApiCursorPageResponse.success(
-			followService.getFollowingByCursor(request, followerId, principal.getAvatarId()));
+		if (securityContextService.hasUserAuthority(principal))
+			return ApiCursorPageResponse.success(
+				followService.getFollowingByCursor(request, followerId, principal.getAvatarId()));
+		return ApiCursorPageResponse.success(followService.getFollowingByCursor(request, followerId, null));
+
 	}
 
 	@Tag(name = "${swagger.tag.follow}")
@@ -90,8 +95,10 @@ public class FollowController {
 		@AuthenticationPrincipal UserPrincipal principal,
 		@ParameterObject @Valid GetFollowRequest request
 	) {
-		return ApiCursorPageResponse.success(
-			followService.getFollowerByCursor(request, followingId, principal.getAvatarId()));
+		if (securityContextService.hasUserAuthority(principal))
+			return ApiCursorPageResponse.success(
+				followService.getFollowerByCursor(request, followingId, principal.getAvatarId()));
+		return ApiCursorPageResponse.success(followService.getFollowerByCursor(request, followingId, null));
 	}
 
 	@Tag(name = "${swagger.tag.main}")
