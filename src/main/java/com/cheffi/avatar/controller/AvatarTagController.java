@@ -25,9 +25,9 @@ public class AvatarTagController {
 
 	private final AvatarTagService avatarTagService;
 
-	@Tag(name = "SignUp")
-	@Tag(name = "Avatar")
-	@Operation(summary = "아바타 태그 변경",
+	@Tag(name = "${swagger.tag.sign-up}")
+	@Tag(name = "${swagger.tag.profile-update}")
+	@Operation(summary = "아바타 태그 변경 - 인증 필요",
 		description = "자신의 태그 변경 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")

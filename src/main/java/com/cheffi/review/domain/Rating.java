@@ -48,6 +48,14 @@ public class Rating extends BaseTimeEntity {
 	}
 
 	public static Rating of(Avatar avatar, Review review, RatingType ratingType) {
+		review.addRatingCount(ratingType);
 		return new Rating(avatar, review, ratingType);
+	}
+
+	public void changeType(RatingType type) {
+		if(this.ratingType.equals(type))
+			return;
+		this.review.changeRatingCount(this.ratingType, type);
+		this.ratingType = type;
 	}
 }

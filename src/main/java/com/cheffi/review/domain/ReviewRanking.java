@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.redis.core.ZSetOperations;
 
-import com.cheffi.review.dto.ReviewTypedTuple;
+import com.cheffi.review.dto.ReviewTuple;
 import com.cheffi.review.dto.dao.ScoreDto;
 
 public class ReviewRanking {
@@ -34,7 +34,7 @@ public class ReviewRanking {
 
 	public Set<ZSetOperations.TypedTuple<Object>> toTuples() {
 		return reviewScores.stream()
-			.map(rs -> ReviewTypedTuple.of(rs.getId(), rs.getScore()))
+			.map(rs -> ReviewTuple.of(rs.getId(), rs.getScore()))
 			.collect(Collectors.toUnmodifiableSet());
 	}
 

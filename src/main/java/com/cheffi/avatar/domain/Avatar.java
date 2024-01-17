@@ -46,6 +46,9 @@ public class Avatar extends BaseTimeEntity {
 	private Address address;
 	private int cheffiCoinCnt;
 	private int pointCnt;
+	private int followerCnt;
+	private int followingCnt;
+	private int postCnt;
 
 	@NotNull
 	@OneToOne(fetch = FetchType.LAZY)
@@ -64,6 +67,9 @@ public class Avatar extends BaseTimeEntity {
 		this.user = user;
 		this.cheffiCoinCnt = 0;
 		this.pointCnt = 0;
+		this.followerCnt = 0;
+		this.followingCnt = 0;
+		this.postCnt = 0;
 	}
 
 	public void changeAddress(Address address) {
@@ -83,6 +89,14 @@ public class Avatar extends BaseTimeEntity {
 	public void changePhoto(ProfilePhoto photo) {
 		Assert.notNull(photo, "변경할 사진은 null 일 수 없습니다.");
 		this.photo = photo;
+	}
+
+	public void changeIntroduction(String introduction) {
+		if (!StringUtils.hasText(introduction))
+			throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+		if (introduction.length() < 10 || introduction.length() > 50)
+			throw new BusinessException(ErrorCode.INVALID_INTRO_LENGTH);
+		this.introduction = introduction;
 	}
 
 	public boolean hasPhoto() {
@@ -115,4 +129,23 @@ public class Avatar extends BaseTimeEntity {
 		return getId().equals(idToCompare);
 	}
 
+	public void addFollower() {
+		this.followerCnt++;
+	}
+
+	public void addFollowing() {
+		this.followingCnt++;
+	}
+
+	public void removeFollower() {
+		this.followerCnt--;
+	}
+
+	public void removeFollowing() {
+		this.followingCnt--;
+	}
+
+	public void addPostCount() {
+		this.postCnt++;
+	}
 }

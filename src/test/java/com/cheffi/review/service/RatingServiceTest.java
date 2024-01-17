@@ -31,6 +31,7 @@ class RatingServiceTest {
 	private Rating rating;
 
 	private static final RatingType RATING_TYPE_GOOD = RatingType.GOOD;
+	private static final RatingType RATING_TYPE_NONE = RatingType.NONE;
 	private static final Long AVATAR_ID = 2L;
 	private static final Long REVIEW_ID = 123L;
 
@@ -53,7 +54,7 @@ class RatingServiceTest {
 		}
 
 		@Test
-		@DisplayName("Rating 레코드가 DB에 없으면 평가하지 않았다는 Dto를 반환한다.")
+		@DisplayName("Rating 레코드가 DB에 없으면 RatingType.NONE type 이 담긴 Dto를 반환한다.")
 		void whenRatingNotExistThenNotRatedDto() {
 			//Arrange
 			when(ratingRepository.findByAvatarAndReview(AVATAR_ID, REVIEW_ID)).thenReturn(Optional.empty());
@@ -62,7 +63,7 @@ class RatingServiceTest {
 			RatingInfoDto ratingInfoDto = ratingService.getRatingInfoOf(AVATAR_ID, REVIEW_ID);
 
 			//Assert
-			assertThat(ratingInfoDto.getRatingType()).isNull();
+			assertThat(ratingInfoDto.getRatingType()).isEqualTo(RATING_TYPE_NONE);
 			assertThat(ratingInfoDto.isRated()).isFalse();
 		}
 	}

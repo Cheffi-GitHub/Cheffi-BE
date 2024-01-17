@@ -14,18 +14,20 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.Follow;
 import com.cheffi.avatar.dto.response.AddFollowResponse;
 import com.cheffi.avatar.dto.response.UnfollowResponse;
+import com.cheffi.avatar.repository.AvatarJpaRepository;
 import com.cheffi.avatar.repository.AvatarRepository;
+import com.cheffi.avatar.repository.FollowJpaRepository;
 import com.cheffi.avatar.repository.FollowRepository;
 import com.cheffi.common.config.exception.business.EntityNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class FollowServiceTest {
-
 
 	@Mock
 	private AvatarRepository avatarRepository;
@@ -33,8 +35,15 @@ class FollowServiceTest {
 	private FollowRepository followRepository;
 	@Mock
 	private ProfilePhotoService profilePhotoService;
+	@Mock
+	private FollowJpaRepository followJpaRepository;
+	@Mock
+	private AvatarJpaRepository avatarJpaRepository;
+	@Mock
+	private ApplicationEventPublisher eventPublisher;
 
 	private AvatarService avatarService;
+
 	private FollowService followService;
 
 	@Mock
@@ -49,14 +58,13 @@ class FollowServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		avatarService = new AvatarService(avatarRepository, profilePhotoService);
-		followService = new FollowService(followRepository, avatarService);
+		avatarService = new AvatarService(avatarRepository, avatarJpaRepository, profilePhotoService);
+		followService = new FollowService(followRepository, followJpaRepository, avatarService, eventPublisher);
 	}
-
 
 	@Nested
 	@DisplayName("addFollow 메서드")
-	class AddFollow{
+	class AddFollow {
 
 		@Test
 		@DisplayName("success - 팔로우 등록")
@@ -66,11 +74,11 @@ class FollowServiceTest {
 
 			try (MockedStatic<Follow> staticFollow = Mockito.mockStatic(Follow.class);
 				 MockedStatic<AddFollowResponse> staticAddFollowResponse = Mockito.mockStatic(
-				AddFollowResponse.class)) {
+					 AddFollowResponse.class)) {
 				when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
 				when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.of(followee));
 				when(followRepository
-					.existsBySubjectAndTarget(follower, followee))
+					.existsBySubjectAndTarget(FOLLOWER_ID, FOLLOWEE_ID))
 					.thenReturn(false);
 				staticFollow
 					.when(() -> Follow.createFollowRelationship(follower, followee))
@@ -95,9 +103,7 @@ class FollowServiceTest {
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
 			when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.empty());
 
-			assertThrows(EntityNotFoundException.class, () -> {
-				followService.addFollow(FOLLOWER_ID, FOLLOWEE_ID);
-			});
+			assertThrows(EntityNotFoundException.class, () -> followService.addFollow(FOLLOWER_ID, FOLLOWEE_ID));
 		}
 
 		@Test
@@ -106,35 +112,33 @@ class FollowServiceTest {
 
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
 			when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.of(followee));
-			when(followRepository.existsBySubjectAndTarget(follower, followee))
+			when(followRepository.existsBySubjectAndTarget(FOLLOWER_ID, FOLLOWEE_ID))
 				.thenReturn(true);
 
-			assertThrows(RuntimeException.class, () -> {
-				followService.addFollow(FOLLOWER_ID, FOLLOWEE_ID);
-			});
+			assertThrows(RuntimeException.class, () -> followService.addFollow(FOLLOWER_ID, FOLLOWEE_ID));
 		}
 
 	}
 
 	@Nested
 	@DisplayName("unFollow 메서드")
-	class Unfollow{
+	class Unfollow {
 
 		@Test
 		@DisplayName("success - 팔로우 취소")
 		void successUnFollow() {
 
-				when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
-				when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.of(followee));
-				when(followRepository
-					.findBySubjectAndTarget(follower, followee))
-					.thenReturn(Optional.of(follow));
-				doNothing().when(followRepository).delete(follow);
+			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
+			when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.of(followee));
+			when(followRepository
+				.findBySubjectAndTarget(follower, followee))
+				.thenReturn(Optional.of(follow));
+			doNothing().when(followRepository).delete(follow);
 
-				UnfollowResponse response = followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID);
+			UnfollowResponse response = followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID);
 
-				assertEquals(FOLLOWER_ID, response.followerId());
-				assertEquals(FOLLOWEE_ID, response.followeeId());
+			assertEquals(FOLLOWER_ID, response.followerId());
+			assertEquals(FOLLOWEE_ID, response.followeeId());
 		}
 
 		@Test
@@ -144,9 +148,7 @@ class FollowServiceTest {
 			when(avatarRepository.findById(FOLLOWER_ID)).thenReturn(Optional.of(follower));
 			when(avatarRepository.findById(FOLLOWEE_ID)).thenReturn(Optional.empty());
 
-			assertThrows(EntityNotFoundException.class, () -> {
-				followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID);
-			});
+			assertThrows(EntityNotFoundException.class, () -> followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID));
 		}
 
 		@Test
@@ -158,9 +160,7 @@ class FollowServiceTest {
 			when(followRepository.findBySubjectAndTarget(follower, followee))
 				.thenReturn(Optional.empty());
 
-			assertThrows(RuntimeException.class, () -> {
-				followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID);
-			});
+			assertThrows(RuntimeException.class, () -> followService.unfollow(FOLLOWER_ID, FOLLOWEE_ID));
 		}
 
 	}

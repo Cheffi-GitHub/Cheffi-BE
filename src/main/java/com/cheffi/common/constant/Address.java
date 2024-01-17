@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,20 +25,25 @@ import lombok.NoArgsConstructor;
 public class Address {
 
 	// 시, 도
+	@Parameter(name = "province", description = "검색 기준 시/도 주소(1차)", example = "서울특별시")
 	@Schema(description = "식당의 시/도 주소(1차)", example = "서울특별시")
+	@NotBlank
 	@NotNull
 	private String province;
 
 	// 구, 시, 군
-	@Schema(description = "식당의 시/군/구 주소(2차)", example = "마포구")
+	@Parameter(name = "city", description = "검색 기준 시/군/구 주소(2차)", example = "양천구")
+	@Schema(description = "식당의 시/군/구 주소(2차)", example = "양천구")
+	@NotBlank
 	@NotNull
 	private String city;
 
 	protected Address(String province, String city) {
-		this.province = province;
-		this.city = city;
+		this.province = province.trim().replaceAll("\\s+", " ");
+		this.city = city.trim().replaceAll("\\s+", " ");
 	}
 
+	@JsonIgnore
 	public String getCombined() {
 		return getProvince() + " " + getCity();
 	}

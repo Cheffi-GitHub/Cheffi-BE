@@ -1,6 +1,7 @@
 package com.cheffi.review.dto;
 
 import com.cheffi.review.domain.ReviewPhoto;
+import com.querydsl.core.annotations.QueryProjection;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -17,7 +18,8 @@ public class ReviewPhotoInfoDto {
 	@Schema(description = "리뷰 사진의 URL", example = "https.www.~")
 	private String photoUrl;
 
-	private ReviewPhotoInfoDto(Long id, int order, String photoUrl) {
+	@QueryProjection
+	public ReviewPhotoInfoDto(Long id, int order, String photoUrl) {
 		this.id = id;
 		this.order = order;
 		this.photoUrl = photoUrl;

@@ -132,6 +132,10 @@ public class User extends BaseTimeEntity {
 		this.lastLoginDate = LocalDate.now();
 	}
 
+	public boolean isUserOf(String provider) {
+		return UserType.from(provider).equals(userType);
+	}
+
 	/**
 	 * 테스트용 메서드
 	 */

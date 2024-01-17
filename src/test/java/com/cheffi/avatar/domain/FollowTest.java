@@ -11,6 +11,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.cheffi.common.config.exception.business.BusinessException;
 
 @ExtendWith(MockitoExtension.class)
 class FollowTest {
@@ -40,21 +41,15 @@ class FollowTest {
 		}
 
 		@Test
-		@DisplayName("fail - 동일한 avatar가 들어오면 IllegalArgumentException 발생")
+		@DisplayName("fail - 동일한 avatar가 들어오면 BusinessException 발생")
 		void givenSameSubjectAndTarget_thenThrowsIllegalArgumentException() {
-
-			assertThrows(IllegalArgumentException.class, () -> {
-				Follow.createFollowRelationship(subject, subject);
-			});
+			assertThrows(BusinessException.class, () -> Follow.createFollowRelationship(subject, subject));
 		}
 
 		@Test
 		@DisplayName("fail - null인 Avatar가 존재하면 NullPointerException 발생")
 		void givenValidAvatar2() {
-
-			assertThrows(NullPointerException.class, () -> {
-				Follow.createFollowRelationship(null, target);
-			});
+			assertThrows(NullPointerException.class, () -> Follow.createFollowRelationship(null, target));
 		}
 
 	}
