@@ -1,13 +1,17 @@
 package com.cheffi.cs.controller;
 
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cheffi.common.response.ApiResponse;
+import com.cheffi.cs.dto.GetReportReasonResponse;
 import com.cheffi.cs.dto.PostReportRequest;
 import com.cheffi.cs.service.ReportService;
 import com.cheffi.oauth.model.UserPrincipal;
@@ -37,6 +41,15 @@ public class ReportController {
 		@AuthenticationPrincipal UserPrincipal principal) {
 		reportService.report(principal.getAvatarId(), request);
 		return ApiResponse.success();
+	}
+
+	@Tag(name = "${swagger.tag.review-detail}")
+	@Tag(name = "${swagger.tag.report}")
+	@Operation(summary = "신고 사유 조회 API",
+		description = "신고 사유 조회 API")
+	@GetMapping("/reasons")
+	public ApiResponse<List<GetReportReasonResponse>> getReportReasons() {
+		return ApiResponse.success(reportService.getReportReasons());
 	}
 
 }
