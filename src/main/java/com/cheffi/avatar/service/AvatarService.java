@@ -44,9 +44,11 @@ public class AvatarService {
 	}
 
 	@Transactional
-	public void updateIntroduction(Long avatarId, String introduction) {
+	public String changePhotoTab(Long avatarId, String introduction, MultipartFile file, boolean defaultPhoto) {
 		Avatar avatar = getById(avatarId);
+
 		avatar.changeIntroduction(introduction);
+		return changePhoto(file, defaultPhoto, avatar);
 	}
 
 	public boolean isNicknameInUse(String nickname) {
@@ -60,8 +62,7 @@ public class AvatarService {
 	}
 
 	@Transactional
-	public String changePhoto(Long avatarId, MultipartFile file, boolean defaultPhoto) {
-		Avatar avatar = getByIdWithPhoto(avatarId);
+	public String changePhoto(MultipartFile file, boolean defaultPhoto, Avatar avatar) {
 		String s3key = null;
 		if (avatar.hasPhoto())
 			s3key = profilePhotoService.deletePhotoFromDB(avatar);
