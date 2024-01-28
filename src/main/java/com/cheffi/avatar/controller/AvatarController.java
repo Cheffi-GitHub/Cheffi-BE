@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
-import com.cheffi.avatar.dto.request.ChangeProfilePhotoRequest;
-import com.cheffi.avatar.dto.request.PatchIntroRequest;
+import com.cheffi.avatar.dto.request.PhotoTabChangeRequest;
 import com.cheffi.avatar.dto.request.PatchNicknameRequest;
 import com.cheffi.avatar.dto.response.AvatarInfoResponse;
 import com.cheffi.avatar.service.AvatarService;
@@ -69,34 +68,29 @@ public class AvatarController {
 
 	@Tag(name = "${swagger.tag.sign-up}")
 	@Tag(name = "${swagger.tag.profile-update}")
-	@Operation(summary = "자신의 자기소개 변경 API - 인증 필요",
-		description = "자기소개 변경 - 인증 필요",
-		security = {@SecurityRequirement(name = "session-token")})
-	@PreAuthorize("hasRole('USER')")
-	@PatchMapping("/intro")
-	public ApiResponse<Void> changeIntroduction(
-		@Valid @RequestBody PatchIntroRequest request,
-		@AuthenticationPrincipal UserPrincipal principal) {
-		avatarService.updateIntroduction(principal.getAvatarId(), request.introduction());
-		return ApiResponse.success(null);
-	}
-
-	@Tag(name = "${swagger.tag.sign-up}")
-	@Tag(name = "${swagger.tag.profile-update}")
-	@Operation(summary = "프로필 사진 변경 API - 인증 필요",
-		description = "프로필 사진 변경 - 인증 필요, swagger 에서는 오류가 발생합니다. request 부분을 application/json"
+	@Operation(summary = "프로필 사진, 자기소개 변경 API - 인증 필요",
+		description = "프로필 사진, 자기소개 변경 - 인증 필요, "
+			+ "swagger 에서는 오류가 발생합니다. request 부분을 application/json"
 			+ "으로 설정해서 요청을 보내주세요.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
-	@PostMapping(value = "/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ApiResponse<String> changePhoto(
+	@PostMapping(value = "/photo-tab", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ApiResponse<String> changePhotoTab(
 		@AuthenticationPrincipal UserPrincipal principal,
-		@Parameter(description = "변경할 프로필 사진 파일")
+		@Parameter(description = "변경할 프로필 사진 파일, 자기소개")
 		@RequestPart("file") MultipartFile file,
-		@Valid @RequestPart("request") ChangeProfilePhotoRequest request) {
-		return ApiResponse.success(avatarService.changePhoto(principal.getAvatarId(), file,
-			request.defaultPhoto()));
+		@Valid @RequestPart("request") PhotoTabChangeRequest request
+	) {
+		return ApiResponse.success(
+			avatarService.changePhotoTab(
+				principal.getAvatarId(),
+				request.introduction(),
+				file,
+				request.defaultPhoto()
+			)
+		);
 	}
+
 
 	@Tag(name = "${swagger.tag.sign-up}")
 	@Tag(name = "${swagger.tag.profile-update}")
