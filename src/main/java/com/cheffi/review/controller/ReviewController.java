@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cheffi.common.config.swagger.SwaggerBody;
 import com.cheffi.common.response.ApiCursorPageResponse;
 import com.cheffi.common.response.ApiResponse;
 import com.cheffi.common.service.SecurityContextService;
@@ -35,6 +36,8 @@ import com.cheffi.review.service.ReviewSearchService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -128,13 +131,16 @@ public class ReviewController {
 			+ "3. 프로필을 등록한 유저만 리뷰 등록이 가능합니다."
 			+ "content-type : multipart/form-data 형태로 아래의 형식에 맞춰서 보내면 정상적으로 작동합니다.",
 		security = {@SecurityRequirement(name = "session-token")})
+	@SwaggerBody(content = @Content(
+		encoding = @Encoding(name = "request", contentType = MediaType.APPLICATION_JSON_VALUE)))
 	@PreAuthorize("hasRole('USER') and !hasAuthority('NO_PROFILE')")
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ApiResponse<Long> registerReview(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestPart("request") @Valid RegisterReviewRequest request,
 		@Parameter(description = "작성할 리뷰의 사진 파일")
-		@RequestPart("images") @Size(min = 3, max = 10) List<MultipartFile> images) {
+		@RequestPart("images") @Size(min = 3, max = 10) List<MultipartFile> images,
+		@RequestPart("request") @Valid RegisterReviewRequest request
+	) {
 		return ApiResponse.success(reviewCudService.registerReview(userPrincipal.getAvatarId(), request, images));
 	}
 
@@ -147,13 +153,15 @@ public class ReviewController {
 			+ "3. 프로필을 등록한 유저만 리뷰 수정이 가능합니다."
 			+ "content-type : multipart/form-data 형태로 아래의 형식에 맞춰서 보내면 정상적으로 작동합니다.",
 		security = {@SecurityRequirement(name = "session-token")})
+	@SwaggerBody(content = @Content(
+		encoding = @Encoding(name = "request", contentType = MediaType.APPLICATION_JSON_VALUE)))
 	@PreAuthorize("hasRole('USER') and !hasAuthority('NO_PROFILE')")
 	@PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ApiResponse<Void> updateReview(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestPart("request") @Valid UpdateReviewRequest request,
 		@Parameter(description = "수정할 리뷰의 사진 파일")
-		@RequestPart("images") @Size(min = 3, max = 10) List<MultipartFile> images
+		@RequestPart("images") @Size(min = 3, max = 10) List<MultipartFile> images,
+		@RequestPart("request") @Valid UpdateReviewRequest request
 	) {
 		reviewCudService.updateReview(userPrincipal.getAvatarId(), request, images);
 		return ApiResponse.success(null);
