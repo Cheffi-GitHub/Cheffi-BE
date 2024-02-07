@@ -35,6 +35,11 @@ public class Tag implements Serializable {
 		this.tagType = tagType;
 		this.name = name;
 	}
+
+	public boolean hasType(TagType type) {
+		return this.tagType.equals(type);
+	}
+
 }
 
 

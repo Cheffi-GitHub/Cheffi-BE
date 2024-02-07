@@ -75,9 +75,11 @@ public enum ErrorCode {
 	NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "F-001", "전송된 파일의 형식이 이미지가 아닙니다."),
 
 	// 태그
-	BAD_AVATAR_TAG_REQUEST(HttpStatus.BAD_REQUEST, "T-001", "아바타 관련 태그 요청이 잘못 됐습니다."),
+	LOWER_LIMIT_UNSATISFIED(HttpStatus.BAD_REQUEST, "T-001", "태그 갯수가 하한선을 충족하지 못했습니다."),
 	TAG_NOT_EXIST(HttpStatus.BAD_REQUEST, "T-002", "식별자에 해당하는 태그가 없습니다."),
-	TAG_NOT_MATCH(HttpStatus.BAD_REQUEST, "T-003", "태그의 타입이 요청된 타입과 다릅니다."),
+	TAG_UNMATCHED(HttpStatus.BAD_REQUEST, "T-003", "태그의 타입이 요청된 타입과 다릅니다."),
+	SOME_TAGS_ARE_MISSING(HttpStatus.BAD_REQUEST, "T-004", "필수 태그가 누락되었습니다."),
+	ALL_TYPE_CANNOT_BE_INCLUDED(HttpStatus.BAD_REQUEST, "T-005", "ALL 타입의 태그는 입력할 수 없습니다."),
 
 	// 쉐피코인
 	NOT_ENOUGH_CHEFFI_COIN(HttpStatus.BAD_REQUEST, "C-001", "쉐피코인이 부족합니다."),

@@ -10,6 +10,7 @@ import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.constant.Address;
 import com.cheffi.common.domain.BaseTimeEntity;
+import com.cheffi.tag.constant.TagType;
 import com.cheffi.tag.domain.Tag;
 import com.cheffi.user.domain.User;
 
@@ -117,6 +118,13 @@ public class Avatar extends BaseTimeEntity {
 
 	public boolean hasTags() {
 		return !avatarTags.isEmpty();
+	}
+
+	public List<Tag> getTags(TagType type) {
+		return this.avatarTags.stream()
+			.map(AvatarTag::getTag)
+			.filter(tag -> tag.hasType(type))
+			.toList();
 	}
 
 	void applyCheffiCoinBy(int value) {

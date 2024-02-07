@@ -27,7 +27,10 @@ public class TagService {
 	}
 
 	public List<Tag> getAllById(List<Long> ids) {
-		return tagRepository.findAllById(ids);
+		List<Tag> result = tagRepository.findAllById(ids);
+		if(ids.size() != result.size())
+			throw new BusinessException(ErrorCode.TAG_NOT_EXIST);
+		return result;
 	}
 
 	public List<Tag> extractDistinctTags(List<Tag> src, List<Tag> from) {
@@ -54,7 +57,7 @@ public class TagService {
 
 	public void verifyTag(Long id, TagType type) {
 		if (!type.equals(getById(id).getTagType()))
-			throw new BusinessException(ErrorCode.TAG_NOT_MATCH);
+			throw new BusinessException(ErrorCode.TAG_UNMATCHED);
 	}
 
 }

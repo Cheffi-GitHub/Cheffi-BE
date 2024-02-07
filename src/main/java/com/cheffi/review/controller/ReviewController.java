@@ -164,7 +164,7 @@ public class ReviewController {
 		@RequestPart("request") @Valid UpdateReviewRequest request
 	) {
 		reviewCudService.updateReview(userPrincipal.getAvatarId(), request, images);
-		return ApiResponse.success(null);
+		return ApiResponse.success();
 	}
 
 	@Tag(name = "${swagger.tag.review-cud}")
