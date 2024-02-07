@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cheffi.avatar.dto.request.TagsChangeRequest;
+import com.cheffi.tag.dto.request.TagsChangeRequest;
 import com.cheffi.avatar.dto.response.TagsChangeResponse;
 import com.cheffi.avatar.service.AvatarTagService;
 import com.cheffi.common.response.ApiResponse;
@@ -35,7 +35,7 @@ public class AvatarTagController {
 	public ApiResponse<TagsChangeResponse> changeTags(
 		@RequestBody TagsChangeRequest tagsChangeRequest,
 		@AuthenticationPrincipal UserPrincipal principal) {
-		return ApiResponse.success(avatarTagService.changeTags(principal.getAvatarId(), tagsChangeRequest));
+		return ApiResponse.success(avatarTagService.changeTagsByType(principal.getAvatarId(), tagsChangeRequest));
 	}
 
 }

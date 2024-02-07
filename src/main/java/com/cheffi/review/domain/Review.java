@@ -13,6 +13,7 @@ import com.cheffi.common.domain.BaseTimeEntity;
 import com.cheffi.review.constant.RatingType;
 import com.cheffi.review.constant.ReviewStatus;
 import com.cheffi.review.dto.request.UpdateReviewRequest;
+import com.cheffi.tag.constant.TagType;
 import com.cheffi.tag.domain.Tag;
 
 import jakarta.persistence.CascadeType;
@@ -124,6 +125,13 @@ public class Review extends BaseTimeEntity {
 
 	public void removeTags(List<Tag> tagsToRemove) {
 		reviewTags.removeIf(rt -> tagsToRemove.contains(rt.getTag()));
+	}
+
+	public List<Tag> getTags(TagType type) {
+		return this.reviewTags.stream()
+			.map(ReviewTag::getTag)
+			.filter(tag -> tag.hasType(type))
+			.toList();
 	}
 
 	public void updateFromRequest(UpdateReviewRequest request) {

@@ -1,9 +1,14 @@
 package com.cheffi.review.dto.request;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
-import com.cheffi.avatar.dto.request.TagsChangeRequest;
 import com.cheffi.review.dto.MenuDto;
+import com.cheffi.tag.constant.TagType;
+import com.cheffi.tag.dto.request.TagRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -26,6 +31,22 @@ public class UpdateReviewRequest {
 	private String text;
 	@Schema(description = "메뉴")
 	private List<MenuDto> menus;
+	@JsonIgnore
+	private Map<TagType, List<Long>> map;
+	@Schema(description = "추가할 태그의 식별자, 타입의 리스트, 음식 태그는 최소 1개, 취향 태그는 최소 2개 이상 입력해야 합니다.")
+	private List<TagRequest> tags;
 
-	private TagsChangeRequest tag;
+	public UpdateReviewRequest(Long id, String title, String text, List<MenuDto> menus, List<TagRequest> tags) {
+		this.id = id;
+		this.title = title;
+		this.text = text;
+		this.menus = menus;
+		this.tags = tags;
+		this.map = new EnumMap<>(TagType.class);
+		for (TagRequest tag : tags) {
+			List<Long> list = map.getOrDefault(tag.getType(), new ArrayList<>());
+			list.add(tag.getId());
+			map.put(tag.getType(), list);
+		}
+	}
 }

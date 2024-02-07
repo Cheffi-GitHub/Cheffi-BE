@@ -49,7 +49,8 @@ public class ReviewCudService {
 		writer.addPostCount();
 
 		menuService.addMenus(review, request.getMenus());
-		reviewTagService.changeTags(review, request.getTag());
+
+		reviewTagService.changeTags(review, request.getMap());
 
 		reviewPhotoService.addPhotos(review, images);
 
@@ -60,27 +61,27 @@ public class ReviewCudService {
 	}
 
 	@Transactional
-	public void updateReview(Long authorId, UpdateReviewRequest request, List<MultipartFile> images) {
-		Avatar author = avatarService.getById(authorId);
+	public void updateReview(Long writerId, UpdateReviewRequest request, List<MultipartFile> images) {
+		Avatar writer = avatarService.getById(writerId);
 		Review review = reviewService.getById(request.getId());
-		validateReviewAuthor(author, review);
+		validateReviewAuthor(writer, review);
 
 		review.updateFromRequest(request);
 		menuService.changeMenus(review, request.getMenus());
-		reviewTagService.changeTags(review, request.getTag());
+		reviewTagService.changeTags(review, request.getMap());
 		reviewPhotoService.changePhotos(review, images, S3RootPath.REVIEW_PHOTO);
 	}
 
 	@Transactional
-	public void deleteReview(Long authorId, DeleteReviewRequest request) {
-		Avatar author = avatarService.getById(authorId);
+	public void deleteReview(Long writerId, DeleteReviewRequest request) {
+		Avatar author = avatarService.getById(writerId);
 		Review review = reviewService.getById(request.id());
 		validateReviewAuthor(author, review);
 		review.delete();
 	}
 
 	private static void validateReviewAuthor(Avatar author, Review review) {
-		if (review.getWriter().getId().equals(author.getId()))
+		if (!review.getWriter().equals(author))
 			throw new BusinessException(ErrorCode.NOT_REVIEW_WRITER);
 	}
 
