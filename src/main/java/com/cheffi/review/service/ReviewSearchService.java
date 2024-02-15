@@ -80,7 +80,7 @@ public class ReviewSearchService {
 	public CursorPage<ReviewInfoDto, Integer> searchReviewsByArea(AreaSearchRequest request, Long viewerId) {
 		ReviewTuples reviewTuples = getTrendingReviewTuples(request, request.toSearchCondition());
 		return CursorPage.of(
-			reviewService.getInfoById(reviewTuples.toIdList(), request.getCursor(), viewerId),
+			reviewService.getInfoById(reviewTuples.toIdList(), request.getStart(), viewerId),
 			request.getSize(),
 			ReviewInfoDto::getNumber,
 			request.getReferenceTime());
@@ -89,9 +89,8 @@ public class ReviewSearchService {
 	public CursorPage<ReviewInfoDto, Integer> searchReviewsByAreaAndTag(AreaTagSearchRequest request, Long viewerId) {
 		tagService.verifyTag(request.getTagId(), TagType.FOOD);
 		ReviewTuples reviewTuples = getTrendingReviewTuples(request, request.toSearchCondition());
-
 		return CursorPage.of(
-			reviewService.getInfoById(reviewTuples.toIdList(), request.getCursor(), viewerId),
+			reviewService.getInfoById(reviewTuples.toIdList(), request.getStart(), viewerId),
 			request.getSize(),
 			ReviewInfoDto::getNumber,
 			request.getReferenceTime());
