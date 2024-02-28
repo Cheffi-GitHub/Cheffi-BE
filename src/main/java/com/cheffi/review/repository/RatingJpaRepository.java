@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cheffi.review.constant.RatingType;
 import com.cheffi.review.dto.dao.QScoreDto;
-import com.cheffi.review.dto.dao.ScoreDto;
+import com.cheffi.review.dto.ScoreDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
