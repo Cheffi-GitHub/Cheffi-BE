@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.service.PurchasedItemService;
 import com.cheffi.common.code.ErrorCode;
-import com.cheffi.common.config.exception.business.AuthenticationException;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.dto.CursorPage;
 import com.cheffi.common.dto.RedisZSetRequest;
@@ -46,8 +45,9 @@ public class ReviewSearchService {
 		Review review = getReviewFromDB(reviewId);
 
 		Avatar writer = review.getWriter();
-		if (review.isLocked())
-			throw new AuthenticationException(ErrorCode.ANONYMOUS_USER_CANNOT_ACCESS_LOCKED_REVIEW);
+		// TODO 잠금 로직 다시 활성화 필요
+		// if (review.isLocked())
+		// 	throw new AuthenticationException(ErrorCode.ANONYMOUS_USER_CANNOT_ACCESS_LOCKED_REVIEW);
 
 		viewHistoryService.readReviewAnonymous(reviewId);
 
@@ -60,9 +60,10 @@ public class ReviewSearchService {
 		Avatar writer = review.getWriter();
 
 		if (!writer.hasSameIdWith(viewerId)) {
-			if (review.isLocked() && !purchasedItemService.hasUnlocked(viewerId, reviewId)) {
-				throw new BusinessException(ErrorCode.REVIEW_NOT_UNLOCKED);
-			}
+			// TODO 잠금 로직 다시 활성화 필요
+			// if (review.isLocked() && !purchasedItemService.hasUnlocked(viewerId, reviewId)) {
+			// 	throw new BusinessException(ErrorCode.REVIEW_NOT_UNLOCKED);
+			// }
 			viewHistoryService.readReview(viewerId, reviewId);
 		}
 
@@ -126,13 +127,15 @@ public class ReviewSearchService {
 		return reviewTrendingService.calculateTrendingReviews(condition, request);
 	}
 
-	public CursorPage<ReviewInfoDto, Long> searchByWriter(GetMyPageReviewRequest request, Long writerId, Long viewerId) {
+	public CursorPage<ReviewInfoDto, Long> searchByWriter(GetMyPageReviewRequest request, Long writerId,
+		Long viewerId) {
 		return CursorPage.of(reviewService.getByWriter(request, writerId, viewerId),
 			request.getSize(),
 			ReviewInfoDto::getId);
 	}
 
-	public CursorPage<ReviewInfoDto, Long> searchByBookmarks(GetMyPageReviewRequest request, Long ownerId, Long viewerId) {
+	public CursorPage<ReviewInfoDto, Long> searchByBookmarks(GetMyPageReviewRequest request, Long ownerId,
+		Long viewerId) {
 		return CursorPage.of(reviewService.getByBookmarks(request, ownerId, viewerId),
 			request.getSize(),
 			ReviewInfoDto::getCursor);
