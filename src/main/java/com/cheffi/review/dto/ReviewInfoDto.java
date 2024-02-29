@@ -1,7 +1,8 @@
 package com.cheffi.review.dto;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Random;
 
 import com.cheffi.review.constant.ReviewStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -49,6 +50,9 @@ public class ReviewInfoDto {
 	@JsonIgnore
 	private Long cursor;
 
+	private static final List<Long> LEFT_TIMES_TO_LOCK = List.of(305000L, 5000L, 86400000L, 37800000L);
+	private static final Random RANDOM = new Random();
+
 	@QueryProjection
 	public ReviewInfoDto(Long id, String title, String text, ReviewPhotoInfoDto photo,
 		LocalDateTime timeToLock, Integer viewCount, ReviewStatus reviewStatus, Boolean writtenByUser,
@@ -61,8 +65,11 @@ public class ReviewInfoDto {
 		this.title = title;
 		this.text = text;
 		this.photo = photo;
-		this.timeLeftToLock = Duration.between(LocalDateTime.now(), timeToLock).toMillis();
-		this.locked = timeLeftToLock <= 0;
+		this.timeLeftToLock = LEFT_TIMES_TO_LOCK.get(RANDOM.nextInt(LEFT_TIMES_TO_LOCK.size()));
+		this.locked = false;
+		// TODO 배포시 아래 로직으로 변경 필요
+		// this.timeLeftToLock = Duration.between(LocalDateTime.now(), timeToLock).toMillis();
+		// this.locked = timeLeftToLock <= 0;
 		this.bookmarked = bookmarked;
 		this.viewCount = viewCount;
 		this.writtenByUser = writtenByUser;
