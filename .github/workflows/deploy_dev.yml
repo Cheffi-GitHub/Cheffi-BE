@@ -6,9 +6,6 @@ on:
       - cicd/eb
   workflow_dispatch:
 
-env:
-
-
 jobs:
   build:
     runs-on: ubuntu-latest
