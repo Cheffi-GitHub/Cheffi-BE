@@ -83,3 +83,35 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYYMMDD_HH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Copy Dockerrun.aws.json
+        env:
+          DOCKER_RUN_AWS: ${{ secrets.DOCKER_RUN_AWS }}
+        shell: bash
+        run: echo $DOCKER_RUN_AWS | base64 --decode > Dockerrun.aws.json
+
+      - name: Generate deployment package
+        run: |
+          mkdir -p deploy
+          cp -r .ebextensions deploy/.ebextensions
+          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
+          cd deploy && zip -r deploy.zip .
+
+      - name: Beanstalk Deploy
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_EB_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_EB_SECRET_ACCESS_KEY }}
+          application_name: cheffi-dev-eb
+          environment_name: Cheffi-dev-eb-env
+          version_label: cheffi-dev-${{ steps.current-time.outputs.formattedTime }}
+          region: ${{ secrets.AWS_EB_REGION }}
+          deployment_package: deploy/deploy.zip
+          wait_for_environment_recovery: 200

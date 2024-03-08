@@ -43,3 +43,6 @@ application-dev-db.yml
 
 ### QueryDSL ###
 **/src/main/generated
+
+### ElasticBeanstalk ###
+Dockerrun.aws.json
