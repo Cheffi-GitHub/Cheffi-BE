@@ -24,8 +24,9 @@ spring:
       max-request-size: 20MB
 
 logging:
-  level:
-    com.cheffi.web.kakao.client: debug
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS,Asia/Seoul
+
 
 springdoc:
   # define target package of swagger scanning
