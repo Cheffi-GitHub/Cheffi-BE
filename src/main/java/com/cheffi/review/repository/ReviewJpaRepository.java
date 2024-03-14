@@ -59,7 +59,7 @@ public class ReviewJpaRepository {
 			.where(
 				restaurantAddressEq(condition.getAddress())
 			)
-			.leftJoin(review)
+			.join(review)
 			.on(restaurant.eq(review.restaurant));
 
 		Long tagId = condition.getTagId();
