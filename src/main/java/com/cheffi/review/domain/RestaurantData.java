@@ -42,7 +42,7 @@ public class RestaurantData implements RestaurantInfo {
 	@NotNull
 	private String category;
 	private boolean registered;
-	@Column(columnDefinition = "POINT NULL SRID 4326")
+	@Column(columnDefinition = "GEOMETRY NOT NULL SRID 4326")
 	private Point coordinates;
 	@NotNull
 	@Enumerated(EnumType.STRING)

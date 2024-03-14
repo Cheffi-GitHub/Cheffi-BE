@@ -37,7 +37,7 @@ public class Restaurant extends BaseTimeEntity implements RestaurantInfo {
 
 	private String category;
 
-	@Column(columnDefinition = "POINT NULL SRID 4326")
+	@Column(columnDefinition = "GEOMETRY NOT NULL SRID 4326")
 	private Point coordinates;
 
 	@Enumerated(EnumType.STRING)
