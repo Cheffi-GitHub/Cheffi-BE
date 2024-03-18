@@ -17,7 +17,7 @@ import lombok.Getter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ProfileInfo {
-	@Schema(description = "ID", example = "1")
+	@Schema(description = "ID", example = "1", required = true)
 	private final Long id;
 	@Schema(description = "닉네임", example = "동구밭에서캔감자")
 	private final String nickname;
