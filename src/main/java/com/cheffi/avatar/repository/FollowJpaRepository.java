@@ -42,7 +42,7 @@ public class FollowJpaRepository {
 		this.queryFactory = new JPAQueryFactory(em);
 	}
 
-	public List<RecommendFollowResponse> recommendByTag(Long tagId, Long avatarId) {
+	public List<RecommendFollowResponse> recommendByTag(List<Long> tags, Long avatarId) {
 		JPAQuery<RecommendFollowResponse> query = queryFactory
 			.from(recommended)
 			.select(new QRecommendFollowResponse(
@@ -58,8 +58,8 @@ public class FollowJpaRepository {
 			.on(follow.target.id.eq(recommended.id),
 				follow.subject.id.eq(avatarId))
 			.leftJoin(recommended.avatarTags, avatarTag)
-			.on(avatarTag.tag.id.eq(tagId))
-			.where(follow.isNull(),
+			.where(avatarTag.tag.id.in(tags),
+				follow.isNull(),
 				avatarTag.isNotNull(),
 				recommended.id.ne(avatarId))
 			.orderBy(recommended.followerCnt.desc())
