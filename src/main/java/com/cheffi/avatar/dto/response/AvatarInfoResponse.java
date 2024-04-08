@@ -34,7 +34,7 @@ public record AvatarInfoResponse(
 	public static AvatarInfoResponse of(Avatar avatar) {
 		return AvatarInfoResponse.builder()
 			.id(avatar.getId())
-			.nickname(avatar.getNickname())
+			.nickname(avatar.stringNickname())
 			.photoUrl(avatar.getPhoto().getUrl())
 			.introduction(avatar.getIntroduction())
 			.follower(avatar.getFollowerCnt())

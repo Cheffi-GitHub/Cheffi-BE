@@ -47,7 +47,7 @@ public class FollowJpaRepository {
 			.from(recommended)
 			.select(new QRecommendFollowResponse(
 				recommended.id,
-				recommended.nickname,
+				recommended.nickname.value,
 				profilePhoto.url,
 				recommended.introduction,
 				recommended.followerCnt,
@@ -141,7 +141,7 @@ public class FollowJpaRepository {
 		return common.select(new QGetFollowResponse(
 				follow.id,
 				object.id,
-				object.nickname,
+				object.nickname.value,
 				profilePhoto.url,
 				expression
 			))
@@ -154,7 +154,7 @@ public class FollowJpaRepository {
 		return common.select(new QGetFollowResponse(
 				follow.id,
 				object.id,
-				object.nickname,
+				object.nickname.value,
 				profilePhoto.url,
 				viewerFollow.isNotNull()
 			))

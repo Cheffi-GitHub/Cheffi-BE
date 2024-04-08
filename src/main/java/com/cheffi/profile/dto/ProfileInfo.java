@@ -44,7 +44,7 @@ public class ProfileInfo {
 	@QueryProjection
 	public ProfileInfo(Avatar avatar, String photoUrl, Boolean following, Boolean blocking, List<Tag> tags) {
 		this.id = avatar.getId();
-		this.nickname = avatar.getNickname();
+		this.nickname = avatar.stringNickname();
 		this.introduction = avatar.getIntroduction();
 		this.followerCount = avatar.getFollowerCnt();
 		this.followingCount = avatar.getFollowingCnt();
