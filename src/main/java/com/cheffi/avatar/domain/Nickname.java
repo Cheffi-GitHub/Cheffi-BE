@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Nickname implements Serializable {
 
-	@Schema(description = "닉네임", required = true)
+	@Schema(description = "닉네임", example = "동구밭에서캔감자", required = true)
 	@Size(min = 2, max = 8)
 	@NotBlank
 	@NotNull

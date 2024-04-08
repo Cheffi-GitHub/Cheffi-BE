@@ -19,7 +19,7 @@ import lombok.Getter;
 public class ProfileInfo {
 	@Schema(description = "ID", example = "1", required = true)
 	private final Long id;
-	@Schema(description = "닉네임", example = "동구밭에서캔감자")
+	@Schema(description = "닉네임")
 	private final String nickname;
 	@Schema(description = "자기소개", example = "동구밭 과수원길에서 태어난 감자입니다.")
 	private final String introduction;
