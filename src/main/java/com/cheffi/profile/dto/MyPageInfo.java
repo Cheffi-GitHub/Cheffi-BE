@@ -17,7 +17,7 @@ import lombok.Builder;
 public record MyPageInfo(
 	@Schema(description = "ID", example = "1", required = true)
 	Long id,
-	@Schema(description = "닉네임", example = "동구밭에서캔감자", required = true)
+	@Schema(description = "닉네임", required = true)
 	Nickname nickname,
 	@Schema(description = "자기소개", example = "동구밭 과수원길에서 태어난 감자입니다 .", required = true)
 	String introduction,
