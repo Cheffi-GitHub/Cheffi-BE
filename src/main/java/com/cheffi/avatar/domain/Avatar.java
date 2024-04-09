@@ -94,8 +94,10 @@ public class Avatar extends BaseTimeEntity {
 	}
 
 	public void changeIntroduction(String introduction) {
-		if (!StringUtils.hasText(introduction))
-			throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+		if (!StringUtils.hasText(introduction)) {
+			this.introduction = null;
+			return;
+		}
 		if (introduction.length() < 10 || introduction.length() > 50)
 			throw new BusinessException(ErrorCode.INVALID_INTRO_LENGTH);
 		this.introduction = introduction;
