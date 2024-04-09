@@ -97,8 +97,7 @@ public class AvatarService {
 	public boolean checkIfCompleteProfile(Long avatarId) {
 		Avatar avatar = getByIdWithTagsAndPhoto(avatarId);
 		return avatar.hasTags() &&
-			   avatar.hasPhoto() &&
-			   !avatar.stringNickname().contains("쉐피");
+			   avatar.hasPhoto();
 	}
 
 	public AvatarInfoResponse getAvatarInfo(Long avatarId) {
