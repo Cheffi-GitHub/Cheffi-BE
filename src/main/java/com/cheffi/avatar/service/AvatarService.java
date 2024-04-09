@@ -62,6 +62,7 @@ public class AvatarService {
 		}
 		if (isNicknameInUse(avatar.stringNickname()))
 			throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+		profilePhotoService.addDefaultPhoto(avatar);
 		return avatarRepository.save(avatar);
 	}
 
