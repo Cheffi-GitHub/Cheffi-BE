@@ -62,6 +62,7 @@ public class AvatarService {
 		}
 		if (isNicknameInUse(avatar.stringNickname()))
 			throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+		profilePhotoService.addDefaultPhoto(avatar);
 		return avatarRepository.save(avatar);
 	}
 
@@ -96,8 +97,7 @@ public class AvatarService {
 	public boolean checkIfCompleteProfile(Long avatarId) {
 		Avatar avatar = getByIdWithTagsAndPhoto(avatarId);
 		return avatar.hasTags() &&
-			   avatar.hasPhoto() &&
-			   !avatar.stringNickname().contains("쉐피");
+			   avatar.hasPhoto();
 	}
 
 	public AvatarInfoResponse getAvatarInfo(Long avatarId) {

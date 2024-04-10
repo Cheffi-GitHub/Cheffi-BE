@@ -2,6 +2,8 @@ package com.cheffi.avatar.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.util.StringUtils;
@@ -29,6 +31,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @Embeddable
 public class Nickname implements Serializable {
+
+	private static final List<String> BANNED_WORDS = List.of("쉐피");
+	private static final List<String> DEFAULT_WORDS = List.of("도토리", "완두콩", "단호박", "떡볶이", "인절미");
+	private static final Random random = new Random();
 
 	@Schema(description = "닉네임", example = "동구밭에서캔감자", required = true)
 	@Size(min = 2, max = 8)
@@ -59,7 +65,7 @@ public class Nickname implements Serializable {
 	private void validateNickname(String newNickname) {
 		if (!StringUtils.hasText(newNickname))
 			throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
-		if (newNickname.contains("쉐피"))
+		if (BANNED_WORDS.stream().anyMatch(newNickname::contains))
 			throw new BusinessException(ErrorCode.NICKNAME_CONTAINS_BANNED_WORDS);
 		if (!isChangeable())
 			throw new BusinessException(ErrorCode.CANNOT_CHANGE_NICKNAME_YET);
@@ -68,7 +74,7 @@ public class Nickname implements Serializable {
 	}
 
 	private static String getRandomNickname() {
-		return RandomStringUtils.randomNumeric(6) + "쉐피";
+		return DEFAULT_WORDS.get(random.nextInt(DEFAULT_WORDS.size())) + RandomStringUtils.randomNumeric(5);
 	}
 
 	@Schema(description = "응답일자 기준 닉네임 변경가능 여부", required = true)
