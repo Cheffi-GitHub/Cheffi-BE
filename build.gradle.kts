@@ -92,6 +92,10 @@ dependencies {
     //kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    //FCM admin SDK
+    implementation("com.google.firebase:firebase-admin:9.2.0")
+
 }
 
 kapt {
