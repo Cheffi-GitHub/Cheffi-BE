@@ -1,9 +1,20 @@
 plugins {
     val springBootVersion = "3.0.8"
+    val kotlinVersion = "1.9.20"
+
     java
     id("org.springframework.boot") version springBootVersion
     id("io.spring.dependency-management") version "1.1.4"
-
+    // kotlin jvm 플러그인
+    kotlin("jvm") version kotlinVersion
+    // kotlin spring 호환성(open class) 플러그인
+    kotlin("plugin.spring") version kotlinVersion
+    // Kotlin Annotation Processing Tool
+    kotlin("kapt") version kotlinVersion
+    // kotlin jpa 호환성(entity class에 매개변수 없는 기본 생성자 생성)
+    kotlin("plugin.jpa") version kotlinVersion
+    // kotlin에서 lombok 사용이 가능해지게 만들어주는 플러그인
+    kotlin("plugin.lombok") version kotlinVersion
     id("io.freefair.lombok") version "8.1.0"
 }
 
@@ -39,10 +50,9 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
     //QueryDSL
-    implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
-    annotationProcessor ("com.querydsl:querydsl-apt:5.0.0:jakarta")
-    annotationProcessor ("jakarta.annotation:jakarta.annotation-api")
-    annotationProcessor ("jakarta.persistence:jakarta.persistence-api")
+    val querydslVersion = "5.0.0"
+    implementation("com.querydsl:querydsl-jpa:$querydslVersion:jakarta")
+    kapt("com.querydsl:querydsl-apt:$querydslVersion:jakarta")
 
     // OpenFeign
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.0.3")
@@ -79,12 +89,31 @@ dependencies {
     //hibernate-spatial
     implementation("org.hibernate:hibernate-spatial:6.4.2.Final")
 
+    //kotlin
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+}
+
+kapt {
+    keepJavacAnnotationProcessors = true
 }
 
 tasks {
-
     test {
         useJUnitPlatform()
     }
-
+    compileKotlin {
+        kotlinOptions {
+            freeCompilerArgs += "-Xjsr305=strict"
+            jvmTarget = "17"
+        }
+    }
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
+    jar {
+        enabled = false
+    }
 }
