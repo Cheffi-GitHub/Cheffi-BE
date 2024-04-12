@@ -60,6 +60,8 @@ public class User extends BaseTimeEntity {
 	private boolean adAgreed;
 	@NotNull
 	private boolean analysisAgreed;
+	@NotNull
+	private boolean notificationAllowed;
 	@Embedded
 	private Password password;
 	private LocalDate lastLoginDate;
@@ -69,7 +71,7 @@ public class User extends BaseTimeEntity {
 
 	@Builder
 	private User(String email, boolean locked, boolean expired, boolean withdrawn, boolean activated, String name,
-		UserType userType, Password password) {
+		UserType userType, boolean notificationAllowed, Password password) {
 		this.email = email;
 		this.locked = locked;
 		this.expired = expired;
@@ -77,6 +79,7 @@ public class User extends BaseTimeEntity {
 		this.activated = activated;
 		this.name = name;
 		this.userType = userType;
+		this.notificationAllowed = notificationAllowed;
 		this.password = password;
 	}
 
@@ -108,6 +111,7 @@ public class User extends BaseTimeEntity {
 			.expired(false)
 			.withdrawn(false)
 			.activated(true)
+			.notificationAllowed(false)
 			.password(request.password())
 			.build();
 		createdUser.addRoles(request.roles());
