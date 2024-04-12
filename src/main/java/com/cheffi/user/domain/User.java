@@ -63,7 +63,6 @@ public class User extends BaseTimeEntity {
 	@Embedded
 	private Password password;
 	private LocalDate lastLoginDate;
-	private String fcmToken;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserRole> userRoles = new ArrayList<>();

@@ -36,7 +36,6 @@ public class UserPrincipal implements UserDetails, Serializable {
 	private final UserType userType;
 	private boolean adAgreed;
 	private boolean analysisAgreed;
-	private String fcmToken;
 
 	// Avatar
 	private final Long avatarId;
@@ -57,7 +56,6 @@ public class UserPrincipal implements UserDetails, Serializable {
 			.userType(user.getUserType())
 			.adAgreed(user.isAdAgreed())
 			.analysisAgreed(user.isAnalysisAgreed())
-			.fcmToken(user.getFcmToken())
 			.avatarId(avatar.getId())
 			.nickname(avatar.getNickname())
 			.authorities(new ArrayList<>(authorities))
@@ -69,7 +67,6 @@ public class UserPrincipal implements UserDetails, Serializable {
 		this.name = info.name();
 		this.adAgreed = info.adAgreed();
 		this.analysisAgreed = info.analysisAgreed();
-		this.fcmToken = info.fcmToken();
 		if (info.authorities() != null)
 			this.authorities = info.authorities().stream().map((SimpleGrantedAuthority::new)).toList();
 		return this;
@@ -135,7 +132,6 @@ public class UserPrincipal implements UserDetails, Serializable {
 			.userType(UserType.KAKAO)
 			.adAgreed(true)
 			.analysisAgreed(false)
-			.fcmToken("fcm-token")
 			.avatarId(34L)
 			.nickname(Nickname.getRandom())
 			.authorities(authorities)
