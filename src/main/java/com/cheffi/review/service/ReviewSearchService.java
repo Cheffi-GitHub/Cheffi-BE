@@ -13,7 +13,6 @@ import com.cheffi.region.service.RegionService;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.dto.AddressSearchRequest;
 import com.cheffi.review.dto.MenuSearchRequest;
-import com.cheffi.review.dto.ReviewCursor;
 import com.cheffi.review.dto.ReviewInfoDto;
 import com.cheffi.review.dto.ReviewSearchCondition;
 import com.cheffi.review.dto.ReviewTuples;
@@ -97,22 +96,22 @@ public class ReviewSearchService {
 			request.getReferenceTime());
 	}
 
-	public CursorPage<ReviewInfoDto, ReviewCursor> searchByMenu(MenuSearchRequest request, Long viewerId) {
+	public CursorPage<ReviewInfoDto, Long> searchByMenu(MenuSearchRequest request, Long viewerId) {
 		return CursorPage.of(
 			reviewService.getByMenu(request, viewerId),
 			request.getSize(),
-			ReviewCursor::of
+			ReviewInfoDto::getId
 		);
 	}
 
-	public CursorPage<ReviewInfoDto, ReviewCursor> searchByAddress(AddressSearchRequest request, Long viewerId) {
+	public CursorPage<ReviewInfoDto, Long> searchByAddress(AddressSearchRequest request, Long viewerId) {
 		if (!regionService.contains(request.getAddress()))
 			throw new BusinessException(ErrorCode.ADDRESS_NOT_EXIST);
 
 		return CursorPage.of(
 			reviewService.getByAddress(request, viewerId),
 			request.getSize(),
-			ReviewCursor::of
+			ReviewInfoDto::getId
 		);
 	}
 
