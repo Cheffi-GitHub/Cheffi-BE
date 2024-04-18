@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.util.Assert;
 
 import com.cheffi.common.domain.BaseTimeEntity;
+import com.cheffi.notification.domain.Device;
 import com.cheffi.user.constant.Password;
 import com.cheffi.user.constant.UserType;
 import com.cheffi.user.dto.UserCreateRequest;
@@ -68,6 +69,9 @@ public class User extends BaseTimeEntity {
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserRole> userRoles = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Device> devices = new ArrayList<>();
 
 	@Builder
 	private User(String email, boolean locked, boolean expired, boolean withdrawn, boolean activated, String name,
