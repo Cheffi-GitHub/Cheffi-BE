@@ -49,7 +49,6 @@ public record UserInfo(
 			.adAgreed(user.isAdAgreed())
 			.analysisAgreed(user.isAnalysisAgreed())
 			.authorities(roles.stream().map(Role::getAuthority).toList())
-			.fcmToken(user.getFcmToken())
 			.build();
 	}
 
@@ -62,7 +61,6 @@ public record UserInfo(
 			.userType(user.getUserType())
 			.adAgreed(user.isAdAgreed())
 			.analysisAgreed(user.isAnalysisAgreed())
-			.fcmToken(user.getFcmToken())
 			.build();
 	}
 
