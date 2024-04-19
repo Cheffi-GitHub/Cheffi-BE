@@ -81,4 +81,10 @@ public class ReviewService {
 	public List<ReviewInfoDto> getByPurchaser(GetMyPageReviewRequest request, Long purchaserId, Long viewerId) {
 		return reviewJpaRepository.findByPurchaser(request, purchaserId, viewerId);
 	}
+
+	@Transactional
+	public void increaseViewCount(Long reviewId) {
+		getById(reviewId).increaseViewCount();
+	}
+
 }

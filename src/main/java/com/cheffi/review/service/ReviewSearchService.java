@@ -1,5 +1,6 @@
 package com.cheffi.review.service;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +10,7 @@ import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.dto.CursorPage;
 import com.cheffi.common.dto.RedisZSetRequest;
+import com.cheffi.event.event.ReviewReadEvent;
 import com.cheffi.region.service.RegionService;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.dto.AddressSearchRequest;
@@ -35,20 +37,19 @@ public class ReviewSearchService {
 	private final RegionService regionService;
 	private final PurchasedItemService purchasedItemService;
 	private final ReviewAvatarService reviewAvatarService;
-	private final ViewHistoryService viewHistoryService;
 	private final ReviewTrendingService reviewTrendingService;
 	private final TagService tagService;
+	private final ApplicationEventPublisher eventPublisher;
 
 	@Transactional
 	public GetReviewResponse getReviewInfoOfNotAuthenticated(Long reviewId) {
 		Review review = getReviewFromDB(reviewId);
-
 		Avatar writer = review.getWriter();
+
 		// TODO 잠금 로직 다시 활성화 필요
 		// if (review.isLocked())
 		// 	throw new AuthenticationException(ErrorCode.ANONYMOUS_USER_CANNOT_ACCESS_LOCKED_REVIEW);
-
-		viewHistoryService.readReviewAnonymous(reviewId);
+		eventPublisher.publishEvent(new ReviewReadEvent(review));
 
 		return GetReviewResponse.ofNotAuthenticated(review, ReviewWriterInfoDto.of(writer));
 	}
@@ -63,7 +64,7 @@ public class ReviewSearchService {
 			// if (review.isLocked() && !purchasedItemService.hasUnlocked(viewerId, reviewId)) {
 			// 	throw new BusinessException(ErrorCode.REVIEW_NOT_UNLOCKED);
 			// }
-			viewHistoryService.readReview(viewerId, reviewId);
+			eventPublisher.publishEvent(new ReviewReadEvent(review, viewerId));
 		}
 
 		return GetReviewResponse.ofAuthenticated(review, reviewAvatarService.getInfoOfViewer(viewerId, reviewId),

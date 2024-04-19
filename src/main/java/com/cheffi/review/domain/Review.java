@@ -158,7 +158,7 @@ public class Review extends BaseTimeEntity {
 			badRatingCnt);
 	}
 
-	public void read() {
+	public void increaseViewCount() {
 		this.viewCnt += 1;
 	}
 
