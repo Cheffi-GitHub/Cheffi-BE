@@ -15,7 +15,6 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
 	Optional<Rating> findByAvatarAndReview(@Param("avatar") Long avatarId, @Param("review") Long reviewId);
 
 	@Query("select r from Rating r "
-		+ "join fetch r.review re "
 		+ "join fetch r.avatar a "
 		+ "where r.review.id = :review "
 		+ "and r.avatar.id = :avatar ")

@@ -32,6 +32,11 @@ public class ReviewService {
 			.orElseThrow(() -> new BusinessException(ErrorCode.REVIEW_NOT_EXIST));
 	}
 
+	public Review getByIdForUpdate(Long reviewId) {
+		return reviewRepository.findByIdForUpdate(reviewId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.REVIEW_NOT_EXIST));
+	}
+
 	public List<ReviewInfoDto> getInfoById(List<Long> ids, Long offset, Long viewerId) {
 		if (ids.isEmpty())
 			return List.of();
@@ -84,7 +89,7 @@ public class ReviewService {
 
 	@Transactional
 	public void increaseViewCount(Long reviewId) {
-		getById(reviewId).increaseViewCount();
+		getByIdForUpdate(reviewId).increaseViewCount();
 	}
 
 }

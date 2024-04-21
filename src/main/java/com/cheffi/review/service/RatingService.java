@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.review.domain.Rating;
+import com.cheffi.review.domain.Review;
 import com.cheffi.review.dto.RatingInfoDto;
 import com.cheffi.review.dto.ScoreDto;
 import com.cheffi.review.dto.request.PutRatingRequest;
@@ -39,7 +40,8 @@ public class RatingService {
 
 	@Transactional
 	public Long putRating(PutRatingRequest request, Long avatarId) {
-		Optional<Rating> rating = ratingRepository.findByAvatarAndReviewFetch(avatarId, request.getId());
+		Review review = reviewService.getByIdForUpdate(request.getId());
+		Optional<Rating> rating = ratingRepository.findByAvatarAndReviewFetch(avatarId, review.getId());
 		if (rating.isPresent()) {
 			rating.get().changeType(request.getType());
 			return rating.get().getId();
@@ -47,7 +49,7 @@ public class RatingService {
 
 		return ratingRepository.save(Rating.of(
 			avatarService.getById(avatarId),
-			reviewService.getById(request.getId()),
+			review,
 			request.getType())).getId();
 	}
 }
