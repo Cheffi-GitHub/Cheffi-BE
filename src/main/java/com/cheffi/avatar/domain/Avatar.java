@@ -120,7 +120,16 @@ public class Avatar extends BaseTimeEntity {
 	}
 
 	public boolean hasTags() {
-		return !avatarTags.isEmpty();
+		return !avatarTags.isEmpty() && checkAllTags();
+	}
+
+	private boolean checkAllTags() {
+		for (var type : TagType.values()) {
+			if (!type.equals(TagType.ALL) && getTags(type).isEmpty()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public List<Tag> getTags(TagType type) {
