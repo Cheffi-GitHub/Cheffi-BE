@@ -41,7 +41,6 @@ public class ReviewSearchService {
 	private final TagService tagService;
 	private final ApplicationEventPublisher eventPublisher;
 
-	@Transactional
 	public GetReviewResponse getReviewInfoOfNotAuthenticated(Long reviewId) {
 		Review review = getReviewFromDB(reviewId);
 		Avatar writer = review.getWriter();
@@ -54,7 +53,6 @@ public class ReviewSearchService {
 		return GetReviewResponse.ofNotAuthenticated(review, ReviewWriterInfoDto.of(writer));
 	}
 
-	@Transactional
 	public GetReviewResponse getReviewInfoOfAuthenticated(Long reviewId, Long viewerId) {
 		Review review = getReviewFromDB(reviewId);
 		Avatar writer = review.getWriter();
