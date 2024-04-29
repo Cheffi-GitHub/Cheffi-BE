@@ -22,6 +22,7 @@ import com.cheffi.review.service.RestaurantService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -50,7 +51,8 @@ public class RestaurantController {
 	@Tag(name = "${swagger.tag.review-cud}")
 	@Operation(summary = "식당 등록 신청 API - 인증 필수",
 		description = "사용자에 의한 식당 등록 API입니다. "
-					  + "임시적으로 식당이 등록되며 관리자에 의해 최종 등록됩니다.")
+					  + "임시적으로 식당이 등록되며 관리자에 의해 최종 등록됩니다.",
+		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER') and !hasAuthority('NO_PROFILE')")
 	@PostMapping
 	public ApiResponse<Long> registerTempRestaurant(@Valid @RequestBody RegisterRestaurantRequest request) {
@@ -60,7 +62,8 @@ public class RestaurantController {
 	@Tag(name = "${swagger.tag.review-cud}")
 	@Operation(summary = "반경 5KM 이내 식당 조회 API - 인증 필수",
 		description = "반경 5KM 이내 식당을 조회하는 API입니다. 최대 8개 까지의 검색 결과만 제공됩니다."
-					  + "좌표가 입력되지 않을 경우 선릉역을 기준으로 조회합니다.")
+					  + "좌표가 입력되지 않을 경우 선릉역을 기준으로 조회합니다.",
+		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER') and !hasAuthority('NO_PROFILE')")
 	@GetMapping("/near")
 	public ApiResponse<List<RestaurantInfoDto>> popularRestaurantsWithin(
