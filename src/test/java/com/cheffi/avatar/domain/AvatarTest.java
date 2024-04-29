@@ -66,6 +66,7 @@ class AvatarTest {
 		private static final Tag KOREAN_TAG = new Tag(TagType.FOOD, "한식");
 		private static final Tag CHINESE_TAG = new Tag(TagType.FOOD, "중식");
 		private static final Tag JAPANESE_TAG = new Tag(TagType.FOOD, "일식");
+		private static final Tag SPICY_TAG = new Tag(TagType.TASTE, "매콤한");
 		private final List<Tag> TAG_LIST = List.of(KOREAN_TAG, CHINESE_TAG, JAPANESE_TAG);
 
 		@Nested
@@ -115,10 +116,12 @@ class AvatarTest {
 		class HasTags {
 
 			@Test
-			@DisplayName("아바타가 갖고 있는 태그가 있으면 true 를 반환한다.")
-			void givenTagsThatAvatarHas() {
+			@DisplayName("아바타가 모든 유형의 태그를 최소 1개씩 갖고 있으면 true 를 반환한다.")
+			void givenAllTags() {
 				//given
-				avatar.getAvatarTags().add(AvatarTag.mapTagToAvatar(avatar, KOREAN_TAG));
+				List<AvatarTag> avatarTags = avatar.getAvatarTags();
+				avatarTags.add(AvatarTag.mapTagToAvatar(avatar, KOREAN_TAG));
+				avatarTags.add(AvatarTag.mapTagToAvatar(avatar, SPICY_TAG));
 
 				//when
 				boolean hasTags = avatar.hasTags();
@@ -126,6 +129,34 @@ class AvatarTest {
 				//then
 				assertThat(hasTags).isTrue();
 			}
+
+			@Test
+			@DisplayName("아바타가 FOOD 유형의 태그만 모두 갖고 있으면 false 를 반환한다.")
+			void givenOnlyFoodTags() {
+				//given
+				avatar.getAvatarTags().add(AvatarTag.mapTagToAvatar(avatar, KOREAN_TAG));
+
+				//when
+				boolean hasTags = avatar.hasTags();
+
+				//then
+				assertThat(hasTags).isFalse();
+			}
+
+			@Test
+			@DisplayName("아바타가 TASTE 유형의 태그만 모두 갖고 있으면 false 를 반환한다.")
+			void givenOnlyTasteTags() {
+				//given
+				avatar.getAvatarTags().add(AvatarTag.mapTagToAvatar(avatar, SPICY_TAG));
+
+				//when
+				boolean hasTags = avatar.hasTags();
+
+				//then
+				assertThat(hasTags).isFalse();
+			}
+
+
 
 			@Test
 			@DisplayName("아바타가 갖고 있는 태그가 없으면 false 를 반환한다.")
