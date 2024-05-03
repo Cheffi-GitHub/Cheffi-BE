@@ -14,7 +14,7 @@ public record PhotoTabChangeRequest(
 	Boolean defaultPhoto,
 
 	@Nullable
-	@Size(min = 10, max = 50)
+	@Size(max = 50)
 	String introduction
 ) {
 }
