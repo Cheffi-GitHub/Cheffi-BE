@@ -98,7 +98,7 @@ public class Avatar extends BaseTimeEntity {
 			this.introduction = null;
 			return;
 		}
-		if (introduction.length() < 10 || introduction.length() > 50)
+		if (introduction.length() > 50)
 			throw new BusinessException(ErrorCode.INVALID_INTRO_LENGTH);
 		this.introduction = introduction;
 	}
