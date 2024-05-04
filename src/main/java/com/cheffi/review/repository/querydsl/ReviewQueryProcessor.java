@@ -5,6 +5,7 @@ import static com.cheffi.review.domain.QReviewPhoto.*;
 
 import com.cheffi.avatar.domain.QPurchasedItem;
 import com.cheffi.review.constant.ReviewStatus;
+import com.cheffi.review.domain.QBookmark;
 import com.cheffi.review.dto.QReviewInfoDto;
 import com.cheffi.review.dto.QReviewPhotoInfoDto;
 import com.cheffi.review.dto.ReviewInfoDto;
@@ -16,7 +17,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 public class ReviewQueryProcessor {
 
 	private static final QPurchasedItem viewerPurchase = new QPurchasedItem("viewerPurchase");
-	private static final QPurchasedItem viewerBookmark = new QPurchasedItem("viewerBookmark");
+	private static final QBookmark viewerBookmark = new QBookmark("viewerBookmark");
 
 	private final Long viewerId;
 	private final boolean requestBookmark;
