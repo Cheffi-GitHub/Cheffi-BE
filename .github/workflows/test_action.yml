@@ -48,7 +48,7 @@ jobs:
           author_name: 'Test Fail Notification'
           text: '테스트에 실패했습니다.'
           fields: repo,commit,author,ref,workflow,job,took,pullRequest
-          mention: 'U05BT7J8YV8,U05BT2V4C58'
+          mention: 'U07458BUZGQ'
           if_mention: failure
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BACKEND_WEBHOOK_URL }} # required
