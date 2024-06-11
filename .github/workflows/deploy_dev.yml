@@ -143,6 +143,7 @@ jobs:
           fields: repo,message,commit,author,ref,workflow,job,took,pullRequest
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
         if: success()
 
       - name: Deployment Fail Notification
