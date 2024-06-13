@@ -140,10 +140,9 @@ jobs:
           status: ${{ job.status }}
           author_name: 'Deployment Success Notification'
           text: '서버가 성공적으로 배포되었습니다.'
-          fields: repo,message,commit,author,ref,workflow,job,took,pullRequest
+          fields: message,commit,ref,workflow
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-          MATRIX_CONTEXT: ${{ toJson(matrix) }}
         if: success()
 
       - name: Deployment Fail Notification
