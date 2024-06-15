@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.AvatarTag;
+import com.cheffi.avatar.domain.Nickname;
 import com.cheffi.avatar.dto.common.TagDto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -16,8 +17,8 @@ import lombok.Builder;
 public record MyPageInfo(
 	@Schema(description = "ID", example = "1", required = true)
 	Long id,
-	@Schema(description = "닉네임", example = "동구밭에서캔감자", required = true)
-	String nickname,
+	@Schema(description = "닉네임", required = true)
+	Nickname nickname,
 	@Schema(description = "자기소개", example = "동구밭 과수원길에서 태어난 감자입니다 .", required = true)
 	String introduction,
 	@Schema(description = "프로필 사진 URL", required = true)
@@ -40,12 +41,12 @@ public record MyPageInfo(
 			.id(avatar.getId())
 			.nickname(avatar.getNickname())
 			.introduction(avatar.getIntroduction())
-			.cheffiCoin(avatar.getCheffiCoinCnt())
-			.point(avatar.getPointCnt())
+			.photoUrl(avatar.getPhoto().getUrl())
 			.followerCount(avatar.getFollowerCnt())
 			.followingCount(avatar.getFollowingCnt())
 			.post(avatar.getPostCnt())
-			.photoUrl(avatar.getPhoto().getUrl())
+			.cheffiCoin(avatar.getCheffiCoinCnt())
+			.point(avatar.getPointCnt())
 			.tags(avatar.getAvatarTags().stream()
 				.map(AvatarTag::getTag)
 				.map(TagDto::of).toList())

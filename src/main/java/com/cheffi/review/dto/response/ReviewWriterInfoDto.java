@@ -21,7 +21,8 @@ public class ReviewWriterInfoDto {
 	@Schema(description = "조회자(유저)가 작성자인지 여부", example = "false", required = true)
 	private boolean writtenByViewer;
 
-	private ReviewWriterInfoDto(Long id, String nickname, String photoUrl, String introduction, boolean writtenByViewer) {
+	private ReviewWriterInfoDto(Long id, String nickname, String photoUrl, String introduction,
+		boolean writtenByViewer) {
 		this.id = id;
 		this.nickname = nickname;
 		this.photoUrl = photoUrl;
@@ -30,7 +31,7 @@ public class ReviewWriterInfoDto {
 	}
 
 	public static ReviewWriterInfoDto of(Avatar avatar, boolean writtenByViewer) {
-		return new ReviewWriterInfoDto(avatar.getId(), avatar.getNickname(), avatar.getPhoto().getUrl(),
+		return new ReviewWriterInfoDto(avatar.getId(), avatar.stringNickname(), avatar.getPhoto().getUrl(),
 			avatar.getIntroduction(), writtenByViewer);
 	}
 

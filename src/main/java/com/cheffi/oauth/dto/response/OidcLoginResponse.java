@@ -59,7 +59,8 @@ public record OidcLoginResponse(
 	boolean isNewUser
 ) {
 
-	public static OidcLoginResponse of(AuthenticationToken token, Avatar avatar, ProfilePhoto photo, boolean isNewUser) {
+	public static OidcLoginResponse of(AuthenticationToken token, Avatar avatar, ProfilePhoto photo,
+		boolean isNewUser) {
 		UserPrincipal principal = (UserPrincipal)token.getPrincipal();
 		return OidcLoginResponse.builder()
 			.email(principal.getEmail())
@@ -74,7 +75,7 @@ public record OidcLoginResponse(
 			.id(principal.getAvatarId())
 			.cheffiCoinCount(avatar.getCheffiCoinCnt())
 			.pointCnt(avatar.getPointCnt())
-			.nickname(principal.getNickname())
+			.nickname(principal.stringNickname())
 			.photoUrl(photo != null ? photo.getUrl() : null)
 			.profileCompleted(isProfileCompleted(principal.getAuthorities()))
 			.authorities((new ArrayList<>(principal.getAuthorities())))

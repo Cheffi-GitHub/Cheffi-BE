@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cheffi.avatar.dto.adapter.SelfAvatarInfo;
-import com.cheffi.avatar.dto.request.PhotoTabChangeRequest;
 import com.cheffi.avatar.dto.request.PatchNicknameRequest;
+import com.cheffi.avatar.dto.request.PhotoTabChangeRequest;
 import com.cheffi.avatar.dto.response.AvatarInfoResponse;
 import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.common.config.swagger.SwaggerBody;
@@ -27,7 +27,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Encoding;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nullable;
@@ -66,8 +65,7 @@ public class AvatarController {
 		@Valid @RequestBody PatchNicknameRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
 		String nickname = avatarService
-			.updateNickname(principal.getAvatarId(), request.nickname())
-			.nickname();
+			.updateNickname(principal.getAvatarId(), request.nickname()).nickname().getValue();
 		return ApiResponse.success(nickname);
 	}
 
@@ -75,7 +73,7 @@ public class AvatarController {
 	@Tag(name = "${swagger.tag.profile-update}")
 	@Operation(summary = "프로필 사진, 자기소개 변경 API - 인증 필요",
 		description = "프로필 사진, 자기소개 변경 - 인증 필요, "
-			+ "request 부분을 application/json 으로 설정해서 요청을 보내주세요.",
+					  + "request 부분을 application/json 으로 설정해서 요청을 보내주세요.",
 		security = {@SecurityRequirement(name = "session-token")})
 	@SwaggerBody(content = @Content(
 		encoding = @Encoding(name = "request", contentType = MediaType.APPLICATION_JSON_VALUE)))
@@ -84,7 +82,7 @@ public class AvatarController {
 	public ApiResponse<String> changePhotoTab(
 		@AuthenticationPrincipal UserPrincipal principal,
 		@Parameter(description = "변경할 프로필 사진 파일, 자기소개")
-		@RequestPart("file") @Nullable MultipartFile file,
+		@RequestPart(value = "file", required = false) @Nullable MultipartFile file,
 		@Valid @RequestPart("request") PhotoTabChangeRequest request
 	) {
 		return ApiResponse.success(
@@ -96,7 +94,6 @@ public class AvatarController {
 			)
 		);
 	}
-
 
 	@Tag(name = "${swagger.tag.sign-up}")
 	@Tag(name = "${swagger.tag.profile-update}")

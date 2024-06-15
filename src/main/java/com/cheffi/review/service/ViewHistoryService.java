@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cheffi.avatar.service.AvatarService;
+import com.cheffi.event.event.ReviewReadEvent;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.domain.ViewHistory;
 import com.cheffi.review.dto.ScoreDto;
@@ -26,17 +27,17 @@ public class ViewHistoryService {
 	private final AvatarService avatarService;
 
 	@Transactional
-	public void readReview(Long viewerId, Long reviewId) {
-		Review review = reviewService.getById(reviewId);
-		viewHistoryRepository.save(ViewHistory.of(avatarService.getById(viewerId), review));
-		review.read();
+	public void saveViewHistory(ReviewReadEvent event) {
+		Review review = reviewService.getById(event.getReviewId());
+		if (event.isAuthenticated())
+			viewHistoryRepository.save(ViewHistory.of(avatarService.getById(event.getViewerId()), review));
+		else
+			viewHistoryRepository.save(ViewHistory.ofNotAuthenticated(review));
 	}
 
 	@Transactional
-	public void readReviewAnonymous(Long reviewId) {
-		Review review = reviewService.getById(reviewId);
-		viewHistoryRepository.save(ViewHistory.ofNotAuthenticated(review));
-		review.read();
+	public void increaseViewCount(ReviewReadEvent event) {
+		reviewService.increaseViewCount(event.getReviewId());
 	}
 
 	public List<ScoreDto> getViewScoreBetween(List<Long> ids, LocalDateTime start, LocalDateTime end) {

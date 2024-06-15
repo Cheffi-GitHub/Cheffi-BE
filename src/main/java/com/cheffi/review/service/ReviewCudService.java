@@ -62,8 +62,8 @@ public class ReviewCudService {
 
 	@Transactional
 	public void updateReview(Long writerId, UpdateReviewRequest request, List<MultipartFile> images) {
+		Review review = reviewService.getByIdForUpdate(request.getId());
 		Avatar writer = avatarService.getById(writerId);
-		Review review = reviewService.getById(request.getId());
 		validateReviewAuthor(writer, review);
 
 		review.updateFromRequest(request);

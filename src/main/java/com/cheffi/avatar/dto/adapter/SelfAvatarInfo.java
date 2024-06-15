@@ -1,6 +1,7 @@
 package com.cheffi.avatar.dto.adapter;
 
 import com.cheffi.avatar.domain.Avatar;
+import com.cheffi.avatar.domain.Nickname;
 import com.cheffi.avatar.domain.ProfilePhoto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -14,7 +15,7 @@ public record SelfAvatarInfo(
 	@Schema(description = "아바타 식별자 (아바타 = 유저 개념)", required = true)
 	Long id,
 	@Schema(description = "유저 닉네임", required = true)
-	String nickname,
+	Nickname nickname,
 	@Schema(description = "유저 소개말", required = true)
 	String introduction,
 	@Schema(description = "쉐피 코인", required = true)
