@@ -24,12 +24,12 @@ public class AreaSearchRequest implements RedisZSetRequest {
 	@Valid
 	private final Address address;
 
-	@Parameter(description = "검색을 시작할 커서(포함) 최초 조회시는 입력하지 말아주세요 [Nullable]")
+	@Parameter(description = "검색을 시작할 커서(포함) 최초 조회시는 입력하지 말아주세요 [Nullable, 0 이상]")
 	@Nullable
 	@PositiveOrZero
 	private final Long cursor;
 
-	@Parameter(description = "검색 사이즈")
+	@Parameter(description = "검색 사이즈 [1 이상, 16 이하]")
 	@NotNull
 	@Range(min = 1, max = 16)
 	private final Integer size;
