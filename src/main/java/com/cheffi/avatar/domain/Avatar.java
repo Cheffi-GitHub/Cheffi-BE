@@ -57,6 +57,7 @@ public class Avatar extends BaseTimeEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@NotNull
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "photo_id")
 	private ProfilePhoto photo;
