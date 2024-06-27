@@ -8,17 +8,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record RecommendFollowResponse(
-	@Schema(description = "ID", example = "1")
+	@Schema(description = "유저 ID", example = "1", required = true)
 	Long id,
-	@Schema(description = "닉네임", example = "동구밭에서캔감자")
+	@Schema(description = "닉네임", example = "동구밭에서캔감자", required = true)
 	String nickname,
-	@Schema(description = "프로필 사진 URL")
+	@Schema(description = "프로필 사진 URL", required = true)
 	String photoUrl,
 	@Schema(description = "자기소개", example = "동구밭 과수원길에서 태어난 감자입니다.")
 	String introduction,
-	@Schema(description = "팔로워 수", example = "16")
+	@Schema(description = "팔로워 수", example = "16", required = true)
 	int followers,
-	@Schema(description = "팔로우 여부", example = "false")
+	@Schema(description = "팔로우 여부", example = "false", required = true)
 	boolean followed
 ) {
 

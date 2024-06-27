@@ -4,6 +4,7 @@ import static com.cheffi.common.dto.ValidationGroups.*;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.Getter;
 public class RecommendFollowRequest {
 
 	@NotEmpty(groups = NotEmptyGroup.class)
+	@Parameter(description = "검색할 태그의 ID 리스트 [NotEmpty, NotNull, 1 이상]", example = "[1, 2, 3]")
 	List<Long> tags;
 
 	public RecommendFollowRequest(List<Long> tags) {

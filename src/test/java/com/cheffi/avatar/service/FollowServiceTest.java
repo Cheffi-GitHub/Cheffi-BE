@@ -25,6 +25,7 @@ import com.cheffi.avatar.repository.AvatarRepository;
 import com.cheffi.avatar.repository.FollowJpaRepository;
 import com.cheffi.avatar.repository.FollowRepository;
 import com.cheffi.common.config.exception.business.EntityNotFoundException;
+import com.cheffi.tag.service.TagService;
 
 @ExtendWith(MockitoExtension.class)
 class FollowServiceTest {
@@ -41,6 +42,9 @@ class FollowServiceTest {
 	private AvatarJpaRepository avatarJpaRepository;
 	@Mock
 	private ApplicationEventPublisher eventPublisher;
+
+	@Mock
+	private TagService tagService;
 
 	private AvatarService avatarService;
 
@@ -59,7 +63,7 @@ class FollowServiceTest {
 	@BeforeEach
 	void setUp() {
 		avatarService = new AvatarService(avatarRepository, avatarJpaRepository, profilePhotoService);
-		followService = new FollowService(followRepository, followJpaRepository, avatarService, eventPublisher);
+		followService = new FollowService(followRepository, followJpaRepository, avatarService, eventPublisher, tagService);
 	}
 
 	@Nested

@@ -28,7 +28,7 @@ public class TagService {
 
 	public List<Tag> getAllById(List<Long> ids) {
 		List<Tag> result = tagRepository.findAllById(ids);
-		if(ids.size() != result.size())
+		if (ids.size() != result.size())
 			throw new BusinessException(ErrorCode.TAG_NOT_EXIST);
 		return result;
 	}
@@ -45,6 +45,12 @@ public class TagService {
 			.filter(t -> t.getId().equals(id))
 			.findAny()
 			.orElseThrow(() -> new BusinessException(ErrorCode.TAG_NOT_EXIST));
+	}
+
+	public void verifyIfExist(List<Long> ids) {
+		List<Long> tags = tagRepository.findAll().stream().map(Tag::getId).toList();
+		if(ids.stream().anyMatch(id -> !tags.contains(id)))
+			throw new BusinessException(ErrorCode.TAG_NOT_EXIST);
 	}
 
 	public List<Tag> getAvatarTagByAvatarId(Long avatarId) {
