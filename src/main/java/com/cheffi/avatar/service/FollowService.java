@@ -20,6 +20,7 @@ import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.dto.CursorPage;
 import com.cheffi.event.event.FollowEvent;
+import com.cheffi.tag.service.TagService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +33,7 @@ public class FollowService {
 	private final FollowJpaRepository followJpaRepository;
 	private final AvatarService avatarService;
 	private final ApplicationEventPublisher eventPublisher;
+	private final TagService tagService;
 
 	@Transactional
 	public AddFollowResponse addFollow(Long followerId, Long followeeId) {
@@ -86,6 +88,7 @@ public class FollowService {
 	}
 
 	public List<RecommendFollowResponse> recommendFollowee(RecommendFollowRequest request, Long avatarId) {
+		tagService.verifyIfExist(request.getTags());
 		return followJpaRepository.recommendByTag(request.getTags(), avatarId);
 	}
 
