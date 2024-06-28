@@ -5,7 +5,6 @@ import java.util.List;
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.dto.common.TagDto;
 import com.cheffi.tag.domain.Tag;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
@@ -14,7 +13,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ProfileInfo {
 	@Schema(description = "ID", example = "1", required = true)
