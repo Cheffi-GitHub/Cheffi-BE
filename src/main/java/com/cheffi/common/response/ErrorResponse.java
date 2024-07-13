@@ -2,8 +2,6 @@ package com.cheffi.common.response;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -35,10 +33,6 @@ public class ErrorResponse {
 		return ErrorResponse.builder()
 			.errorCode(errorCode)
 			.errorMessage(createErrorMessage(bindingResult))
-			.data(bindingResult.getFieldErrors()
-				.stream()
-				.collect(
-					Collectors.toMap(FieldError::getField, f -> Optional.ofNullable(f.getDefaultMessage()).orElse(""))))
 			.build();
 	}
 
