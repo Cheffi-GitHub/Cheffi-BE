@@ -48,8 +48,7 @@ public class KakaoApiService implements OidcLoginApiService {
 		// ios, aos, web 별로 aud를 가져오도록 설정
 		String aud = kakaoAudMap.get(platform.toLowerCase());
 
-		return oidcService.getPayloadFromIdToken(token, iss, aud,
-			kakaoOauthClient.getKakaoOidcOpenKeys());
+		return oidcService.getPayloadFromIdToken(token, iss, aud, kakaoOauthClient.getKakaoOidcOpenKeys());
 	}
 
 	@Override

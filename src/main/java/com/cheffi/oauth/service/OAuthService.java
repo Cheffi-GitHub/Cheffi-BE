@@ -35,6 +35,7 @@ public class OAuthService {
 	private final AvatarService avatarService;
 	private final RoleService roleService;
 	private final SecurityContextService securityContextService;
+	// Map에 등록된 Service는 com/cheffi/oauth/service 패키지에서 확인 가능
 	private final Map<String, OidcLoginApiService> providerMap;
 	private final CheffiCoinService cheffiCoinService;
 

@@ -33,7 +33,7 @@ public record OidcLoginResponse(
 	boolean activated,
 	@Schema(description = "마지막 비밀번호 변경 일자")
 	LocalDateTime lastPwChangedDate,
-	@Schema(description = "사용자 이름", example = "안유진")
+	@Schema(description = "사용자 이름", example = "안유진", required = true)
 	String name,
 	@Schema(description = "유저 가입 유형", example = "KAKAO", required = true)
 	UserType userType,
@@ -41,17 +41,17 @@ public record OidcLoginResponse(
 	boolean adAgreed,
 	@Schema(description = "개인정보 사용 동의 여부", required = true)
 	boolean analysisAgreed,
-	@Schema(description = "아바타 식별자 (아바타 = 유저 개념)")
+	@Schema(description = "아바타 식별자 (아바타 = 유저 개념)", required = true)
 	Long id,
-	@Schema(description = "현재 쉐피 코인 개수")
+	@Schema(description = "현재 쉐피 코인 개수", required = true)
 	int cheffiCoinCount,
-	@Schema(description = "현재 포인트 양")
+	@Schema(description = "현재 포인트 양", required = true)
 	int pointCnt,
-	@Schema(description = "유저 닉네임")
+	@Schema(description = "유저 닉네임", required = true)
 	String nickname,
-	@Schema(description = "프로필 URL")
+	@Schema(description = "프로필 URL", required = true)
 	String photoUrl,
-	@Schema(description = "프로필 등록 완료 여부")
+	@Schema(description = "프로필 등록 완료 여부", required = true)
 	boolean profileCompleted,
 	@Schema(description = "유저의 권한", required = true)
 	List<GrantedAuthority> authorities,
