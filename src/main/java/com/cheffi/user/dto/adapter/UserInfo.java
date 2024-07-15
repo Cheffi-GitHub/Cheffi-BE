@@ -25,7 +25,7 @@ public record UserInfo(
 	@Schema(description = "가입 시각", example = "2023-03-01 16:31:04.019", required = true)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Seoul")
 	LocalDateTime createdDate,
-	@Schema(description = "이름", example = "안유진")
+	@Schema(description = "이름", example = "안유진", required = true)
 	String name,
 	@Schema(description = "유저가 가입한 플랫폼", example = "KAKAO", required = true)
 	UserType userType,
