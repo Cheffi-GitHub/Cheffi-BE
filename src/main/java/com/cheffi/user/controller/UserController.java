@@ -2,6 +2,7 @@ package com.cheffi.user.controller;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -46,6 +47,7 @@ public class UserController {
 	@Operation(summary = "유저 약관 동의 변경 API - 인증 필요",
 		description = "약관 동의 여부 변경 - 인증 필요",
 		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("hasRole('USER')")
 	@PatchMapping("/terms")
 	public ApiResponse<UserInfo> changeTermsAgreement(
 		@AuthenticationPrincipal UserPrincipal principal,
