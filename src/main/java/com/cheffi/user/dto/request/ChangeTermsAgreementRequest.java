@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 public record ChangeTermsAgreementRequest(
 
 	@JsonProperty("ad_agreed")
-	@Schema(description = "마케팅 정보 수신 동의 여부", example = "true")
+	@Schema(description = "마케팅 정보 수신 동의 여부", example = "true", required = true)
 	@NotNull
 	Boolean adAgreed
 ) {
