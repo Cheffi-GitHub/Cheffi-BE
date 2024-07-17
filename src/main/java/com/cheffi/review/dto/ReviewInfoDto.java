@@ -1,5 +1,6 @@
 package com.cheffi.review.dto;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -27,7 +28,9 @@ public class ReviewInfoDto {
 	private String text;
 	@Schema(description = "리뷰의 사진 URL")
 	private ReviewPhotoInfoDto photo;
-	@Schema(description = "잠금까지 남은 시간 (ms 단위)", example = "86399751")
+    @Schema(description = "리뷰가 잠금되는 시각")
+    private LocalDateTime timeToLock;
+	@Schema(description = "리뷰 잠금까지 남은 시간 (ms 단위)", example = "86399751")
 	private Long timeLeftToLock;
 	@Schema(description = "잠금 여부", example = "true")
 	private Boolean locked;
@@ -63,11 +66,10 @@ public class ReviewInfoDto {
 		this.title = title;
 		this.text = text;
 		this.photo = photo;
-		this.timeLeftToLock = LEFT_TIMES_TO_LOCK.get(RANDOM.nextInt(LEFT_TIMES_TO_LOCK.size()));
 		this.locked = false;
-		// TODO 배포시 아래 로직으로 변경 필요
-		// this.timeLeftToLock = Duration.between(LocalDateTime.now(), timeToLock).toMillis();
-		// this.locked = timeLeftToLock <= 0;
+        this.timeToLock = timeToLock;
+        this.timeLeftToLock = Duration.between(LocalDateTime.now(), timeToLock).toMillis();
+        this.locked = timeLeftToLock <= 0;
 		this.bookmarked = bookmarked;
 		this.viewCount = viewCount;
 		this.writtenByUser = writtenByUser;
