@@ -61,12 +61,11 @@ public class AvatarController {
 		security = {@SecurityRequirement(name = "session-token")})
 	@PreAuthorize("hasRole('USER')")
 	@PatchMapping("/nickname")
-	public ApiResponse<String> patchNickname(
+	public ApiResponse<Void> patchNickname(
 		@Valid @RequestBody PatchNicknameRequest request,
 		@AuthenticationPrincipal UserPrincipal principal) {
-		String nickname = avatarService
-			.updateNickname(principal.getAvatarId(), request.nickname()).nickname().getValue();
-		return ApiResponse.success(nickname);
+		avatarService.updateNickname(principal.getAvatarId(), request.nickname());
+		return ApiResponse.success();
 	}
 
 	@Tag(name = "${swagger.tag.sign-up}")
