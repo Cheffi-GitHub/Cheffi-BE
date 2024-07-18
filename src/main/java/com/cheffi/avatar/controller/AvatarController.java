@@ -80,7 +80,7 @@ public class AvatarController {
 	@PostMapping(value = "/photo-tab", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ApiResponse<String> changePhotoTab(
 		@AuthenticationPrincipal UserPrincipal principal,
-		@Parameter(description = "변경할 프로필 사진 파일, 자기소개")
+		@Parameter(description = "변경할 프로필 사진 파일")
 		@RequestPart(value = "file", required = false) @Nullable MultipartFile file,
 		@Valid @RequestPart("request") PhotoTabChangeRequest request
 	) {
