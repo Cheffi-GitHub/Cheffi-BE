@@ -42,11 +42,11 @@ public class AvatarService {
 	}
 
 	@Transactional
-	public String changePhotoTab(Long avatarId, String introduction, MultipartFile file, boolean defaultPhoto) {
+	public void changePhotoTab(Long avatarId, String introduction, MultipartFile file, boolean defaultPhoto) {
 		Avatar avatar = getById(avatarId);
 
 		avatar.changeIntroduction(introduction);
-		return changePhoto(file, defaultPhoto, avatar);
+		changePhoto(file, defaultPhoto, avatar);
 	}
 
 	public boolean isNicknameInUse(String nickname) {
