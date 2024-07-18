@@ -74,6 +74,10 @@ public enum ErrorCode {
 
 	// 파일
 	NOT_IMAGE_FILE(HttpStatus.BAD_REQUEST, "F-001", "전송된 파일의 형식이 이미지가 아닙니다."),
+	FAIL_TO_GET_TYPE_OF_IMAGE(HttpStatus.INTERNAL_SERVER_ERROR, "F-002", "이미지 파일의 타입을 가져오지 못했습니다."),
+	FAIL_TO_ANALYZE_FILE(HttpStatus.INTERNAL_SERVER_ERROR, "F-003", "이미지 파일을 분석하는데 실패했습니다."),
+	FAIL_TO_UPLOAD_FILE(HttpStatus.INTERNAL_SERVER_ERROR, "F-004", "파일 업로드에 실패했습니다."),
+	IMAGE_FILE_IS_NULL(HttpStatus.BAD_REQUEST, "F-005", "요청된 파일이 null입니다."),
 
 	// 태그
 	LOWER_LIMIT_UNSATISFIED(HttpStatus.BAD_REQUEST, "T-001", "태그 갯수가 하한선을 충족하지 못했습니다."),
