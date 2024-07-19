@@ -2,6 +2,9 @@ package com.cheffi.review.service;
 
 import java.util.List;
 
+import com.cheffi.file.constant.FilePath;
+import com.cheffi.file.service.MultiPhotoService;
+import com.cheffi.review.domain.ReviewPhoto;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +37,7 @@ public class ReviewCudService {
 	private final RestaurantInfoService restaurantInfoService;
 	private final ReviewTagService reviewTagService;
 	private final MenuService menuService;
-	private final ReviewPhotoService reviewPhotoService;
+	private final MultiPhotoService multiPhotoService;
 	private final ReviewService reviewService;
 	private final SecurityContextService securityContextService;
 	private final ApplicationEventPublisher eventPublisher;
@@ -52,7 +55,7 @@ public class ReviewCudService {
 
 		reviewTagService.changeTags(review, request.getMap());
 
-		reviewPhotoService.addPhotos(review, images);
+		multiPhotoService.addPhotos(images, review, ReviewPhoto::of, FilePath.REVIEW_PHOTO);
 
 		Review savedReview = reviewService.save(review);
 		eventPublisher.publishEvent(
@@ -69,7 +72,7 @@ public class ReviewCudService {
 		review.updateFromRequest(request);
 		menuService.changeMenus(review, request.getMenus());
 		reviewTagService.changeTags(review, request.getMap());
-		reviewPhotoService.changePhotos(review, images, S3RootPath.REVIEW_PHOTO);
+		multiPhotoService.changePhotos(images, review, ReviewPhoto::of, FilePath.REVIEW_PHOTO);
 	}
 
 	@Transactional

@@ -18,6 +18,6 @@ public interface MultiPhotoContainer<T extends MultiPhoto> {
 		return getPhotos().stream().map(MultiPhoto::getKey).toList();
 	}
 
-	Long getId();
+	Object getId();
 
 }
