@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class TimeTraceAspect {
 
-	@Around("execution(* com.cheffi.common.service.FileUploadService.uploadImageToS3(..))")
+	// 시간 측정할 서비스에 추가
 	public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable {
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
