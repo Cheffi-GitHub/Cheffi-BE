@@ -5,6 +5,7 @@ import java.util.List;
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.AvatarTag;
 import com.cheffi.avatar.dto.common.TagDto;
+import com.cheffi.common.domain.ImageFile;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -18,8 +19,8 @@ public record AvatarInfoResponse(
 	Long id,
 	@Schema(description = "닉네임", example = "동구밭에서캔감자", required = true)
 	String nickname,
-	@Schema(description = "프로필 사진 URL", required = true)
-	String photoUrl,
+	@Schema(description = "프로필 사진", required = true)
+	ImageFile photo,
 	@Schema(description = "자기소개", example = "동구밭 과수원길에서 태어난 감자입니다.", required = true)
 	String introduction,
 	@Schema(description = "팔로워 수", example = "16", required = true)
@@ -35,7 +36,7 @@ public record AvatarInfoResponse(
 		return AvatarInfoResponse.builder()
 			.id(avatar.getId())
 			.nickname(avatar.stringNickname())
-			.photoUrl(avatar.getPhoto().getUrl())
+			.photo(avatar.getPhoto().getFile())
 			.introduction(avatar.getIntroduction())
 			.follower(avatar.getFollowerCnt())
 			.following(avatar.getFollowingCnt())

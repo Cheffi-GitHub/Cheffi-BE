@@ -3,6 +3,7 @@ package com.cheffi.avatar.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cheffi.file.domain.SinglePhotoContainer;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -33,7 +34,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Avatar extends BaseTimeEntity {
+public class Avatar extends BaseTimeEntity implements SinglePhotoContainer<ProfilePhoto> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +59,7 @@ public class Avatar extends BaseTimeEntity {
 	private User user;
 
 	@NotNull
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "photo_id")
 	private ProfilePhoto photo;
 

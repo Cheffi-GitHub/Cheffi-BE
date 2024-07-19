@@ -2,6 +2,9 @@ package com.cheffi.avatar.service;
 
 import java.util.List;
 
+import com.cheffi.common.config.exception.business.FileUploadException;
+import com.cheffi.file.constant.FilePath;
+import com.cheffi.file.service.SinglePhotoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +33,7 @@ public class AvatarService {
 	private final AvatarRepository avatarRepository;
 	private final AvatarJpaRepository avatarJpaRepository;
 	private final ProfilePhotoService profilePhotoService;
+	private final SinglePhotoService singlePhotoService;
 
 	@UpdatePrincipal
 	@Transactional
@@ -53,6 +57,7 @@ public class AvatarService {
 		return avatarRepository.existsByNickname(nickname);
 	}
 
+	@Transactional
 	public Avatar createAvatar(User user) {
 		Avatar avatar = new Avatar(user);
 		for (int i = 0; i < 10; i++) {
@@ -62,7 +67,8 @@ public class AvatarService {
 		}
 		if (isNicknameInUse(avatar.stringNickname()))
 			throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
-		profilePhotoService.addDefaultPhoto(avatar);
+
+		singlePhotoService.changePhoto(avatar, profilePhotoService.getDefaultPhoto());
 		return avatarRepository.save(avatar);
 	}
 
@@ -73,25 +79,17 @@ public class AvatarService {
 	}
 
 	@Transactional
-	public String changePhoto(MultipartFile file, boolean defaultPhoto, Avatar avatar) {
-		String s3key = null;
-		if (avatar.hasPhoto())
-			s3key = profilePhotoService.deletePhotoFromDB(avatar);
-
-		ProfilePhoto addedPhoto;
-		if (defaultPhoto)
-			addedPhoto = profilePhotoService.addDefaultPhoto(avatar);
-		else
-			addedPhoto = profilePhotoService.addPhoto(avatar, file);
-
-		try {
-			profilePhotoService.deletePhotoFromS3(s3key);
-		} catch (Exception e) {
-			profilePhotoService.deletePhotoFromS3(addedPhoto.getS3Key());
-			throw new BusinessException(e.getMessage());
+	public void changePhoto(MultipartFile file, boolean defaultPhoto, Avatar avatar) {
+		if(defaultPhoto) {
+			singlePhotoService.changePhoto(avatar, profilePhotoService.getDefaultPhoto());
+			return;
 		}
 
-		return addedPhoto.getUrl();
+		if(file == null) {
+			throw new FileUploadException(ErrorCode.IMAGE_FILE_IS_NULL);
+		}
+
+		singlePhotoService.changePhoto(file, avatar, ProfilePhoto::new, FilePath.PROFILE_PHOTO);
 	}
 
 	public boolean checkIfCompleteProfile(Long avatarId) {

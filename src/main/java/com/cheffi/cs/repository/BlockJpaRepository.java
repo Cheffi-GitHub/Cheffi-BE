@@ -34,7 +34,7 @@ public class BlockJpaRepository {
 					block.id,
 					avatar.id,
 					avatar.nickname.value,
-					profilePhoto.url,
+					profilePhoto.file,
 					block.createdDate
 				)
 			).from(block)

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.cheffi.common.domain.ImageFile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -49,8 +50,8 @@ public record OidcLoginResponse(
 	int pointCnt,
 	@Schema(description = "유저 닉네임", required = true)
 	String nickname,
-	@Schema(description = "프로필 URL", required = true)
-	String photoUrl,
+	@Schema(description = "프로필 사진", required = true)
+	ImageFile photo,
 	@Schema(description = "프로필 등록 완료 여부", required = true)
 	boolean profileCompleted,
 	@Schema(description = "유저의 권한", required = true)
@@ -76,7 +77,7 @@ public record OidcLoginResponse(
 			.cheffiCoinCount(avatar.getCheffiCoinCnt())
 			.pointCnt(avatar.getPointCnt())
 			.nickname(principal.stringNickname())
-			.photoUrl(photo != null ? photo.getUrl() : null)
+			.photo(photo.getFile())
 			.profileCompleted(isProfileCompleted(principal.getAuthorities()))
 			.authorities((new ArrayList<>(principal.getAuthorities())))
 			.isNewUser(isNewUser)

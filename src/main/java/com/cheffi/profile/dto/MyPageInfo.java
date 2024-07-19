@@ -6,6 +6,7 @@ import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.AvatarTag;
 import com.cheffi.avatar.domain.Nickname;
 import com.cheffi.avatar.dto.common.TagDto;
+import com.cheffi.common.domain.ImageFile;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -19,10 +20,10 @@ public record MyPageInfo(
 	Long id,
 	@Schema(description = "닉네임", required = true)
 	Nickname nickname,
-	@Schema(description = "자기소개", example = "동구밭 과수원길에서 태어난 감자입니다 .", required = true)
+	@Schema(description = "자기소개", example = "동구밭 과수원길에서 태어난 감자입니다 .")
 	String introduction,
-	@Schema(description = "프로필 사진 URL", required = true)
-	String photoUrl,
+	@Schema(description = "프로필 사진", required = true)
+	ImageFile photo,
 	@Schema(description = "팔로워 수", example = "16", required = true)
 	int followerCount,
 	@Schema(description = "팔로잉 수", example = "24", required = true)
@@ -33,7 +34,8 @@ public record MyPageInfo(
 	int cheffiCoin,
 	@Schema(description = "포인트", required = true)
 	int point,
-	@Schema(required = true) List<TagDto> tags
+	@Schema(description = "취향 태그", required = true)
+	List<TagDto> tags
 ) {
 
 	public static MyPageInfo of(Avatar avatar) {
@@ -41,7 +43,7 @@ public record MyPageInfo(
 			.id(avatar.getId())
 			.nickname(avatar.getNickname())
 			.introduction(avatar.getIntroduction())
-			.photoUrl(avatar.getPhoto().getUrl())
+			.photo(avatar.getPhoto().getFile())
 			.followerCount(avatar.getFollowerCnt())
 			.followingCount(avatar.getFollowingCnt())
 			.post(avatar.getPostCnt())

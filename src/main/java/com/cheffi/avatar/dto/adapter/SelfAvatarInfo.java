@@ -3,6 +3,7 @@ package com.cheffi.avatar.dto.adapter;
 import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.domain.Nickname;
 import com.cheffi.avatar.domain.ProfilePhoto;
+import com.cheffi.common.domain.ImageFile;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -28,8 +29,8 @@ public record SelfAvatarInfo(
 	int following,
 	@Schema(description = "게시물 수", required = true)
 	int post,
-	@Schema(description = "프로필 사진 URL", required = true)
-	String photoUrl
+	@Schema(description = "프로필 사진", required = true)
+	ImageFile photo
 ) {
 	public static SelfAvatarInfo of(Avatar avatar, ProfilePhoto photo) {
 		return SelfAvatarInfo.builder()
@@ -41,7 +42,7 @@ public record SelfAvatarInfo(
 			.follower(avatar.getFollowerCnt())
 			.following(avatar.getFollowingCnt())
 			.post(avatar.getPostCnt())
-			.photoUrl(photo != null ? photo.getUrl() : null)
+			.photo(photo.getFile())
 			.build();
 	}
 

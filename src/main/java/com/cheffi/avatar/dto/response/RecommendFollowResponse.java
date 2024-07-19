@@ -1,5 +1,6 @@
 package com.cheffi.avatar.dto.response;
 
+import com.cheffi.common.domain.ImageFile;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.querydsl.core.annotations.QueryProjection;
@@ -12,8 +13,8 @@ public record RecommendFollowResponse(
 	Long id,
 	@Schema(description = "닉네임", example = "동구밭에서캔감자", required = true)
 	String nickname,
-	@Schema(description = "프로필 사진 URL", required = true)
-	String photoUrl,
+	@Schema(description = "프로필 사진", required = true)
+	ImageFile photo,
 	@Schema(description = "자기소개", example = "동구밭 과수원길에서 태어난 감자입니다.")
 	String introduction,
 	@Schema(description = "팔로워 수", example = "16", required = true)
@@ -23,11 +24,11 @@ public record RecommendFollowResponse(
 ) {
 
 	@QueryProjection
-	public RecommendFollowResponse(Long id, String nickname, String photoUrl, String introduction, int followers,
+	public RecommendFollowResponse(Long id, String nickname, ImageFile photo, String introduction, int followers,
 		boolean followed) {
 		this.id = id;
 		this.nickname = nickname;
-		this.photoUrl = photoUrl;
+		this.photo = photo;
 		this.introduction = introduction;
 		this.followers = followers;
 		this.followed = followed;
