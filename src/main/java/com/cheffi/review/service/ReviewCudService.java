@@ -2,9 +2,6 @@ package com.cheffi.review.service;
 
 import java.util.List;
 
-import com.cheffi.file.constant.FilePath;
-import com.cheffi.file.service.MultiPhotoService;
-import com.cheffi.review.domain.ReviewPhoto;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +11,14 @@ import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
-import com.cheffi.common.constant.S3RootPath;
 import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.event.event.ReviewCreateEvent;
+import com.cheffi.file.constant.FilePath;
+import com.cheffi.file.service.MultiPhotoService;
 import com.cheffi.review.domain.Restaurant;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.domain.ReviewCreateRequest;
+import com.cheffi.review.domain.ReviewPhoto;
 import com.cheffi.review.dto.request.DeleteReviewRequest;
 import com.cheffi.review.dto.request.RegisterReviewRequest;
 import com.cheffi.review.dto.request.UpdateReviewRequest;
@@ -55,9 +54,10 @@ public class ReviewCudService {
 
 		reviewTagService.changeTags(review, request.getMap());
 
+		Review savedReview = reviewService.save(review);
+
 		multiPhotoService.addPhotos(images, review, ReviewPhoto::of, FilePath.REVIEW_PHOTO);
 
-		Review savedReview = reviewService.save(review);
 		eventPublisher.publishEvent(
 			new ReviewCreateEvent(writer, savedReview, securityContextService.getAuthorities()));
 		return savedReview.getId();

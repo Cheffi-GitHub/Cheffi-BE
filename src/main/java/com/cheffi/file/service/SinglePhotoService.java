@@ -30,7 +30,7 @@ public class SinglePhotoService {
 	}
 
 	private <T extends SinglePhotoContainer<P>, P extends SinglePhoto> void removePhoto(T container) {
-		if (!container.getPhoto().isUploadedImage())
+		if (container.getPhoto() == null || !container.getPhoto().isUploadedImage())
 			return;
 		String key = container.getKey();
 		imageUploadService.removeFile(key);

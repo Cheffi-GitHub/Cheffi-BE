@@ -1,21 +1,22 @@
 package com.cheffi.file.service;
 
-import com.cheffi.common.code.ErrorCode;
-import com.cheffi.common.config.exception.business.FileUploadException;
-import com.cheffi.file.constant.FilePath;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.cheffi.common.code.ErrorCode;
+import com.cheffi.common.config.exception.business.FileUploadException;
+import com.cheffi.file.constant.FilePath;
+
 @Service
 public class FilePathStrategy {
 
-	private static final String PREFIX = "Map2Zero_";
+	private static final String PREFIX = "Cheffi_";
 
 	public String getType(MultipartFile multipartFile) {
 		File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
