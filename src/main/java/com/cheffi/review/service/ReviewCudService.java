@@ -11,12 +11,14 @@ import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.avatar.service.AvatarService;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
-import com.cheffi.common.constant.S3RootPath;
 import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.event.event.ReviewCreateEvent;
+import com.cheffi.file.constant.FilePath;
+import com.cheffi.file.service.MultiPhotoService;
 import com.cheffi.review.domain.Restaurant;
 import com.cheffi.review.domain.Review;
 import com.cheffi.review.domain.ReviewCreateRequest;
+import com.cheffi.review.domain.ReviewPhoto;
 import com.cheffi.review.dto.request.DeleteReviewRequest;
 import com.cheffi.review.dto.request.RegisterReviewRequest;
 import com.cheffi.review.dto.request.UpdateReviewRequest;
@@ -34,7 +36,7 @@ public class ReviewCudService {
 	private final RestaurantInfoService restaurantInfoService;
 	private final ReviewTagService reviewTagService;
 	private final MenuService menuService;
-	private final ReviewPhotoService reviewPhotoService;
+	private final MultiPhotoService multiPhotoService;
 	private final ReviewService reviewService;
 	private final SecurityContextService securityContextService;
 	private final ApplicationEventPublisher eventPublisher;
@@ -52,9 +54,10 @@ public class ReviewCudService {
 
 		reviewTagService.changeTags(review, request.getMap());
 
-		reviewPhotoService.addPhotos(review, images);
-
 		Review savedReview = reviewService.save(review);
+
+		multiPhotoService.addPhotos(images, review, ReviewPhoto::of, FilePath.REVIEW_PHOTO);
+
 		eventPublisher.publishEvent(
 			new ReviewCreateEvent(writer, savedReview, securityContextService.getAuthorities()));
 		return savedReview.getId();
@@ -69,7 +72,7 @@ public class ReviewCudService {
 		review.updateFromRequest(request);
 		menuService.changeMenus(review, request.getMenus());
 		reviewTagService.changeTags(review, request.getMap());
-		reviewPhotoService.changePhotos(review, images, S3RootPath.REVIEW_PHOTO);
+		multiPhotoService.changePhotos(images, review, ReviewPhoto::of, FilePath.REVIEW_PHOTO);
 	}
 
 	@Transactional

@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
+import com.cheffi.file.service.SinglePhotoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -37,6 +38,8 @@ class FollowServiceTest {
 	@Mock
 	private ProfilePhotoService profilePhotoService;
 	@Mock
+	private SinglePhotoService singlePhotoService;
+	@Mock
 	private FollowJpaRepository followJpaRepository;
 	@Mock
 	private AvatarJpaRepository avatarJpaRepository;
@@ -62,7 +65,7 @@ class FollowServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		avatarService = new AvatarService(avatarRepository, avatarJpaRepository, profilePhotoService);
+		avatarService = new AvatarService(avatarRepository, avatarJpaRepository, profilePhotoService, singlePhotoService);
 		followService = new FollowService(followRepository, followJpaRepository, avatarService, eventPublisher, tagService);
 	}
 

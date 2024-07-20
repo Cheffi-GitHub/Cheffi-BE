@@ -67,7 +67,7 @@ public class ReviewQueryProcessor {
 			review.id,
 			review.title,
 			review.text,
-			new QReviewPhotoInfoDto(reviewPhoto.id, reviewPhoto.givenOrder, reviewPhoto.url),
+			new QReviewPhotoInfoDto(reviewPhoto.id, reviewPhoto.givenOrder, reviewPhoto.file),
 			review.timeToLock,
 			review.viewCnt,
 			review.status,

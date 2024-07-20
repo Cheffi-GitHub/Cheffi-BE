@@ -59,7 +59,7 @@ public class AvatarJpaRepository {
 	private ProfileInfo select(JPAQuery<?> common, boolean authenticated) {
 		return common.transform(groupBy(avatar.id).list(new QProfileInfo(
 			avatar,
-			avatar.photo.url,
+			avatar.photo.file,
 			authenticated ? follow.isNotNull() : Expressions.nullExpression(),
 			authenticated ? block.isNotNull() : Expressions.nullExpression(),
 			list(tag)

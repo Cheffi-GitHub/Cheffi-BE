@@ -10,6 +10,7 @@ import com.cheffi.avatar.domain.Avatar;
 import com.cheffi.common.code.ErrorCode;
 import com.cheffi.common.config.exception.business.BusinessException;
 import com.cheffi.common.domain.BaseTimeEntity;
+import com.cheffi.file.domain.MultiPhotoContainer;
 import com.cheffi.review.constant.RatingType;
 import com.cheffi.review.constant.ReviewStatus;
 import com.cheffi.review.dto.request.UpdateReviewRequest;
@@ -36,7 +37,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Review extends BaseTimeEntity {
+public class Review extends BaseTimeEntity implements MultiPhotoContainer<ReviewPhoto> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,10 +100,6 @@ public class Review extends BaseTimeEntity {
 		return new Review(request.title(), request.text(), request.lockAfterHours(), restaurant, writer);
 	}
 
-	public void addPhotos(List<ReviewPhoto> photos) {
-		this.photos.addAll(photos);
-	}
-
 	public void addMenus(List<Menu> menus) {
 		if (this.menus.size() + menus.size() > 5)
 			throw new BusinessException(ErrorCode.TOO_MANY_MENUS);
@@ -111,10 +108,6 @@ public class Review extends BaseTimeEntity {
 
 	public void clearMenus() {
 		this.menus.clear();
-	}
-
-	public void clearPhotos() {
-		this.photos.clear();
 	}
 
 	public void addTags(List<Tag> tagsToAdd) {

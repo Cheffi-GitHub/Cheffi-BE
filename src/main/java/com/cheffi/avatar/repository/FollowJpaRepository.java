@@ -48,7 +48,7 @@ public class FollowJpaRepository {
 			.select(new QRecommendFollowResponse(
 				recommended.id,
 				recommended.nickname.value,
-				profilePhoto.url,
+				profilePhoto.file,
 				recommended.introduction,
 				recommended.followerCnt,
 				follow.isNotNull()
@@ -142,7 +142,7 @@ public class FollowJpaRepository {
 				follow.id,
 				object.id,
 				object.nickname.value,
-				profilePhoto.url,
+				profilePhoto.file,
 				expression
 			))
 			.where(cursor == null ? new BooleanBuilder() : follow.id.loe(cursor))
@@ -155,7 +155,7 @@ public class FollowJpaRepository {
 				follow.id,
 				object.id,
 				object.nickname.value,
-				profilePhoto.url,
+				profilePhoto.file,
 				viewerFollow.isNotNull()
 			))
 			.leftJoin(viewerFollow)

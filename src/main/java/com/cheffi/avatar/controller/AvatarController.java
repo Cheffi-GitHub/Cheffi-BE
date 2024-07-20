@@ -78,20 +78,14 @@ public class AvatarController {
 		encoding = @Encoding(name = "request", contentType = MediaType.APPLICATION_JSON_VALUE)))
 	@PreAuthorize("hasRole('USER')")
 	@PostMapping(value = "/photo-tab", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ApiResponse<String> changePhotoTab(
+	public ApiResponse<Void> changePhotoTab(
 		@AuthenticationPrincipal UserPrincipal principal,
 		@Parameter(description = "변경할 프로필 사진 파일")
 		@RequestPart(value = "file", required = false) @Nullable MultipartFile file,
 		@Valid @RequestPart("request") PhotoTabChangeRequest request
 	) {
-		return ApiResponse.success(
-			avatarService.changePhotoTab(
-				principal.getAvatarId(),
-				request.introduction(),
-				file,
-				request.defaultPhoto()
-			)
-		);
+		avatarService.changePhotoTab(principal.getAvatarId(), request.introduction(), file, request.defaultPhoto());
+		return ApiResponse.success();
 	}
 
 	@Tag(name = "${swagger.tag.sign-up}")

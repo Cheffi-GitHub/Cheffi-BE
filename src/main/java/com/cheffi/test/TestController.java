@@ -2,6 +2,9 @@ package com.cheffi.test;
 
 import java.util.List;
 
+import com.cheffi.common.domain.ImageFile;
+import com.cheffi.file.constant.FilePath;
+import com.cheffi.file.service.ImageUploadService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cheffi.common.constant.S3RootPath;
-import com.cheffi.common.dto.ImageFileInfo;
 import com.cheffi.common.response.ApiResponse;
-import com.cheffi.common.service.FileUploadService;
 import com.cheffi.common.service.SecurityContextService;
 import com.cheffi.oauth.model.AuthenticationToken;
 import com.cheffi.oauth.model.UserPrincipal;
@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @Profile({"local", "dev"})
 public class TestController {
 
-	private final FileUploadService fileUploadService;
+	private final ImageUploadService imageUploadService;
 	private final SecurityContextService securityContextService;
 
 	@Tag(name = "Test")
@@ -57,8 +57,8 @@ public class TestController {
 	@Tag(name = "Test")
 	@Operation(summary = "이미지 업로드 테스트 API")
 	@PostMapping(value = "/upload")
-	public ApiResponse<ImageFileInfo> upload(MultipartFile file) {
-		return ApiResponse.success(fileUploadService.uploadImageToS3(file, S3RootPath.TEST));
+	public ApiResponse<ImageFile> upload(MultipartFile file) {
+		return ApiResponse.success(imageUploadService.uploadImage(file, FilePath.TEST_PHOTO, "TEST_ID"));
 	}
 
 }

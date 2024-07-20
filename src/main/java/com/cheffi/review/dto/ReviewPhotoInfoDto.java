@@ -1,5 +1,6 @@
 package com.cheffi.review.dto;
 
+import com.cheffi.common.domain.ImageFile;
 import com.cheffi.review.domain.ReviewPhoto;
 import com.querydsl.core.annotations.QueryProjection;
 
@@ -11,22 +12,22 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ReviewPhotoInfoDto {
 
-	@Schema(description = "리뷰 사진ID", example = "1")
+	@Schema(description = "리뷰 사진ID", example = "1", required = true)
 	private Long id;
-	@Schema(description = "리뷰에 보여질 사진의 순서", example = "1")
+	@Schema(description = "리뷰에 보여질 사진의 순서", example = "1", required = true)
 	private int order;
-	@Schema(description = "리뷰 사진의 URL", example = "https.www.~")
-	private String photoUrl;
+	@Schema(description = "리뷰 사진", example = "https.www.~", required = true)
+	private ImageFile photo;
 
 	@QueryProjection
-	public ReviewPhotoInfoDto(Long id, int order, String photoUrl) {
+	public ReviewPhotoInfoDto(Long id, int order, ImageFile photo) {
 		this.id = id;
 		this.order = order;
-		this.photoUrl = photoUrl;
+		this.photo = photo;
 	}
 
 	public static ReviewPhotoInfoDto of(ReviewPhoto reviewPhoto) {
-		return new ReviewPhotoInfoDto(reviewPhoto.getId(), reviewPhoto.getGivenOrder(), reviewPhoto.getUrl());
+		return new ReviewPhotoInfoDto(reviewPhoto.getId(), reviewPhoto.getGivenOrder(), reviewPhoto.getFile());
 	}
 
 }
