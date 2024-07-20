@@ -19,6 +19,7 @@ public class ImageUploadService {
 	private final FileStorageService fileStorageService;
 	private final FilePathStrategy filePathStrategy;
 	private final ImageFileService imageFileService;
+	private final FileTypeService fileTypeService;
 
 	public List<ImageFile> uploadImages(List<MultipartFile> images, FilePath path, Object id) {
 		List<FileUploadRequest> fileUploadRequests = images.stream()
@@ -28,6 +29,7 @@ public class ImageUploadService {
 	}
 
 	public ImageFile uploadImage(MultipartFile image, FilePath path, Object id) {
+		fileTypeService.validateImageType(image);
 		FileUploadRequest fileUploadRequest = new FileUploadRequest(image, getKey(image, path, id));
 		return convert(fileStorageService.uploadFile(fileUploadRequest));
 	}
