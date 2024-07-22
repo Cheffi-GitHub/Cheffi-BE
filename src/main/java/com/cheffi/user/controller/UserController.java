@@ -60,6 +60,7 @@ public class UserController {
 		description = "프로필 완료 등록 - 인증 필요 "
 			+ "닉네임 설정, 프로필 사진 등록, 태그 설정이 끝난 후에 반드시 1회 호출하여 완료 등록을 해야 합니다.",
 		security = {@SecurityRequirement(name = "session-token")})
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/profile")
 	public ApiResponse<Void> completeProfileRegistration(
 		@AuthenticationPrincipal UserPrincipal principal) {
