@@ -107,10 +107,10 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            cd /home/ec2-user/cheffifolder
-            docker-compose down --rmi local
+            cd /home/ubuntu/cheffifolder
+            docker compose down --rmi local
             docker image prune -f
-            docker-compose up --build -d
+            docker compose up --build -d
 
       - name: Remove Github Actions IP from security group
         run: |
